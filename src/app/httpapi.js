@@ -3,7 +3,7 @@
     var rpc = require('json-rpc2');
     var server;
     var lang;
-    var nativeWindow = require('nw.gui').Window.get();
+    var nativeWindow = nw.Window.get();
     var httpServer;
     var Q = require('q');
 
@@ -289,7 +289,7 @@
             });
 
             server.expose('getfullscreen', function (args, opt, callback) {
-                nativeWindow = require('nw.gui').Window.get();
+                nativeWindow = nw.Window.get();
                 popcornCallback(callback, false, {
                     'fullscreen': nativeWindow.isFullscreen
                 });

@@ -6,27 +6,27 @@
     "type": "git",
     "url": "https://github.com/PopcornTimeCommunity/desktop.git"
   },
+  "chromium-args":"--enable-logging --v=1",
   "license": "GPL-3.0",
-  "main": "app://host/src/app/index.html",
-  "version": "0.4.1-1",
-  "node-remote": "client.vpn.ht",
-  "releaseName": "Give me some Nachos",
+  "main": "src/app/index.html",
+  "version": "0.4.2-beta",
+  "node-remote": "https://client.vpn.ht",
+  "releaseName": "Give me the covers",
   "scripts": {
     "start": "gulp run"
   },
-  "single-instance": false,
   "window": {
     "title": "Popcorn Time CE",
     "icon": "src/app/images/icon.png",
-    "toolbar": false,
     "frame": false,
-    "min_width": 960,
-    "min_height": 520,
-    "resizable": true,
+    "width": 960,
+    "height": 520,
     "show": false,
-    "position": "center"
+    "position": "center",
+    "resizable": true
   },
   "dependencies": {
+    "nw": "^0.15.2",
     "urijs": "^1.17.0",
     "adm-zip": "0.4.7",
     "airplay-js": "^0.2.16",
@@ -68,9 +68,9 @@
     "xmlbuilder": "^2.6.2"
   },
   "devDependencies": {
+    "nw-builder": "git://github.com/jontro/nw-builder#nwjs-13",
     "del": "^2.2.0",
     "gulp": "^3.9.0",
-    "nw-builder": "^2.0.2",
     "nw-gyp": "^0.12.4",
     "yargs": "^3.31.0"
   }

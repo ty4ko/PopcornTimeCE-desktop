@@ -240,11 +240,11 @@
 
         startStreaming: function () {
 	    var player = $('.imgplayerchoice').attr('src');
-            if (!player.match(/[0-9]+.[0-9]+.[0-9]+.[0-9]/ig) && 
+            if (!player.match(/[0-9]+.[0-9]+.[0-9]+.[0-9]/ig) &&
 		player=='images/icons/googlecloud-icon.png' && this.model.get('google_video')) {
 		    var google_video = new Backbone.Model({
 		        src: this.model.get('google_video'),
-		        type: 'video/mp4', 
+		        type: 'video/mp4',
 			techOrder: ['html5', 'flash'],
 			quality: this.model.get('quality'), //quality: 'quality unknown', //quality: false,
 			subtitle: this.model.get('subtitle'), //subtitle: null,
@@ -271,7 +271,7 @@
 		    App.vent.trigger('stream:start', torrentStart);
 	    }
 
-		
+
         },
 
         toggleDropdown: function (e) {
@@ -442,17 +442,17 @@
         },
 
         openIMDb: function () {
-            gui.Shell.openExternal('http://www.imdb.com/title/' + this.model.get('imdb_id'));
+            nw.Shell.openExternal('http://www.imdb.com/title/' + this.model.get('imdb_id'));
         },openYifysubtitles: function () {
-            gui.Shell.openExternal('http://www.yifysubtitles.com/movie-imdb/' + this.model.get('imdb_id'));
+            nw.Shell.openExternal('http://www.yifysubtitles.com/movie-imdb/' + this.model.get('imdb_id'));
         },openYify: function () {
-            gui.Shell.openExternal('http://yify.is/index.php/movie/yifi_view/'+this.model.get('slug')+'/' + this.model.get('id'));
+            nw.Shell.openExternal('http://yify.is/index.php/movie/yifi_view/'+this.model.get('slug')+'/' + this.model.get('id'));
         },openVideo2k: function () {
-            gui.Shell.openExternal('http://video2k.is/index.php/movie/watch/'+this.model.get('slug')+'/' + this.model.get('id'));
+            nw.Shell.openExternal('http://video2k.is/index.php/movie/watch/'+this.model.get('slug')+'/' + this.model.get('id'));
         },openGooglevideo: function () {
-            gui.Shell.openExternal(this.model.get('google_video'));
+            nw.Shell.openExternal(this.model.get('google_video'));
         },openYoutube: function () {
-            gui.Shell.openExternal(this.model.get('trailer'));
+            nw.Shell.openExternal(this.model.get('trailer'));
         },
 
         openMagnet: function (e) {
@@ -466,11 +466,11 @@
                 magnetLink = torrent.url;
             }
             if (e.button === 2) { //if right click on magnet link
-                var clipboard = gui.Clipboard.get();
+                var clipboard = nw.Clipboard.get();
                 clipboard.set(magnetLink, 'text'); //copy link to clipboard
                 $('.notification_alert').text(i18n.__('The magnet link was copied to the clipboard')).fadeIn('fast').delay(2500).fadeOut('fast');
             } else {
-                gui.Shell.openExternal(magnetLink);
+                nw.Shell.openExternal(magnetLink);
             }
         },
 
@@ -492,7 +492,7 @@
             var player = $(e.currentTarget).parent('li').attr('id').replace('player-', '');
 	    //this.model.set('device', player);
             if (!player.match(/[0-9]+.[0-9]+.[0-9]+.[0-9]/ig)) {
-		//set player to 'local' if Settings.chosenPlayer='googlecloud' and no google_video found 
+		//set player to 'local' if Settings.chosenPlayer='googlecloud' and no google_video found
 		if(AdvSettings.get('chosenPlayer')=='googlecloud' && !this.model.get('google_video')){
 			AdvSettings.set('chosenPlayer', 'local');
 			this.model.set('device', 'local');

@@ -1,8 +1,8 @@
 (function (App) {
     'use strict';
 
-    var clipboard = gui.Clipboard.get(),
-        collection = path.join(require('nw.gui').App.dataPath + '/TorrentCollection/'),
+    var clipboard = nw.Clipboard.get(),
+        collection = path.join(nw.App.dataPath + '/TorrentCollection/'),
         files;
 
     var TorrentCollection = Backbone.Marionette.ItemView.extend({
@@ -175,7 +175,7 @@
                 });
 
             } /*else { //strike has stopped its service
-                
+
                 var strike = require('strike-api');
                 if (category === 'tv') {
                     category = 'TV';
@@ -204,7 +204,7 @@
                             size: Common.fileSize(parseInt(item.size)),
                             index: index
                         };
-                        
+
                         that.onlineAddItem(itemModel);
                         index++;
                     });
@@ -272,24 +272,23 @@
         },
 
         context_Menu: function (cutLabel, copyLabel, pasteLabel) {
-            var gui = require('nw.gui'),
-                menu = new gui.Menu(),
+            var menu = new nw.Menu(),
 
-                cut = new gui.MenuItem({
+                cut = new nw.MenuItem({
                     label: cutLabel || 'Cut',
                     click: function () {
                         document.execCommand('cut');
                     }
                 }),
 
-                copy = new gui.MenuItem({
+                copy = new nw.MenuItem({
                     label: copyLabel || 'Copy',
                     click: function () {
                         document.execCommand('copy');
                     }
                 }),
 
-                paste = new gui.MenuItem({
+                paste = new nw.MenuItem({
                     label: pasteLabel || 'Paste',
                     click: function () {
                         var text = clipboard.get('text');
@@ -324,8 +323,7 @@
             e.preventDefault();
             e.stopPropagation();
 
-            var magnetLink,
-                gui = require('nw.gui');
+            var magnetLink;
 
             if ($(e.currentTarget.parentNode).context.className === 'file-item') {
                 // stored
@@ -338,11 +336,11 @@
             }
 
             if (e.button === 2) { //if right click on magnet link
-                var clipboard = gui.Clipboard.get();
+                var clipboard = nw.Clipboard.get();
                 clipboard.set(magnetLink, 'text'); //copy link to clipboard
                 $('.notification_alert').text(i18n.__('The magnet link was copied to the clipboard')).fadeIn('fast').delay(2500).fadeOut('fast');
             } else {
-                gui.Shell.openExternal(magnetLink);
+                nw.Shell.openExternal(magnetLink);
             }
         },
 
@@ -419,7 +417,7 @@
 
         openCollection: function () {
             win.debug('Opening: ' + collection);
-            gui.Shell.openItem(collection);
+            nw.Shell.openItem(collection);
         },
 
         importItem: function () {

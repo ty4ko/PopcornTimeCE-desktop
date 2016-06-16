@@ -66,14 +66,14 @@
 		writeDesktopFile: function (cb) {
 				var pctPath = process.execPath.substr(0,process.execPath.lastIndexOf("/")+1);
 				var Exec = pctPath+'Popcorn-Time'; //process.execPath
-				fs.writeFile(gui.App.dataPath+'/popcorntime.desktop', '[Desktop Entry]\nVersion=2.0\nName=Popcorn Time\nComment=Popcorn Time downloads and streams torrents instantly, directly to your browser! Just click on the torrent or magnet link and start downloading and playing it easily and in no time.\nExec='+Exec+' %U\nPath='+pctPath+'\nIcon='+pctPath+'popcorntime.png\nTerminal=false\nType=Application\nMimeType=application/x-bittorrent;x-scheme-handler/magnet;video/avi;video/msvideo;video/x-msvideo;video/mp4;video/x-matroska;video/mpeg;\n', cb);      
+				fs.writeFile(nw.App.dataPath+'/popcorntime.desktop', '[Desktop Entry]\nVersion=2.0\nName=Popcorn Time\nComment=Popcorn Time downloads and streams torrents instantly, directly to your browser! Just click on the torrent or magnet link and start downloading and playing it easily and in no time.\nExec='+Exec+' %U\nPath='+pctPath+'\nIcon='+pctPath+'popcorntime.png\nTerminal=false\nType=Application\nMimeType=application/x-bittorrent;x-scheme-handler/magnet;video/avi;video/msvideo;video/x-msvideo;video/mp4;video/x-matroska;video/mpeg;\n', cb);
 		},
 
 		regTorrent: function () {
 			if (process.platform == 'linux') {
 				this.writeDesktopFile(function(err) {
 					if (err) throw err;
-					var desktopFile = gui.App.dataPath+'/popcorntime.desktop';
+					var desktopFile = nw.App.dataPath+'/popcorntime.desktop';
 					var tempMime = 'application/x-bittorrent';
 					require('child_process').exec('gnome-terminal -x bash -c "echo \'Setting Popcorn Time as default player requires Admin Rights\'; echo; sudo echo; sudo echo \'Authentication Successful\'; sudo echo; sudo mv -f '+desktopFile+' /usr/share/applications; sudo xdg-mime default popcorntime.desktop '+tempMime+'; sudo gvfs-mime --set '+tempMime+' popcorntime.desktop; echo; echo \'Success! Press any key to close ...\'; read" & disown');
 					AdvSettings.set('registerTorrents', true);
@@ -84,9 +84,9 @@
 				alert("Success!");
 				AdvSettings.set('registerTorrents', true);
 			} else {
-				fs.writeFile(gui.App.dataPath+'\\register-torrent.reg', 'REGEDIT4\r\n[HKEY_CURRENT_USER\\Software\\Classes\\popcorntime.player\\DefaultIcon]\r\n@="'+process.execPath.split("\\").join("\\\\")+'"\r\n[HKEY_CURRENT_USER\\Software\\Classes\\popcorntime.player\\shell\\open\\command]\r\n@="\\"'+process.execPath.split("\\").join("\\\\")+'\\" \\"%1\\""\r\n[HKEY_CURRENT_USER\\Software\\Classes\\.torrent]\r\n@="popcorntime.player"\r\n"Content Type"="application/x-bittorrent"', function (err) {
+				fs.writeFile(nw.App.dataPath+'\\register-torrent.reg', 'REGEDIT4\r\n[HKEY_CURRENT_USER\\Software\\Classes\\popcorntime.player\\DefaultIcon]\r\n@="'+process.execPath.split("\\").join("\\\\")+'"\r\n[HKEY_CURRENT_USER\\Software\\Classes\\popcorntime.player\\shell\\open\\command]\r\n@="\\"'+process.execPath.split("\\").join("\\\\")+'\\" \\"%1\\""\r\n[HKEY_CURRENT_USER\\Software\\Classes\\.torrent]\r\n@="popcorntime.player"\r\n"Content Type"="application/x-bittorrent"', function (err) {
 					if (err) throw err;
-					gui.Shell.openExternal(gui.App.dataPath+'\\register-torrent.reg');
+					nw.Shell.openExternal(nw.App.dataPath+'\\register-torrent.reg');
 					AdvSettings.set('registerTorrents', true);
 				});
 			}

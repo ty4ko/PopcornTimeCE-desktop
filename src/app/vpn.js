@@ -36,18 +36,17 @@ var request = require('request');
 
     // open the client
     VPNClient.prototype.launch = function () {
-        var vpnClient = gui.Window.open('https://client.vpn.ht/', {
+        nw.Window.open('https://client.vpn.ht/', {
             position: 'center',
             title: 'VPN.HT',
             icon: 'src/app/images/icon.png',
             focus: true,
-            toolbar: false,
-            resizable: false,
             width: 500,
             height: 500
-        });
-        vpnClient.on('loaded', function () {
-            vpnClient.window.imReady(window);
+        }, function(vpnClient){
+            vpnClient.on('loaded', function () {
+                vpnClient.window.imReady(window);
+            });
         });
     };
     // look if vpn is connected on start

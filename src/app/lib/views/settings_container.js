@@ -1,6 +1,6 @@
 (function (App) {
     'use strict';
-    var clipboard = gui.Clipboard.get(),
+    var clipboard = nw.Clipboard.get(),
         AdmZip = require('adm-zip'),
         fdialogs = require('node-webkit-fdialogs'),
         waitComplete,
@@ -82,24 +82,23 @@
         },
 
         context_Menu: function (cutLabel, copyLabel, pasteLabel, field) {
-            var gui = require('nw.gui'),
-                menu = new gui.Menu(),
+            var menu = new nw.Menu(),
 
-                cut = new gui.MenuItem({
+                cut = new nw.MenuItem({
                     label: cutLabel || 'Cut',
                     click: function () {
                         document.execCommand('cut');
                     }
                 }),
 
-                copy = new gui.MenuItem({
+                copy = new nw.MenuItem({
                     label: copyLabel || 'Copy',
                     click: function () {
                         document.execCommand('copy');
                     }
                 }),
 
-                paste = new gui.MenuItem({
+                paste = new nw.MenuItem({
                     label: pasteLabel || 'Paste',
                     click: function () {
                         var text = clipboard.get('text');
@@ -399,7 +398,7 @@
                     App.vent.trigger('torrentCollection:close');
                 }
                 break;
-            case 'activateRandomize':	
+            case 'activateRandomize':
 	   		case 'activateWatchlist':
                 App.vent.trigger('movies:list');
                 App.vent.trigger('settings:show');
@@ -506,24 +505,21 @@
                 self.render();
             });
             App.TVShowTime.authenticate(function (activateUri) {
-                var gui = require('nw.gui');
-                gui.App.addOriginAccessWhitelistEntry(activateUri, 'app', 'host', true);
-                window.loginWindow = gui.Window.open(activateUri, {
+                nw.App.addOriginAccessWhitelistEntry(activateUri, 'app', 'host', true);
+                nw.Window.open(activateUri, {
                     position: 'center',
                     focus: true,
                     title: 'TVShow Time',
                     icon: 'src/app/images/icon.png',
-                    toolbar: false,
-                    resizable: false,
                     width: 600,
                     height: 600
+                }, function(loginWindow){
+                    window.loginWindow = loginWindow;
+                    loginWindow.on('closed', function () {
+                        $('.tvst-loading-spinner').hide();
+                        $('#connect-with-tvst > i').css('visibility', 'visible');
+                    });
                 });
-
-                window.loginWindow.on('closed', function () {
-                    $('.tvst-loading-spinner').hide();
-                    $('#connect-with-tvst > i').css('visibility', 'visible');
-                });
-
             });
         },
 
@@ -609,7 +605,7 @@
 
         openTmpFolder: function () {
             win.debug('Opening: ' + App.settings['tmpLocation']);
-            gui.Shell.openItem(App.settings['tmpLocation']);
+            nw.Shell.openItem(App.settings['tmpLocation']);
         },
 
         moveTmpLocation: function (location) {
@@ -620,13 +616,13 @@
                 deleteFolder(oldTmpLocation);
             } else {
                 $('.notification_alert').show().text(i18n.__('You should save the content of the old directory, then delete it')).delay(5000).fadeOut(400);
-                gui.Shell.openItem(oldTmpLocation);
+                nw.Shell.openItem(oldTmpLocation);
             }
         },
 
         openDatabaseFolder: function () {
             win.debug('Opening: ' + App.settings['databaseLocation']);
-            gui.Shell.openItem(App.settings['databaseLocation']);
+            nw.Shell.openItem(App.settings['databaseLocation']);
         },
 
         exportDatabase: function (e) {
@@ -792,7 +788,7 @@
 		writeDesktopFile: function (cb) {
 			var pctPath = process.execPath.substr(0,process.execPath.lastIndexOf("/")+1);
 			var Exec = pctPath+'Popcorn-Time'; //process.execPath
-			fs.writeFile(gui.App.dataPath+'/popcorntime.desktop', '[Desktop Entry]\nVersion=2.0\nName=PopcornTime Player\nComment=Popcorn Time CE downloads and streams torrents instantly, directly from your browser! Just click on the torrent or magnet link and start downloading and playing it easily and in no time.\nExec='+Exec+' %U\nPath='+pctPath+'\nIcon='+pctPath+'popcorntime.png\nTerminal=false\nType=Application\nMimeType=application/x-bittorrent;x-scheme-handler/magnet;video/avi;video/msvideo;video/x-msvideo;video/mp4;video/x-matroska;video/mpeg;\n', cb);      
+			fs.writeFile(nw.App.dataPath+'/popcorntime.desktop', '[Desktop Entry]\nVersion=2.0\nName=PopcornTime Player\nComment=Popcorn Time CE downloads and streams torrents instantly, directly from your browser! Just click on the torrent or magnet link and start downloading and playing it easily and in no time.\nExec='+Exec+' %U\nPath='+pctPath+'\nIcon='+pctPath+'popcorntime.png\nTerminal=false\nType=Application\nMimeType=application/x-bittorrent;x-scheme-handler/magnet;video/avi;video/msvideo;video/x-msvideo;video/mp4;video/x-matroska;video/mpeg;\n', cb);
 		},
 
 
@@ -802,7 +798,7 @@
 			if (process.platform == 'linux') {
 				this.writeDesktopFile(function(err) {
 					if (err) throw err;
-					var desktopFile = gui.App.dataPath+'/popcorntime.desktop';
+					var desktopFile = nw.App.dataPath+'/popcorntime.desktop';
 					//var desktopFile = '$HOME/.Popcorn-Time/popcorntime.desktop';
 					var tempMime = 'x-scheme-handler/magnet';
 
@@ -814,9 +810,9 @@
 				require('child_process').exec('"'+pctPath+'src/duti/duti" -s media.popcorntime.player magnet');
 				alert("Success!");
 			} else {
-				fs.writeFile(gui.App.dataPath+'\\register-magnet.reg', 'REGEDIT4\r\n[HKEY_CLASSES_ROOT\\Magnet]\r\n@="URL:magnet Protocol"\r\n"Content Type"="application/x-magnet"\r\n"URL Protocol"=""\r\n\[HKEY_CLASSES_ROOT\\Magnet\\DefaultIcon]\r\n@="\\"'+process.execPath.split("\\").join("\\\\")+'\\"\r\n[HKEY_CLASSES_ROOT\\Magnet\\shell]\r\n[HKEY_CLASSES_ROOT\\Magnet\\shell\\open]\r\n[HKEY_CLASSES_ROOT\\Magnet\\shell\\open\\command]\r\n@="\\"'+process.execPath.split("\\").join("\\\\")+'\\" \\"%1\\""\r\n[HKEY_CURRENT_USER\\Software\\Classes\\Magnet]\r\n@="URL:magnet Protocol"\r\n"Content Type"="application/x-magnet"\r\n"URL Protocol"=""\r\n[HKEY_CURRENT_USER\\Software\\Classes\\Magnet\\DefaultIcon]\r\n@="\\"'+process.execPath.split("\\").join("\\\\")+'\\"\r\n[HKEY_CURRENT_USER\\Software\\Classes\\Magnet\\shell]\r\n[HKEY_CURRENT_USER\\Software\\Classes\\Magnet\\shell\\open]\r\n[HKEY_CURRENT_USER\\Software\\Classes\\Magnet\\shell\\open\\command]\r\n@="\\"'+process.execPath.split("\\").join("\\\\")+'\\" \\"%1\\""', function (err) {
+				fs.writeFile(nw.App.dataPath+'\\register-magnet.reg', 'REGEDIT4\r\n[HKEY_CLASSES_ROOT\\Magnet]\r\n@="URL:magnet Protocol"\r\n"Content Type"="application/x-magnet"\r\n"URL Protocol"=""\r\n\[HKEY_CLASSES_ROOT\\Magnet\\DefaultIcon]\r\n@="\\"'+process.execPath.split("\\").join("\\\\")+'\\"\r\n[HKEY_CLASSES_ROOT\\Magnet\\shell]\r\n[HKEY_CLASSES_ROOT\\Magnet\\shell\\open]\r\n[HKEY_CLASSES_ROOT\\Magnet\\shell\\open\\command]\r\n@="\\"'+process.execPath.split("\\").join("\\\\")+'\\" \\"%1\\""\r\n[HKEY_CURRENT_USER\\Software\\Classes\\Magnet]\r\n@="URL:magnet Protocol"\r\n"Content Type"="application/x-magnet"\r\n"URL Protocol"=""\r\n[HKEY_CURRENT_USER\\Software\\Classes\\Magnet\\DefaultIcon]\r\n@="\\"'+process.execPath.split("\\").join("\\\\")+'\\"\r\n[HKEY_CURRENT_USER\\Software\\Classes\\Magnet\\shell]\r\n[HKEY_CURRENT_USER\\Software\\Classes\\Magnet\\shell\\open]\r\n[HKEY_CURRENT_USER\\Software\\Classes\\Magnet\\shell\\open\\command]\r\n@="\\"'+process.execPath.split("\\").join("\\\\")+'\\" \\"%1\\""', function (err) {
 				if (err) throw err;
-				gui.Shell.openExternal(gui.App.dataPath+'\\register-magnet.reg'); 
+				nw.Shell.openExternal(nw.App.dataPath+'\\register-magnet.reg');
 				});
 			}
         },
@@ -825,7 +821,7 @@
 			if (process.platform == 'linux') {
 				this.writeDesktopFile(function(err) {
 					if (err) throw err;
-					var desktopFile = gui.App.dataPath+'/popcorntime.desktop';
+					var desktopFile = nw.App.dataPath+'/popcorntime.desktop';
 					var tempMime = 'application/x-bittorrent';
 					require('child_process').exec('gnome-terminal -x bash -c "echo \'Streaming torrents from your browser requires Admin Rights\'; echo; sudo echo; sudo echo \'Authentication Successful\'; sudo echo; sudo mv -f '+desktopFile+' /usr/share/applications; sudo xdg-mime default popcorntime.desktop '+tempMime+'; sudo gvfs-mime --set '+tempMime+' popcorntime.desktop; echo; echo \'Success! Press any key to close ...\'; read" & disown');
 				});
@@ -834,9 +830,9 @@
 				require('child_process').exec('"'+pctPath+'src/duti/duti" -s media.PopcornTimeCE.player .torrent viewer');
 				alert("Success!");
 			} else {
-				fs.writeFile(gui.App.dataPath+'\\register-torrent.reg', 'REGEDIT4\r\n[HKEY_CURRENT_USER\\Software\\Classes\\PopcornTimeCE.player\\DefaultIcon]\r\n@="'+process.execPath.split("\\").join("\\\\")+'"\r\n[HKEY_CURRENT_USER\\Software\\Classes\\PopcornTimeCE.player\\shell\\open\\command]\r\n@="\\"'+process.execPath.split("\\").join("\\\\")+'\\" \\"%1\\""\r\n[HKEY_CURRENT_USER\\Software\\Classes\\.torrent]\r\n@="PopcornTimeCE.player"\r\n"Content Type"="application/x-bittorrent"', function (err) {
+				fs.writeFile(nw.App.dataPath+'\\register-torrent.reg', 'REGEDIT4\r\n[HKEY_CURRENT_USER\\Software\\Classes\\PopcornTimeCE.player\\DefaultIcon]\r\n@="'+process.execPath.split("\\").join("\\\\")+'"\r\n[HKEY_CURRENT_USER\\Software\\Classes\\PopcornTimeCE.player\\shell\\open\\command]\r\n@="\\"'+process.execPath.split("\\").join("\\\\")+'\\" \\"%1\\""\r\n[HKEY_CURRENT_USER\\Software\\Classes\\.torrent]\r\n@="PopcornTimeCE.player"\r\n"Content Type"="application/x-bittorrent"', function (err) {
 					if (err) throw err;
-					gui.Shell.openExternal(gui.App.dataPath+'\\register-torrent.reg');
+					nw.Shell.openExternal(nw.App.dataPath+'\\register-torrent.reg');
 				});
 			}
 		}

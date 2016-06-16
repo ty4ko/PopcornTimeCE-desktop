@@ -40,7 +40,7 @@
 
         onShow: function () {
             this.isTorrentStored();
-			
+
             Mousetrap.bind(['esc', 'backspace'], function (e) {
                 _this.closeSelector(e);
             });
@@ -48,7 +48,7 @@
             App.Device.Collection.setDevice(Settings.chosenPlayer);
             App.Device.ChooserView('#player-chooser2').render();
             this.$('#watch-now').text('');
-			
+
 			// get all a in file-selector and click the one with highest size
 			var li = document.getElementsByTagName("li");
 			var length = li.length;
@@ -61,7 +61,7 @@
 					highest = id;
 				}
 			}
-			
+
 			if (AdvSettings.get('autoStoreTorrents')===true && !this.isTorrentStored()){
 				this.storeTorrent();
 			}
@@ -112,7 +112,7 @@
         },
 
         isTorrentStored: function () {
-            var target = require('nw.gui').App.dataPath + '/TorrentCollection/';
+            var target = nw.App.dataPath + '/TorrentCollection/';
 
             // bypass errors
             if (!Settings.droppedTorrent && !Settings.droppedMagnet) {
@@ -152,7 +152,7 @@
 
         storeTorrent: function () {
             var source = App.settings.tmpLocation + '/',
-                target = require('nw.gui').App.dataPath + '/TorrentCollection/',
+                target = nw.App.dataPath + '/TorrentCollection/',
                 file,
                 _file;
 

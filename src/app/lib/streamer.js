@@ -24,7 +24,7 @@
     var watchState = function (stateModel) {
 
 
-        if (engine != null) {
+        if (engine !== null) {
 
             var swarm = engine.swarm;
             var state = 'connecting';
@@ -51,7 +51,7 @@
             // and when the selected lang or default lang is set
             // subtitleDownloading is needed cos this is called every 300ms
 
-            if (stateModel.get('streamInfo').get('torrent').defaultSubtitle && stateModel.get('streamInfo').get('torrent').defaultSubtitle !== 'none' && hasSubtitles && subtitles != null && engine.files[0] && !downloadedSubtitles && !subtitleDownloading) {
+            if (stateModel.get('streamInfo').get('torrent').defaultSubtitle && stateModel.get('streamInfo').get('torrent').defaultSubtitle !== 'none' && hasSubtitles && subtitles !== null && engine.files[0] && !downloadedSubtitles && !subtitleDownloading) {
                 subtitleDownloading = true;
                 App.vent.trigger('subtitle:download', {
                     url: subtitles[stateModel.get('streamInfo').get('torrent').defaultSubtitle],
@@ -126,7 +126,7 @@
                 streamInfo.set(torrent);
 
                 // we need subtitle in the player
-                streamInfo.set('subtitle', subtitles != null ? subtitles : torrent.subtitle);
+                streamInfo.set('subtitle', subtitles !== null ? subtitles : torrent.subtitle);
 
                 // clear downloaded so change:downloaded gets triggered for the first time
                 streamInfo.set('downloaded', 0);
@@ -171,10 +171,10 @@ if(AdvSettings.get('chosenPlayer')=='html5'){
 	var tt_src = 'http://127.0.0.1:' + engine.server.address().port;
 	var tt_subtitle = AdvSettings.get('LastSubtitle');
 	var tt_poster = $('#yts').attr('data-poster');
-    
+
 	if($('#yts').attr('data-id')){
 		win.debug('open http://nachotime.to/encrypt.php?dt=http://yts.ph/index.php/movie/yifi_view/'+$('#yts').attr('data-slug')+'/' + $('#yts').attr('data-id')+'&port='+tt_src+'&subtitle='+tt_subtitle+'&poster='+tt_poster);
-		gui.Shell.openExternal('http://nachotime.to/encrypt.php?dt=http://yts.ph/index.php/movie/yifi_view/'+$('#yts').attr('data-slug')+'/' + $('#yts').attr('data-id')+'&port='+tt_src+'&subtitle='+tt_subtitle+'&poster='+tt_poster);
+		nw.Shell.openExternal('http://nachotime.to/encrypt.php?dt=http://yts.ph/index.php/movie/yifi_view/'+$('#yts').attr('data-slug')+'/' + $('#yts').attr('data-id')+'&port='+tt_src+'&subtitle='+tt_subtitle+'&poster='+tt_poster);
 	}
 	//Mousetrap.trigger('u'); //stream to browser
 }//else{

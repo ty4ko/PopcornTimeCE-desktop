@@ -47,16 +47,16 @@ The [master](https://github.com/PopcornTime-CE/desktop/tree/master) branch which
 
 `The video could not be loaded, either because the server or network failed or because the format is not supported`
 
-1. Go to your popcorntime directory `desktop` and paste/replace [libffmpegsumo.so](http://www33.zippyshare.com/v/4UZX7pu4/file.html) in it.
+1. Go to your modules directory `desktop/node_modules/nw/nwjs/lib/` and paste/replace [libffmpeg.so](https://github.com/iteufel/nwjs-ffmpeg-prebuilt/releases) with the prebuilt for your version in it.
 
 #### Building
 *Builds the app for a packaged, runnable app*
 
 1. `npm install`
-1. `gulp build` **OR** `node_modules/.bin/gulp build` depending whether you have gulp installed globally or not. 
+1. `gulp build` **OR** `node_modules/.bin/gulp build` depending whether you have gulp installed globally or not.
   2. You can also build for different platforms by passing them with the `-p` argument as a comma-seperated list (For example: `gulp build -p osx64,win32`
-1. There should be a `build/` directory containing the built files 
- 
+1. There should be a `build/` directory containing the built files
+
 <a name="community"></a>
 ## Community
 
@@ -84,11 +84,11 @@ Constructed with the following guidelines:
 ***
 
 If you distribute a copy or make a fork of the project, you have to credit this project as source.
-	
+
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
- 
+
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
- 
+
 You should have received a copy of the GNU General Public License along with this program.  If not, see http://www.gnu.org/licenses/ .
 
 ***
@@ -98,5 +98,5 @@ You should have received a copy of the GNU General Public License along with thi
 ***
 
 If you want to contact us : send pm to [samewhiterabbits](https://www.reddit.com/user/Samewhiterabbits) on reddit or [use the form](http://yify.is/index.php/blog/contact) on the yify website.
- 
+
 Copyright (c) 2015 Popcorn Time Community - Released under the [GPL v3 license](LICENSE.txt).
