@@ -439,11 +439,9 @@
                 icon: 'src/app/images/icon.png',
                 width: 600,
                 height: 600,
-                // FIXME resizable does not work
-                resizable: false,
-                position: 'center',
                 focus: true
             }, function(loginWindow){
+              loginWindow.setResizable(false);
               loginWindow.on('closed', function () {
                   if (url) {
                       defer.resolve(url);

@@ -514,6 +514,7 @@
                     width: 600,
                     height: 600
                 }, function(loginWindow){
+                    loginWindow.setResizable(false);
                     window.loginWindow = loginWindow;
                     loginWindow.on('closed', function () {
                         $('.tvst-loading-spinner').hide();
