@@ -7,7 +7,7 @@
 
     var queryTorrents = function (filters) {
         return App.db.getBookmarks(filters)
-            .then(function (data) {
+            .then(function (data) {              
                     return data;
                 },
                 function (error) {

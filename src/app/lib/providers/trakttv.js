@@ -435,12 +435,14 @@
             nw.App.addOriginAccessWhitelistEntry(API_URI, 'app', 'host', true);
 
             nw.Window.open(OAUTH_URI + '&redirect_uri=' + encodeURIComponent(REDIRECT_URI), {
-                position: 'center',
-                focus: true,
                 title: 'Trakt.tv',
                 icon: 'src/app/images/icon.png',
                 width: 600,
                 height: 600,
+                // FIXME resizable does not work
+                resizable: false,
+                position: 'center',
+                focus: true
             }, function(loginWindow){
               loginWindow.on('closed', function () {
                   if (url) {

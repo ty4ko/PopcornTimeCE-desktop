@@ -306,7 +306,6 @@
         showFavorites: function (e) {
             this.Settings.destroy();
             this.MovieDetail.destroy();
-
             this.Content.show(new App.View.FavoriteBrowser());
         },
 

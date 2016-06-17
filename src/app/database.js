@@ -6,6 +6,7 @@ async = require('async'),
     Q = require('q'),
 
     db = {},
+    //FIXME nw.js > 0.12 returns ~/.config/Appname/Default instead of ~/.config/Appname and breaks compatibility
     data_path = nw.App.dataPath,
     TTL = 1000 * 60 * 60 * 24;
 
@@ -18,6 +19,7 @@ db.bookmarks = new Datastore({
     filename: path.join(data_path, 'data/bookmarks.db'),
     autoload: true
 });
+
 db.settings = new Datastore({
     filename: path.join(data_path, 'data/settings.db'),
     autoload: true
@@ -267,7 +269,7 @@ var Database = {
                 episode: data.episode.toString()
             }))
             .then(function (data) {
-                return (data != null && data.length > 0);
+                return (data !== null && data.length > 0);
             });
     },
 
@@ -398,7 +400,7 @@ var Database = {
         return Database.getUserInfo()
             .then(Database.getSettings)
             .then(function (data) {
-                if (data != null) {
+                if (data !== null) {
                     for (var key in data) {
                         Settings[data[key].key] = data[key].value;
                     }

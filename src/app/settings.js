@@ -2,7 +2,7 @@ var Q = require('q'),
     os = require('os'),
     path = require('path'),
     _ = require('underscore'),
-    data_path = require('nw.gui').App.dataPath;
+    data_path = nw.App.dataPath;
 
 /** Default settings **/
 var Settings = {};
@@ -341,8 +341,7 @@ var AdvSettings = {
 
     performUpgrade: function () {
         // This gives the official version (the package.json one)
-        gui = require('nw.gui');
-        var currentVersion = gui.App.manifest.version;
+        var currentVersion = nw.App.manifest.version;
 
         if (currentVersion !== AdvSettings.get('version')) {
             // Nuke the DB if there's a newer version
@@ -358,6 +357,6 @@ var AdvSettings = {
             window.__isUpgradeInstall = true;
         }
         AdvSettings.set('version', currentVersion);
-        AdvSettings.set('releaseName', gui.App.manifest.releaseName);
+        AdvSettings.set('releaseName', nw.App.manifest.releaseName);
     },
 };
