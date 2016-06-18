@@ -1,6 +1,10 @@
 <%
+    function round(value, precision) {
+        var multiplier = Math.pow(10, precision || 0);
+        return Math.round(value * multiplier) / multiplier;
+    }
     if (typeof image === 'undefined') { var image = images.poster; }
-    if (typeof rating === 'object') { var rating = rating.percentage /10; }
+    if (typeof rating === 'object') { var rating = round(rating.percentage) / 10; }
 %>
 
 <img class="cover-image" src="images/posterholder.png">
@@ -40,7 +44,7 @@
 		<% if (google_video !== false) {%>
         	<img class="seasons quality" style="display:block; float:left; margin-right:3px;" src="images/icons/googlecloud-favicon.png" width="15" title="Google Cloud" alt="Google Cloud" />
     	<%} %>
-	<%} %>	
+	<%} %>
 
     <% if (typeof year !== 'undefined') {%>
         <%= year %>
