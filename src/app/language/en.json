@@ -503,5 +503,10 @@
 	"Seeds:": "Seeds:",
 	"Peers:": "Peers:",
 	"Torrents-Time v2": "Torrents-Time v2",
-	"Torrents Time v2": "Torrents Time v2"
+	"Torrents Time v2": "Torrents Time v2",
+	"default torrent application": "default torrent application",
+	"Yes": "Yes",
+	"YTS.ph Search": "YTS.ph Search",
+	"This feature has a built-in kat.cr search, which allows you to stream any movies, series or anime torrents with automatic subtitle support. The casting option integrates features including Chromecast, Airplay and DLNA. This library also provides an Anti-Virus Scanner and a 'History' feature, that keeps track of all your downloaded KAT torrents": "This feature has a built-in kat.cr search, which allows you to stream any movies, series or anime torrents with automatic subtitle support. The casting option integrates features including Chromecast, Airplay and DLNA. This library also provides an Anti-Virus Scanner and a 'History' feature, that keeps track of all your downloaded KAT torrents",
+	"VLC Player": "VLC Player"
 }

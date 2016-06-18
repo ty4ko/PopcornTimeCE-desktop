@@ -500,5 +500,16 @@
 	"Torrent Link": "Enlaces Torrent",
 	"Magnet Link": "Enlaces Magnet",
 	"VLC Player": "Reproductor VLC",
-	"Movie API Endpoint": "Movie API Endpoint"
+	"Movie API Endpoint": "Movie API Endpoint",
+	" Comedy": " Comedy",
+	" War \r\n\t\t\t\t": " War \r\n\t\t\t\t",
+	"Seeds": "Seeds",
+	"Peers": "Peers",
+	" Drama": " Drama",
+	" Thriller": " Thriller",
+	"": "",
+	" Action": " Action",
+	" Animation": " Animation",
+	" Romance \n\t\t\t\t": " Romance \n\t\t\t\t",
+	" Drama \n\t\t\t\t": " Drama \n\t\t\t\t"
 }

@@ -634,8 +634,11 @@
             databaseFiles.forEach(function (entry) {
                 zip.addLocalFile(App.settings['databaseLocation'] + '/' + entry);
             });
-
-            fdialogs.saveFile(zip.toBuffer(), function (err, path) {
+            var exportDialog = new fdialogs.FDialog({
+                type: 'save',
+                window: nw.Window.get().window
+            });
+            exportDialog.saveFile(zip.toBuffer(), function (err, path) {
                 that.alertMessageWait(i18n.__('Exporting Database...'));
                 win.info('Database exported to:', path);
                 that.alertMessageSuccess(false, btn, i18n.__('Export Database'), i18n.__('Database Successfully Exported'));
@@ -644,7 +647,11 @@
         },
 
         importDatabase: function () {
-            fdialogs.readFile(function (err, content, path) {
+            var importDialog = new fdialogs.FDialog({
+                type: 'open',
+                window: nw.Window.get().window
+            });
+            importDialog.readFile(function (err, content, path) {
                 that.alertMessageWait(i18n.__('Importing Database...'));
                 try {
                     var zip = new AdmZip(content);
