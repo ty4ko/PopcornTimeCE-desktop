@@ -153,8 +153,8 @@
         storeTorrent: function () {
             var torrent_display_name, torrent_file_name, cached_torrent_hashname;
 
-            var source = require('os').tmpDir() + '/Popcorn-Time/TorrentCache/',
-                target = require('nw.gui').App.dataPath + '/TorrentCollection/';
+            var source = require('os').tmpDir() + App.settings['tmpLocation'] + '/TorrentCache/',
+                target = nw.App.dataPath + '/TorrentCollection/';
 
             if (Settings.droppedTorrent) {
                 torrent_file_name = Settings.droppedTorrent;

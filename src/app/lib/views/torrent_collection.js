@@ -6,14 +6,14 @@
         files;
 
     var readCollection = function (dir) {
-        return fs.readdirSync(dir).map(function(v) { 
+        return fs.readdirSync(dir).map(function(v) {
                       return { name:v,
                                time:fs.statSync(dir + v).mtime.getTime()
-                             }; 
+                             };
                    })
                    .sort(function(a, b) { return b.time - a.time; })
                    .map(function(v) { return v.name; });
-    }
+    };
 
     var TorrentCollection = Backbone.Marionette.ItemView.extend({
         template: '#torrent-collection-tpl',
@@ -336,14 +336,13 @@
 
             var magnetLink,
                 torrentInfo,
-                gui = require('nw.gui'),
                 parseTorrent = require('parse-torrent');
 
             if ($(e.currentTarget.parentNode).context.className === 'file-item') {
                 // stored
                 var _file = $(e.currentTarget.parentNode).context.innerText,
                     file = _file.substring(0, _file.length - 2); // avoid ENOENT
-                
+
                 if (file.indexOf('.torrent') !== -1) {
                     torrentInfo = parseTorrent(fs.readFileSync(collection + file));
                     magnetLink = parseTorrent.toMagnetURI(torrentInfo);
