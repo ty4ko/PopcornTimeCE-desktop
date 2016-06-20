@@ -634,6 +634,7 @@
             databaseFiles.forEach(function (entry) {
                 zip.addLocalFile(App.settings['databaseLocation'] + '/' + entry);
             });
+            // https://github.com/exos/node-webkit-fdialogs/issues/9
             var exportDialog = new fdialogs.FDialog({
                 type: 'save',
                 window: nw.Window.get().window
@@ -647,6 +648,7 @@
         },
 
         importDatabase: function () {
+          // https://github.com/exos/node-webkit-fdialogs/issues/9
             var importDialog = new fdialogs.FDialog({
                 type: 'open',
                 window: nw.Window.get().window
