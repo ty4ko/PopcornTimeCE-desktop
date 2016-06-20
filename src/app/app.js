@@ -235,17 +235,6 @@ var deleteCookies = function () {
     }
 };
 
-win.on('resize', function (width, height) {
-    // FIXME height is undefined, probably due to a nwjs bug
-    //localStorage.width = Math.round(width);
-    //localStorage.height = Math.round(height);
-});
-
-win.on('move', function (x, y) {
-    localStorage.posX = Math.round(x);
-    localStorage.posY = Math.round(y);
-});
-
 var delCache = function () {
     var reqDB = window.indexedDB.webkitGetDatabaseNames();
     reqDB.onsuccess = function (db) {
