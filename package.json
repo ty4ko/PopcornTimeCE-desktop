@@ -16,14 +16,16 @@
     "start": "gulp run"
   },
   "window": {
+    "id": "com.popcorntime.ce",
     "title": "Popcorn Time CE",
     "icon": "src/app/images/icon.png",
     "frame": false,
+    "min_width": 960,
+    "min_height": 520,
     "width": 960,
     "height": 520,
     "show": false,
-    "position": "center",
-    "resizable": true
+    "position": "center"
   },
   "dependencies": {
     "nw": "^0.15.3",
