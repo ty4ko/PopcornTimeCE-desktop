@@ -28,7 +28,6 @@
     "position": "center"
   },
   "dependencies": {
-    "nw": "^0.15.3",
     "urijs": "^1.17.0",
     "adm-zip": "0.4.7",
     "airplay-js": "^0.2.16",
