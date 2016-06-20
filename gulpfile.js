@@ -35,7 +35,6 @@ gulp.task('build', ['clean'], function() {
         platforms: argv.p ? argv.p.split(',') : detectCurrentPlatform(),
         outputDir: './build',
         withFFmpeg: true,
-        sideBySide: true,
         production: true,
         macIcns: './src/app/images/icons/popcorntime.icns',
         winIco: './src/app/images/icons/popcorntime.ico'
