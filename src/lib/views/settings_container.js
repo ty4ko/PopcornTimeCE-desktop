@@ -128,7 +128,7 @@
             App.vent.trigger('settings:close');
         },
 
-	resetMovieAPI: function () {
+	      resetMovieAPI: function () {
             var value = [{
                 url: 'http://yts.ph/',
                 strictSSL: true
@@ -139,7 +139,7 @@
                 url: 'https://yts.ag/',
                 strictSSL: true
             }];
-            App.settings['ytsAPI'] = value;
+            App.settings.ytsAPI = value;
             //save to db
             App.db.writeSetting({
                 key: 'ytsAPI',
@@ -162,7 +162,7 @@
                 url: 'https://popcornwvnbg7jev.onion.to/',
                 strictSSL: true
             }];
-            App.settings['tvAPI'] = value;
+            App.settings.tvAPI = value;
             //save to db
             App.db.writeSetting({
                 key: 'tvAPI',
@@ -212,7 +212,7 @@
                 apiDataChanged = true;
                 value = parseInt(field.val());
                 break;
- 	   case 'ytsAPI':
+ 	          case 'ytsAPI':
                 value = field.val();
                 if (value.substr(-1) !== '/') {
                     value += '/';
@@ -225,7 +225,7 @@
                     strictSSL: value.substr(0, 8) === 'https://'
                 }];
                 break;
-           case 'tvAPI':
+            case 'tvAPI':
                 value = field.val();
                 if (value.substr(-1) !== '/') {
                     value += '/';
@@ -239,27 +239,26 @@
                 }];
                 break;
             case 'subtitle_size':
- 			case 'stream_browser':
-				if ($('option:selected', field).val() === 'Torrent Link') {
-                    this.regTorrent();
-                }
-				else if ($('option:selected', field).val() === 'Magnet Link') {
-					this.regMagnet();
-				}
-				else{
-					this.remBrowStre();
-				}
+       			case 'stream_browser':
+      				if ($('option:selected', field).val() === 'Torrent Link') {
+                this.regTorrent();
+              } else if ($('option:selected', field).val() === 'Magnet Link') {
+      					this.regMagnet();
+      				} else {
+      					this.remBrowStre();
+      				}
+              break;
             case 'chosenPlayer':
-				value = field.is(':checked');
-				if (value) {
-                    AdvSettings.set('chosenPlayer', 'VLC');
-                } else {
-                    AdvSettings.set('chosenPlayer', 'local');
-                }
+              value = "local";
+      				if (field.is(':checked')) {
+                  value= 'VLC';
+              }
+              AdvSettings.set('chosenPlayer', value);
+              break;
             case 'tv_detail_jump_to':
             case 'subtitle_language':
             case 'subtitle_decoration':
-			case 'bufferingSize':
+			      case 'bufferingSize':
             case 'movies_quality':
             case 'subtitle_font':
             case 'start_screen':
@@ -320,7 +319,6 @@
                 win.warn('Setting not defined: ' + field.attr('name'));
             }
             win.info('Setting changed: ' + field.attr('name') + ' - ' + value);
-
 
             // update active session
             App.settings[field.attr('name')] = value;
@@ -399,7 +397,7 @@
                 }
                 break;
             case 'activateRandomize':
-	   		case 'activateWatchlist':
+	   		    case 'activateWatchlist':
                 App.vent.trigger('movies:list');
                 App.vent.trigger('settings:show');
                 break;
@@ -414,7 +412,7 @@
                 App.vent.trigger('movies:list');
                 App.vent.trigger('settings:show');
                 break;
-	    case 'ytsAPI':
+	          case 'ytsAPI':
                 App.Providers.delete('ytsAPI');
                 App.vent.trigger('movies:list');
                 App.vent.trigger('settings:show');
@@ -465,9 +463,9 @@
         },
 
         disconnectTrakt: function (e) {
-            App.settings['traktToken'] = '';
-            App.settings['traktTokenRefresh'] = '';
-            App.settings['traktTokenTTL'] = '';
+            App.settings.traktToken = '';
+            App.settings.traktTokenRefresh = '';
+            App.settings.traktTokenTTL = '';
             App.Trakt.authenticated = false;
 
             App.db.writeSetting({
@@ -605,15 +603,15 @@
         },
 
         openTmpFolder: function () {
-            win.debug('Opening: ' + App.settings['tmpLocation']);
-            nw.Shell.openItem(App.settings['tmpLocation']);
+            win.debug('Opening: ' + App.settings.tmpLocation);
+            nw.Shell.openItem(App.settings.tmpLocation);
         },
 
         moveTmpLocation: function (location) {
             if (!fs.existsSync(location)) {
                 fs.mkdir(location);
             }
-            if (App.settings['deleteTmpOnClose']) {
+            if (App.settings.deleteTmpOnClose) {
                 deleteFolder(oldTmpLocation);
             } else {
                 $('.notification_alert').show().text(i18n.__('You should save the content of the old directory, then delete it')).delay(5000).fadeOut(400);
@@ -622,17 +620,17 @@
         },
 
         openDatabaseFolder: function () {
-            win.debug('Opening: ' + App.settings['databaseLocation']);
-            nw.Shell.openItem(App.settings['databaseLocation']);
+            win.debug('Opening: ' + App.settings.databaseLocation);
+            nw.Shell.openItem(App.settings.databaseLocation);
         },
 
         exportDatabase: function (e) {
             var zip = new AdmZip();
             var btn = $(e.currentTarget);
-            var databaseFiles = fs.readdirSync(App.settings['databaseLocation']);
+            var databaseFiles = fs.readdirSync(App.settings.databaseLocation);
 
             databaseFiles.forEach(function (entry) {
-                zip.addLocalFile(App.settings['databaseLocation'] + '/' + entry);
+                zip.addLocalFile(App.settings.databaseLocation + '/' + entry);
             });
             // https://github.com/exos/node-webkit-fdialogs/issues/9
             var exportDialog = new fdialogs.FDialog({
@@ -657,7 +655,7 @@
                 that.alertMessageWait(i18n.__('Importing Database...'));
                 try {
                     var zip = new AdmZip(content);
-                    zip.extractAllTo(App.settings['databaseLocation'] + '/', /*overwrite*/ true);
+                    zip.extractAllTo(App.settings.databaseLocation + '/', /*overwrite*/ true);
                     that.alertMessageSuccess(true);
                 } catch (err) {
                     that.alertMessageFailed(i18n.__('Invalid PCT Database File Selected'));

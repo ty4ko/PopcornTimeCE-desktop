@@ -49,7 +49,7 @@
         });
 
         //this.outputDir = App.settings.os === 'linux' ? process.execPath : process.cwd();
-		this.outputDir = process.execPath;
+		    this.outputDir = process.execPath;
 
         this.updateData = null;
     }

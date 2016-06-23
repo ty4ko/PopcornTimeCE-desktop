@@ -101,11 +101,8 @@ var os = require('os');
                     'show': 800,
                     'hide': 100
                 }
-
             });
-
         }
-
     });
 
     App.View.TitleBar = TitleBar;

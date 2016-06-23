@@ -3,22 +3,25 @@
 
     var clipboard = nw.Clipboard.get(),
         collection = path.join(nw.App.dataPath + '/TorrentCollection/'),
+        parseTorrent = require('parse-torrent'),
         files;
 
     var readCollection = function (dir) {
         return fs.readdirSync(dir).map(function(v) {
-                      return { name:v,
-                               time:fs.statSync(dir + v).mtime.getTime()
-                             };
-                   })
-                   .sort(function(a, b) { return b.time - a.time; })
-                   .map(function(v) { return v.name; });
+          return {
+              name:v,
+              time:fs.statSync(dir + v).mtime.getTime()
+          };
+        }).sort(function(a, b) {
+          return b.time - a.time;
+        }).map(function(v) {
+          return v.name;
+        });
     };
 
     var TorrentCollection = Backbone.Marionette.ItemView.extend({
         template: '#torrent-collection-tpl',
         className: 'torrent-collection',
-
         events: {
             'mousedown .file-item': 'openFileSelector',
             'mousedown .result-item': 'onlineOpen',
@@ -91,20 +94,23 @@
         },
 
         createMagnetURI: function (torrentHash) {
-            var magnet_uri = 'magnet:?xt=urn:btih:';
-            var tracker_list = '&tr=udp:\/\/tracker.coppersurfer.tk:6969'
-                + '&tr=udp:\/\/p4p.arenabg.com:1337'
-                + '&tr=udp:\/\/9.rarbg.me:2710/announce'
-                + '&tr=udp:\/\/glotorrents.pw:6969/announce'
-                + '&tr=udp:\/\/torrent.gresille.org:80/announce'
-                + '&tr=udp:\/\/tracker.internetwarriors.net:1337'
-                + '&tr=udp:\/\/tracker.opentrackr.org:1337/announce'
-                + '&tr=udp:\/\/tracker.leechers-paradise.org:696931622A'
-                + '&tr=udp:\/\/open.demonii.com:1337'
-                + '&tr=udp:\/\/tracker.coppersurfer.tk:6969'
-                + '&tr=udp:\/\/tracker.leechers-paradise.org:6969'
-                + '&tr=udp:\/\/exodus.desync.com:696931622A';
-            return magnet_uri + torrentHash + tracker_list;
+            return parseTorrent.toMagnetURI({
+              infoHash: torrentHash,
+              "tr": [
+                "udp://p4p.arenabg.com:1337",
+                "udp://9.rarbg.me:2710/announce",
+                "udp://9.rarbg.me:2710/announce",
+                "udp://glotorrents.pw:6969/announce",
+                "udp://torrent.gresille.org:80/announce",
+                "udp://tracker.internetwarriors.net:1337",
+                "udp://tracker.opentrackr.org:1337/announce",
+                "udp://tracker.leechers-paradise.org:696931622A",
+                "udp://open.demonii.com:1337",
+                "udp://tracker.coppersurfer.tk:6969",
+                "udp://tracker.leechers-paradise.org:6969",
+                "udp://exodus.desync.com:696931622A",
+              ]
+            });
         },
 
         onlineSearch: function (e) {
@@ -275,8 +281,7 @@
             e.stopPropagation();
 
             var magnetLink,
-                torrentInfo,
-                parseTorrent = require('parse-torrent');
+                torrentInfo;
 
             if ($(e.currentTarget.parentNode).context.className === 'file-item') {
                 // stored

@@ -28,14 +28,15 @@
             App.vent.trigger('register:close');
         },
 
-		saveSetting: function (e) {
+		    saveSetting: function (e) {
             var value = false,
                 field = $(e.currentTarget);
 
             switch (field.attr('name')) {
-            case 'rememberRegister':
- 			case 'chosenPlayer':
-            default:
+              case 'rememberRegister':
+ 			        case 'chosenPlayer':
+                break;
+              default:
                 win.warn('Setting not defined: ' + field.attr('name'));
             }
             win.info('Setting changed: ' + field.attr('name') + ' - ' + value);
@@ -54,7 +55,7 @@
 
         syncSetting: function (setting, value) {
             switch (setting) {
-	   		case 'rememberRegister':
+	   		        case 'rememberRegister':
                 break;
             default:
             }

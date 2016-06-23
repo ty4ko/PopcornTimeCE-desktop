@@ -20,12 +20,12 @@
             'click .favourites-toggle': 'toggleFavourite',
             'click .watched-toggle': 'toggleWatched',
             'click .movie-imdb-link': 'openIMDb',
-	    	'click .movie-yify-link': 'openYify',
-		'click .movie-video2k-link': 'openVideo2k',
-		'click .movie-imdbid-link': 'openIMDb',
-		'click .movie-yifysubtitles-link': 'openYifysubtitles',
-		'click .movie-youtube-link': 'openYoutube',
-		'click .movie-googlevideo-link': 'openGooglevideo',
+	    	    'click .movie-yify-link': 'openYify',
+		        'click .movie-video2k-link': 'openVideo2k',
+		        'click .movie-imdbid-link': 'openIMDb',
+		        'click .movie-yifysubtitles-link': 'openYifysubtitles',
+		        'click .movie-youtube-link': 'openYoutube',
+		        'click .movie-googlevideo-link': 'openGooglevideo',
             'mousedown .magnet-link': 'openMagnet',
             'click .sub-dropdown': 'toggleDropdown',
             'click .sub-flag-icon': 'closeDropdown',
@@ -35,9 +35,7 @@
 
         initialize: function () {
             var _this = this;
-
             //Handle keyboard shortcuts when other views are appended or removed
-
             //If a child was removed from above this view
             App.vent.on('viewstack:pop', function () {
                 if (_.last(App.ViewStack) === _this.className) {
@@ -71,32 +69,31 @@
                 this.model.set('quality', '720p');
             } else if (torrents['480p'] !== undefined) {
                 this.model.set('quality', '480p');
-            } else if (torrents['HDRip'] !== undefined) {
+            } else if (torrents.HDRip !== undefined) {
                 this.model.set('quality', 'HDRip');
             }
 
             if (Settings.movies_default_quality === '720p' && torrents['720p'] !== undefined && document.getElementsByName('switch')[0] !== undefined) {
                 document.getElementsByName('switch')[0].checked = true;
             }
-
-	    if (!this.model.get('runtime')) {
+	          if (!this.model.get('runtime')) {
                 $('#runtime').hide();
             }
-	    if (!this.model.get('synopsis')) {
+	          if (!this.model.get('synopsis')) {
                 $('#synopsis').hide();
             }
-	    if (!this.model.get('directors') || this.model.get('directors')=='') {
+	          if (!this.model.get('directors') || this.model.get('directors')==='') {
                 $('#directors').hide();
             }
-	    if (!this.model.get('cast') || this.model.get('cast')=='') {
+	          if (!this.model.get('cast') || this.model.get('cast')==='') {
                 $('#cast').hide();
             }
             if (!this.model.get('trailer')) {
                 $('#watch-trailer').hide();
             }
-	    if (!this.model.get('google_video')) {
+	          if (!this.model.get('google_video')) {
                 $('#watch-googlevideo').hide();
-		$('.movie-googlevideo-link').hide();
+		            $('.movie-googlevideo-link').hide();
             }
 
             this.renderHealth();
@@ -168,17 +165,17 @@
 
             this.initKeyboardShortcuts();
 
-	    if(AdvSettings.get('chosenPlayer')=='googlecloud' && !this.model.get('google_video')){
-            	App.Device.Collection.setDevice('local');
-	    }else{
-            	App.Device.Collection.setDevice(Settings.chosenPlayer);
-	    }
+      	    if(AdvSettings.get('chosenPlayer')=='googlecloud' && !this.model.get('google_video')){
+              App.Device.Collection.setDevice('local');
+      	    } else {
+              App.Device.Collection.setDevice(Settings.chosenPlayer);
+      	    }
             App.Device.ChooserView('#player-chooser').render();
-	    /*if(this.model.get('google_video')){
-		$('#showDropdown').click();
-	    }*/
-	    if (!this.model.get('google_video')) {
-		$('#player-googlecloud').hide();
+	          /*if(this.model.get('google_video')){
+		            $('#showDropdown').click();
+	          }*/
+	         if (!this.model.get('google_video')) {
+		           $('#player-googlecloud').hide();
             }
         },
 
@@ -239,39 +236,37 @@
         },
 
         startStreaming: function () {
-	    var player = $('.imgplayerchoice').attr('src');
+	          var player = $('.imgplayerchoice').attr('src');
             if (!player.match(/[0-9]+.[0-9]+.[0-9]+.[0-9]/ig) &&
-		player=='images/icons/googlecloud-icon.png' && this.model.get('google_video')) {
-		    var google_video = new Backbone.Model({
-		        src: this.model.get('google_video'),
-		        type: 'video/mp4',
-			techOrder: ['html5', 'flash'],
-			quality: this.model.get('quality'), //quality: 'quality unknown', //quality: false,
-			subtitle: this.model.get('subtitle'), //subtitle: null,
-			defaultSubtitle: this.subtitle_selected,
-		        title: this.model.get('title')
-		    });
-		    var tmpPlayer = App.Device.Collection.selected.attributes.id;
-		    App.Device.Collection.setDevice('local');
-		    App.vent.trigger('stream:ready', google_video);
-		    App.Device.Collection.setDevice(tmpPlayer);
+		          player=='images/icons/googlecloud-icon.png' && this.model.get('google_video')) {
+        		  var google_video = new Backbone.Model({
+        		        src: this.model.get('google_video'),
+        		        type: 'video/mp4',
+        			      techOrder: ['html5', 'flash'],
+        			      quality: this.model.get('quality'), //quality: 'quality unknown', //quality: false,
+        			      subtitle: this.model.get('subtitle'), //subtitle: null,
+        			      defaultSubtitle: this.subtitle_selected,
+        		        title: this.model.get('title')
+        		    });
+        		    var tmpPlayer = App.Device.Collection.selected.attributes.id;
+        		    App.Device.Collection.setDevice('local');
+        		    App.vent.trigger('stream:ready', google_video);
+        		    App.Device.Collection.setDevice(tmpPlayer);
             } else {
-		    var torrentStart = new Backbone.Model({
-		        imdb_id: this.model.get('imdb_id'),
-		        torrent: this.model.get('torrents')[this.model.get('quality')].magnet,
-		        backdrop: this.model.get('backdrop'),
-		        subtitle: this.model.get('subtitle'),
-		        defaultSubtitle: this.subtitle_selected,
-		        title: this.model.get('title'),
-		        quality: this.model.get('quality'),
-		        type: 'movie',
-		        device: App.Device.Collection.selected,
-		        cover: this.model.get('cover')
-		    });
-		    App.vent.trigger('stream:start', torrentStart);
-	    }
-
-
+  		        var torrentStart = new Backbone.Model({
+  		        imdb_id: this.model.get('imdb_id'),
+  		        torrent: this.model.get('torrents')[this.model.get('quality')].magnet,
+  		        backdrop: this.model.get('backdrop'),
+  		        subtitle: this.model.get('subtitle'),
+  		        defaultSubtitle: this.subtitle_selected,
+  		        title: this.model.get('title'),
+  		        quality: this.model.get('quality'),
+  		        type: 'movie',
+  		        device: App.Device.Collection.selected,
+  		        cover: this.model.get('cover')
+    		    });
+    		    App.vent.trigger('stream:start', torrentStart);
+    	    }
         },
 
         toggleDropdown: function (e) {
@@ -298,7 +293,7 @@
             }
         },
 
-	playTrailer: function () {
+	       playTrailer: function () {
 
             var trailer = new Backbone.Model({
                 src: this.model.get('trailer'),
@@ -347,8 +342,7 @@
             $('.health-icon2')
                 .html(torrent.seed + ' ' + i18n.__('Seeds') + ',  ' + torrent.peer + ' ' + i18n.__('Peers'))
                 .tooltip('fixTitle');
-
-	    $('.health-icon').tooltip({
+	              $('.health-icon').tooltip({
                     html: true
                 })
                 .removeClass('Bad Medium Good Excellent')
@@ -356,8 +350,6 @@
                 .attr('data-original-title', i18n.__('Health ' + health) + ' - ' + i18n.__('Ratio:') + ' ' + ratio.toFixed(2) + ' <br> ' + i18n.__('Seeds') + ': ' + torrent.seed + ' - ' + i18n.__('Peers') + ': ' + torrent.peer)
                 .tooltip('fixTitle');
         },
-
-
         toggleFavourite: function (e) {
             if (e.type) {
                 e.stopPropagation();
@@ -405,9 +397,9 @@
                     trailer: this.model.get('trailer'),
                     provider: this.model.get('provider'),
                     watched: this.model.get('watched'),
-			google_video: this.model.get('google_video'),
-			directors: this.model.get('directors'),
-			cast: this.model.get('cast'),
+			              google_video: this.model.get('google_video'),
+			              directors: this.model.get('directors'),
+			              cast: this.model.get('cast'),
                 };
 
                 Database.addMovie(movie)
@@ -490,17 +482,16 @@
 
         selectPlayer: function (e) {//onclick li player
             var player = $(e.currentTarget).parent('li').attr('id').replace('player-', '');
-	    //this.model.set('device', player);
+	           //this.model.set('device', player);
             if (!player.match(/[0-9]+.[0-9]+.[0-9]+.[0-9]/ig)) {
-		//set player to 'local' if Settings.chosenPlayer='googlecloud' and no google_video found
-		if(AdvSettings.get('chosenPlayer')=='googlecloud' && !this.model.get('google_video')){
-			AdvSettings.set('chosenPlayer', 'local');
-			this.model.set('device', 'local');
-		}
-		else{
-			AdvSettings.set('chosenPlayer', player);
-			this.model.set('device', player);
-            	}
+		            //set player to 'local' if Settings.chosenPlayer='googlecloud' and no google_video found
+  		        if(AdvSettings.get('chosenPlayer')=='googlecloud' && !this.model.get('google_video')){
+  			          AdvSettings.set('chosenPlayer', 'local');
+  			          this.model.set('device', 'local');
+  		        } else {
+  			          AdvSettings.set('chosenPlayer', player);
+  			          this.model.set('device', player);
+              }
             }
         }
 
