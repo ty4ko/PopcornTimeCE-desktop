@@ -4,7 +4,7 @@ Port to NW.js v0.15 with better application structure and some other enhancement
 
 # [Popcorn Time Community](https://github.com/PopcornTime-CE/desktop)
 
-[![Join the chat at https://gitter.im/PopcornTime-CE/desktop](https://badges.gitter.im/PopcornTime-CE/desktop.svg)](https://gitter.im/PopcornTime-CE/desktop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/vzamanillo/desktop](https://badges.gitter.im/vzamanillo/desktop.svg)](https://gitter.im/vzamanillo/desktop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Allow anyone to easily watch their favorite movies, shows, and anime.
 
