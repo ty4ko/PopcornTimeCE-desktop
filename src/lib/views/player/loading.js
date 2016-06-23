@@ -82,7 +82,18 @@
         onShow: function () {
             $('.filter-bar').hide();
             $('#header').addClass('header-shadow');
+            var backgroundUrl = $('.loading-background').attr('data-bgr');
 
+            var bgCache = new Image();
+            bgCache.src = backgroundUrl;
+            bgCache.onload = function () {
+                $('.loading-background').css('background-image', 'url(' + backgroundUrl + ')').addClass('fadein');
+                bgCache = null;
+            };
+            bgCache.onerror = function () {
+                $('.loading-background').css('background-image', 'url(images/bg-header.jpg)').addClass('fadein');
+                bgCache = null;
+            };
             this.initKeyboardShortcuts();
         },
         onStateUpdate: function () {

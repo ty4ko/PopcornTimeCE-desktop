@@ -1,5 +1,5 @@
 <div class="loading">
-    <div style="background-image:url( <%= backdrop %> )" class="loading-background"></div>
+    <div data-bgr="<%= backdrop %>" class="loading-background"></div>
     <div class="loading-background-overlay"></div>
 
     <div class="state">
@@ -17,7 +17,6 @@
             <!-- downloading info -->
             <div class="loading-info">
                 <span class="buffer_percent"></span><br><br>
-                
                 <span class="loading-info-text"><%= i18n.__("Download") %>:&nbsp;</span>
                 <span class="download_speed value"><%= Common.fileSize(0) %>/s</span><br>
                 <span class="loading-info-text"><%= i18n.__("Upload") %>:&nbsp;</span>
