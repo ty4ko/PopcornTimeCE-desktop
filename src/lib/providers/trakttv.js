@@ -436,7 +436,7 @@
 
             nw.Window.open(OAUTH_URI + '&redirect_uri=' + encodeURIComponent(REDIRECT_URI), {
                 title: 'Trakt.tv',
-                icon: 'src/app/images/icon.png',
+                icon: 'images/icon.png',
                 width: 600,
                 height: 600,
                 focus: true

@@ -178,7 +178,7 @@
                     }
 
                     try {
-                        require('fs').statSync('src/app/themes/' + Settings.theme + '.css');
+                        require('fs').statSync('themes/' + Settings.theme + '.css');
                     } catch (e) {
                         Settings.theme = 'Official_-_Dark_theme';
                         AdvSettings.set('theme', 'Official_-_Dark_theme');

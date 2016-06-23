@@ -122,39 +122,10 @@
         return defer.promise;
     };
 
-    /*Updater.prototype.verify = function (source) {
-        var defer = Q.defer();
-        var self = this;
-        win.debug('Verifying update authenticity with SDA-SHA1 signature...');
-
-        var hash = crypto.createHash('SHA1'),
-            verify = crypto.createVerify('DSA-SHA1');
-
-        var readStream = fs.createReadStream(source);
-        readStream.pipe(hash);
-        readStream.pipe(verify);
-        readStream.on('end', function () {
-            hash.end();
-            if (
-                self.updateData.checksum !== hash.read().toString('hex') ||
-                verify.verify(VERIFY_PUBKEY, self.updateData.signature, 'base64') === false
-            ) {
-                defer.reject('invalid hash or signature');
-            } else {
-                win.debug('Update was correctly signed and is safe to install!');
-                defer.resolve(source);
-            }
-        });
-        return defer.promise;
-    };*/
-
     function installWindows(downloadPath, updateData) {
         var defer = Q.defer();
         var pack = new AdmZip(downloadPath);
-		var outputDir = path.dirname(downloadPath);
-		
-console.log("downloadPath: "+downloadPath);
-console.log("outputDir: "+outputDir);
+		    var outputDir = path.dirname(downloadPath);
 
         if (updateData.extended) {
 
@@ -195,18 +166,11 @@ console.log("outputDir: "+outputDir);
                     win.debug('Update ready to be installed!');
                 }
             });
-
         } else {
-
             // Extended: false || undefined
             var installDir = path.dirname(downloadPath);
-			
-console.log("installDir: "+installDir);
-
             win.debug('Extracting update files...');
             pack.extractAllToAsync(installDir, true, function (err) {
-			
-console.log("logit 3");
 
                 if (err) {
                     defer.reject(err);
@@ -223,7 +187,6 @@ console.log("logit 3");
             });
 
         }
-
         return defer.promise;
     }
 
@@ -231,13 +194,10 @@ console.log("logit 3");
         var defer = Q.defer();
 
         win.debug('Extracting update...');
-//Invalid or unsupported zip format. No END header found
+        //Invalid or unsupported zip format. No END header found
         var outputDir = path.dirname(downloadPath),
             packageFile = path.join(outputDir, 'package.nw'),
             pack = new AdmZip(downloadPath);
-
-console.log("downloadPath: "+downloadPath);
-console.log("outputDir: "+outputDir);
 
         if (updateData.extended) {
 
@@ -281,16 +241,10 @@ console.log("outputDir: "+outputDir);
         } else {
             // Extended: false
             var installDir = path.dirname(downloadPath);
-			
-console.log("installDir: "+installDir);
-
             pack.extractAllToAsync(installDir, true, function (err) {
-//error: Failed to create socket for crash dumping.
-console.log("logit 3");
                 if (err) {
                     defer.reject(err);
                 } else {
-console.log("unlink "+downloadPath);
                     fs.unlink(downloadPath, function (err) {
                         if (err) {
                             defer.reject(err);
@@ -303,7 +257,6 @@ console.log("unlink "+downloadPath);
             });
 
         }
-
         return defer.promise;
     }
 
@@ -355,10 +308,7 @@ console.log("unlink "+downloadPath);
         } else {
 
             // Extended: false
-            //var outputDir = path.dirname(downloadPath);
-			var installDir = process.cwd();
-
-            pack.extractAllToAsync(installDir, true, function (err) {
+            pack.extractAllToAsync(process.cwd(), true, function (err) {
                 if (err) {
                     defer.reject(err);
                 } else {
@@ -377,32 +327,6 @@ console.log("unlink "+downloadPath);
         return defer.promise;
     }
 
-    /*Updater.prototype.install = function (downloadPath) {
-        var os = App.settings.os;
-        if (os === 'windows' || os === 'linux' || os === 'mac') {
-			var defer = Q.defer(),
-			outputDir = path.dirname(downloadPath),
-			installDir = path.dirname(downloadPath);
-			//console.log("downloadPath: "+downloadPath);
-			//console.log("outputDir: "+outputDir);
-			//console.log("installDir: "+installDir);
-			fs.unlink(installDir+'/package.nw', function (err) {
-				if (err) {
-					defer.reject(err);
-				} else {
-					win.debug('Deleted old package.nw!');
-					fs.rename(downloadPath, installDir+'/package.nw', function(err) {
-						if ( err ) console.log('ERROR: ' + err);
-					});
-					win.debug('Renamed downloaded package.nw.new to package.nw');
-					defer.resolve();
-				}
-			});
-			return defer.promise;
-        } else {
-            return Q.reject('Unsupported OS');
-        }
-    };*/
 	Updater.prototype.install = function (downloadPath) {
         var os = App.settings.os;
         var promise;

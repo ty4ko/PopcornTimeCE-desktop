@@ -510,7 +510,7 @@
                     position: 'center',
                     focus: true,
                     title: 'TVShow Time',
-                    icon: 'src/app/images/icon.png',
+                    icon: 'images/icon.png',
                     width: 600,
                     height: 600
                 }, function(loginWindow){

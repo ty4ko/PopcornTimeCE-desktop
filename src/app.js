@@ -51,7 +51,6 @@ win.error = function () {
     fs.appendFileSync(path.join(nw.App.dataPath, 'logs.txt'), '\n\n' + (arguments[0].stack || arguments[0])); // log errors;
 };
 
-
 if (nw.App.fullArgv.indexOf('--reset') !== -1) {
 
     var data_path = nw.App.dataPath;
@@ -366,7 +365,7 @@ var minimizeToTray = function () {
 
     var tray = new nw.Tray({
         title: 'Popcorn Time',
-        icon: 'src/app/images/icon.png'
+        icon: 'images/icon.png'
     });
     tray.tooltip = 'Popcorn Time';
 

@@ -4,7 +4,7 @@
     var STREAM_PORT = 21584; // 'PT'!
     var BUFFERING_SIZE = 10 * 1024 * 1024;
 
-    var readTorrent = require('read-torrent');
+    var parseTorrent = require('parse-torrent');
     var peerflix = require('peerflix');
     var path = require('path');
     var crypto = require('crypto');
@@ -20,9 +20,7 @@
     var downloadedSubtitles = false;
     var subtitleDownloading = false;
 
-
     var watchState = function (stateModel) {
-
 
         if (engine !== null) {
 
@@ -205,13 +203,6 @@ if(AdvSettings.get('chosenPlayer')=='html5'){
 
     };
 
-
-
-
-
-
-
-
     var Preload = {
         start: function (model) {
 
@@ -223,8 +214,7 @@ if(AdvSettings.get('chosenPlayer')=='html5'){
             win.debug('Preloading model:', model.get('title'));
             var torrent_url = model.get('torrent');
 
-            readTorrent(torrent_url, function (err, torrent) {
-
+            parseTorrent.remote(torrent_url, function (err, torrent) {
                 win.debug('Preloading torrent:', torrent.name);
                 var tmpFilename = torrent.infoHash;
                 tmpFilename = tmpFilename.replace(/([^a-zA-Z0-9-_])/g, '_'); // +'-'+ (new Date()*1);
@@ -469,24 +459,11 @@ if(AdvSettings.get('chosenPlayer')=='html5'){
             if (typeof (torrentUrl) === 'string' && torrentUrl.substring(0, 7) === 'http://' && !torrentUrl.match('\\.torrent') && !torrentUrl.match('\\.php?')) {
                 return Streamer.startStream(model, torrentUrl, stateModel);
             } else if (!torrent_read) {
-                readTorrent(torrentUrl, doTorrent); //preload torrent
+                parseTorrent.remote(torrentUrl, doTorrent); //preload torrent
             } else {
                 doTorrent(null, model.get('torrent')); //normal torrent
             }
-
-
         },
-
-
-
-
-
-
-
-
-
-
-
         startStream: function (model, url, stateModel) {
             var si = new App.Model.StreamInfo({});
             si.set('title', url);
@@ -500,14 +477,12 @@ if(AdvSettings.get('chosenPlayer')=='html5'){
             }]);
             App.vent.trigger('stream:ready', si);
         },
-
         stop: function () {
             this.stop_ = true;
             if (engine) {
                 // update ratio
                 AdvSettings.set('totalDownloaded', Settings.totalDownloaded + engine.swarm.downloaded);
                 AdvSettings.set('totalUploaded', Settings.totalUploaded + engine.swarm.uploaded);
-
                 if (engine.server._handle) {
                     engine.server.close();
                 }
@@ -523,10 +498,6 @@ if(AdvSettings.get('chosenPlayer')=='html5'){
             App.vent.off('subtitle:downloaded');
             win.info('Streaming cancelled');
         }
-
-
-
-
     };
 
     App.vent.on('preload:start', Preload.start);

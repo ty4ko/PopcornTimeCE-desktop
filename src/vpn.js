@@ -39,7 +39,7 @@ var request = require('request');
         nw.Window.open('https://client.vpn.ht/', {
             position: 'center',
             title: 'VPN.HT',
-            icon: 'src/app/images/icon.png',
+            icon: 'images/icon.png',
             focus: true,
             width: 500,
             height: 500
