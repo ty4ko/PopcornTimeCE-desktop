@@ -1,3 +1,5 @@
+Port to NW.js v0.15 with the original application structure and some other enhancements
+
 [Warning! Popcorntime.sh threatens your computer privacy.](http://popcorntime.ag/official-statement.html#Malware2)
 
 # [Popcorn Time Community](https://github.com/PopcornTime-CE/desktop)
