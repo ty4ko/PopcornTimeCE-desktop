@@ -42,6 +42,7 @@ The [master](https://github.com/PopcornTime-CE/desktop/tree/master) branch which
 
 1. `git clone https://github.com/PopcornTime-CE/desktop.git`
 1. `cd desktop`
+1. `npm install --global gulp-cli` or `npm install gulp -g` (if you have not installed `gulp` before)
 1. `npm install`
 1. `gulp run`
 
