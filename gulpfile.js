@@ -38,7 +38,7 @@ gulp.task('build', ['clean'], function() {
           version: '0.15.3',
           platforms: argv.p ? argv.p : detectCurrentPlatform(),
           withFFmpeg: true,
-          production: false,
+          production: true,
           macIcns: paths.icons + 'popcorntime.icns',
           winIco:  paths.icons + 'popcorntime.ico',
           sideBySide: false,
