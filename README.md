@@ -49,7 +49,7 @@ The [master](https://github.com/PopcornTime-CE/desktop/tree/master) branch which
 
 `The video could not be loaded, either because the server or network failed or because the format is not supported`
 
-1. Go to your modules directory `desktop/node_modules/nw/nwjs/lib/` and paste/replace [libffmpeg.so](https://github.com/iteufel/nwjs-ffmpeg-prebuilt/releases) with the prebuilt for your version in it.
+1. Go to your profile directory `.nwjs-builder/caches/binary-nwjs-flavor-version-os-arch/lib/` and paste/replace [libffmpeg.so](https://github.com/iteufel/nwjs-ffmpeg-prebuilt/releases) with the prebuilt for your version in it (the build package already includes the prebuilt library).
 
 #### Building
 *Builds the app for a packaged, runnable app*
