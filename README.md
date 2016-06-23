@@ -1,4 +1,4 @@
-Port to NW.js v0.15 with the original application structure and some other enhancements
+Port to NW.js v0.15 with better application structure and some other enhancements
 
 [Warning! Popcorntime.sh threatens your computer privacy.](http://popcorntime.ag/official-statement.html#Malware2)
 
@@ -8,7 +8,7 @@ Port to NW.js v0.15 with the original application structure and some other enhan
 
 Allow anyone to easily watch their favorite movies, shows, and anime.
 
-![Popcorn Time](src/app/images/icon.png)
+![Popcorn Time](src/images/icon.png)
 
 Visit the project's website at <http://popcorntime.ag>.
 
@@ -43,13 +43,17 @@ The [master](https://github.com/PopcornTime-CE/desktop/tree/master) branch which
 1. `git clone https://github.com/PopcornTime-CE/desktop.git`
 1. `cd desktop`
 1. `npm install`
-1. `npm start`
+1. `gulp run`
 
 #### Error
 
 `The video could not be loaded, either because the server or network failed or because the format is not supported`
 
 1. Go to your profile directory `.nwjs-builder/caches/binary-nwjs-flavor-version-os-arch/lib/` and paste/replace [libffmpeg.so](https://github.com/iteufel/nwjs-ffmpeg-prebuilt/releases) with the prebuilt for your version in it (the build package already includes the prebuilt library).
+
+#### PopcornTime-CE configuration
+
+The configuration settings for this port are stored in your profile directory `.Popcorn-Time-CE-nwjs15` (name in manifest src/package.json), if you want to import the configuration settings from a previous installation of PopcornTime-CE you can do that from the configuration page after run this port.
 
 #### Building
 *Builds the app for a packaged, runnable app*
