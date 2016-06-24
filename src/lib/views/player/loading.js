@@ -229,6 +229,7 @@
         },
 
         checkFreeSpace: function (size) {
+          //TODO use diskusage node module
             if (!size) {
                 return;
             }
