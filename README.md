@@ -28,7 +28,7 @@ Please don't post pull requests that reformats the code. Please don't remove whi
 
 If you're comfortable getting up and running from a `git clone`, this method is for you.
 
-The [nwjs-15-restructured](https://github.com/vzamanillo/desktop/tree/nwjs-15-restructured) branch which contains all the new code.
+The [develop](https://github.com/vzamanillo/desktop/tree/develop) branch which contains all the new code.
 
 #### Requirements
 
