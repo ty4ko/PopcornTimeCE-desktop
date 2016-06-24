@@ -11,9 +11,10 @@
     "postinstall": "(cd src && npm install)"
   },
   "devDependencies": {
-    "nwjs-builder": "latest",
     "del": "^2.2.1",
+    "git-guppy": "^1.2.1",
     "gulp": "^3.9.1",
+    "nwjs-builder": "latest",
     "yargs": "^4.7.1"
   }
 }
