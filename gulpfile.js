@@ -23,7 +23,7 @@ gulp.task('run', function() {
     nwb.commands.nwbuild([paths.src], {
         run: true,
         version: '0.15.3-sdk',
-        //withFFmpeg: true
+        withFFmpeg: true
     }, function (err, code) {
         if(err) reject(err);
         else if(code === 0) resolve();
@@ -42,6 +42,7 @@ gulp.task('build', ['clean'], function() {
           macIcns: paths.icons + 'popcorntime.icns',
           winIco:  paths.icons + 'popcorntime.ico',
           sideBySide: false,
+          outputDir: paths.build
       }, function(err) {
           if(err) reject(err);
           return resolve();
