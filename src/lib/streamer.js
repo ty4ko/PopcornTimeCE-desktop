@@ -74,15 +74,16 @@
         var torrentPeerId = crypto.pseudoRandomBytes(10).toString('hex');
 
         win.debug('Streaming movie to %s', tmpFile);
-
+        // TODO tracker list import from settings
         engine = peerflix(torrent.info, {
             connections: parseInt(Settings.connectionLimit, 10) || 100, // Max amount of peers to be connected to.
             dht: true || 50,
             tracker: true,
             trackers: [
-                'udp://tracker.openbittorrent.com:80',
-                'udp://tracker.coppersurfer.tk:6969',
+                'udp://tracker.openbittorrent.com:80/announce',
+                'udp://tracker.coppersurfer.tk:6969/announce',
                 'udp://9.rarbg.com:2710/announce',
+                'udp://tracker.opentrackr.org:1337/announce',
                 'udp://tracker.publicbt.com:80/announce'
             ],
             port: parseInt(Settings.streamPort, 10) || 0,
