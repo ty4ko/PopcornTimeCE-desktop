@@ -2,7 +2,7 @@ Port to NW.js v0.15 with better application structure and some other enhancement
 
 [Warning! Popcorntime.sh threatens your computer privacy.](http://popcorntime.ag/official-statement.html#Malware2)
 
-# [Popcorn Time Community](https://github.com/PopcornTime-CE/desktop)
+# Popcorn Time Community
 
 [![Join the chat at https://gitter.im/vzamanillo/desktop](https://badges.gitter.im/vzamanillo/desktop.svg)](https://gitter.im/vzamanillo/desktop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -18,7 +18,7 @@ This project would absolutely **not** be possible without the original developer
 
 ## Getting Involved
 
-Want to report a bug, request a feature, contribute or translate Popcorn Time? We need all the help we can get! You can also join in with our [community](README.md#community) to keep up-to-date and meet other Popcorn Timers.
+Want to report a bug, request a feature, contribute or translate Popcorn Time? We need all the help we can get! You are welcome.
 
 ## Contributing
 
@@ -28,9 +28,7 @@ Please don't post pull requests that reformats the code. Please don't remove whi
 
 If you're comfortable getting up and running from a `git clone`, this method is for you.
 
-If you clone the GitLab repository, you will need to build a number of assets with npm.
-
-The [master](https://github.com/PopcornTime-CE/desktop/tree/master) branch which contains the latest release.
+The [nwjs-15-restructured](https://github.com/vzamanillo/desktop/tree/nwjs-15-restructured) branch which contains all the new code.
 
 #### Requirements
 
@@ -40,17 +38,11 @@ The [master](https://github.com/PopcornTime-CE/desktop/tree/master) branch which
 #### Running
 *Runs the app without building, useful for testing*
 
-1. `git clone https://github.com/PopcornTime-CE/desktop.git`
+1. `git clone https://github.com/vzamanillo/desktop.git -b nwjs-15-restructured`
 1. `cd desktop`
 1. `npm install --global gulp-cli` or `npm install gulp -g` (if you have not installed `gulp` before)
 1. `npm install`
 1. `gulp run`
-
-#### Error
-
-`The video could not be loaded, either because the server or network failed or because the format is not supported`
-
-1. Go to your profile directory `.nwjs-builder/caches/binary-nwjs-flavor-version-os-arch/lib/` and paste/replace [libffmpeg.so](https://github.com/iteufel/nwjs-ffmpeg-prebuilt/releases) with the prebuilt for your version in it (the build package already includes the prebuilt library).
 
 #### PopcornTime-CE configuration
 
@@ -63,15 +55,6 @@ The configuration settings for this port are stored in your profile directory `.
 1. `gulp build` **OR** `node_modules/.bin/gulp build` depending whether you have gulp installed globally or not.
   2. You can also build for different platforms by passing them with the `-p` argument as a comma-seperated list (For example: `gulp build -p osx64,win32`
 1. There should be a `build/` directory containing the built files
-
-<a name="community"></a>
-## Community
-
-Keep track of Popcorn Time Community development and community activity.
-
-* Join in discussions on the [Popcorn Time Subreddit](http://reddit.com/r/PopcornTimeCE)
-* Visit the [website](http://popcorntime.ag)
-* Chat with us on [![Join the chat at https://gitter.im/PopcornTime-CE/desktop](https://badges.gitter.im/PopcornTime-CE/desktop.svg)](https://gitter.im/PopcornTime-CE/desktop)
 
 ## Versioning
 
@@ -103,7 +86,5 @@ You should have received a copy of the GNU General Public License along with thi
 **This project and the distribution of this project is not illegal, nor does it violate *any* DMCA laws. The use of this project, however, may be illegal in your area. Check your local laws and regulations regarding the use of torrents to watch potentially copyrighted content. The maintainers of this project do not condone the use of this project for anything illegal, in any state, region, country, or planet. *Please use at your own risk*.**
 
 ***
-
-If you want to contact us : send pm to [samewhiterabbits](https://www.reddit.com/user/Samewhiterabbits) on reddit or [use the form](http://yify.is/index.php/blog/contact) on the yify website.
 
 Copyright (c) 2015 Popcorn Time Community - Released under the [GPL v3 license](LICENSE.txt).
