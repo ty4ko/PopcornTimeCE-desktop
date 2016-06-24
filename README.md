@@ -38,7 +38,7 @@ The [nwjs-15-restructured](https://github.com/vzamanillo/desktop/tree/nwjs-15-re
 #### Running
 *Runs the app without building, useful for testing*
 
-1. `git clone https://github.com/vzamanillo/desktop.git -b nwjs-15-restructured`
+1. `git clone https://github.com/vzamanillo/desktop.git -b develop`
 1. `cd desktop`
 1. `npm install --global gulp-cli` or `npm install gulp -g` (if you have not installed `gulp` before)
 1. `npm install`
@@ -46,7 +46,7 @@ The [nwjs-15-restructured](https://github.com/vzamanillo/desktop/tree/nwjs-15-re
 
 #### PopcornTime-CE configuration
 
-The configuration settings for this port are stored in your profile directory `.Popcorn-Time-CE-nwjs15` (name in manifest src/package.json), if you want to import the configuration settings from a previous installation of PopcornTime-CE you can do that from the configuration page after run this port.
+The configuration settings for this port are stored in your profile directory `.Popcorn-Time-CE-dev` (name in manifest src/package.json), if you want to import the configuration settings from a previous installation of PopcornTime-CE you can do that from the configuration page after run this port.
 
 #### Building
 *Builds the app for a packaged, runnable app*
