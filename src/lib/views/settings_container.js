@@ -36,15 +36,15 @@
             'click #unauthTrakt': 'disconnectTrakt',
             'click #connect-with-tvst': 'connectWithTvst',
             'click #disconnect-tvst': 'disconnectTvst',
-	    	'click .reset-ytsAPI': 'resetMovieAPI',
+	    	    'click .reset-ytsAPI': 'resetMovieAPI',
             'click .reset-tvAPI': 'resetTVShowAPI',
             'change #tmpLocation': 'updateCacheDirectory',
             'click #syncTrakt': 'syncTrakt',
             'click .qr-code': 'generateQRcode',
             'click #qrcode-overlay': 'closeModal',
             'click #qrcode-close': 'closeModal',
-	    	'click #reg-Magnet': 'regMagnet',
-	    	'click #reg-Torrent': 'regTorrent',
+	    	    'click #reg-Magnet': 'regMagnet',
+	    	    'click #reg-Torrent': 'regTorrent',
         },
 
         onShow: function () {
@@ -129,16 +129,10 @@
         },
 
 	      resetMovieAPI: function () {
-            var value = [{
-                url: 'http://yts.ph/',
-                strictSSL: true
-            }, {
-                url: 'http://yify.is/index.php/',
-                strictSSL: true
-            }, {
+            var value = {
                 url: 'https://yts.ag/',
                 strictSSL: true
-            }];
+            };
             App.settings.ytsAPI = value;
             //save to db
             App.db.writeSetting({
@@ -152,16 +146,10 @@
         },
 
         resetTVShowAPI: function () {
-            var value = [{
-                url: 'https://popcorntime.ws/api/eztv/',
+            var value = {
+                url: 'https://eztvapi.ml/',
                 strictSSL: true
-            }, {
-                url: 'http://eztvapi.ml/',
-                strictSSL: true
-            }, {
-                url: 'https://popcornwvnbg7jev.onion.to/',
-                strictSSL: true
-            }];
+            };
             App.settings.tvAPI = value;
             //save to db
             App.db.writeSetting({

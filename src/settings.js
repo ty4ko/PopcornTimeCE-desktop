@@ -97,27 +97,15 @@ Settings.vpn = false;
 Settings.vpnUsername = '';
 Settings.vpnPassword = '';
 
-Settings.tvAPI = [{
+Settings.tvAPI = {
     url: 'https://eztvapi.ml/',
     strictSSL: true
-},{
-    url: 'https://popcorntime.ws/api/eztv/',
-    strictSSL: true
-},{
-    url: 'https://popcornwvnbg7jev.onion.to/',
-    strictSSL: true
-}];
+};
 
-Settings.ytsAPI = [{
-    url: 'http://yts.ph/',
+Settings.ytsAPI = {
+    url: 'http://yts.ag/',
     strictSSL: true
-},{
-    url: 'http://yify.is/',
-    strictSSL: true
-},{
-    url: 'https://yts.ag/',
-    strictSSL: true
-}];
+};
 
 Settings.updateEndpoint = {
     url: 'http://popcorntime.ag/',

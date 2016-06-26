@@ -5,6 +5,8 @@
     var Q = require('q');
     var inherits = require('util').inherits;
 
+    var tvApiServer = Settings.tvAPI.url;
+
     var URL = false;
     var TVApi = function () {
         try {
@@ -47,43 +49,31 @@
             params.sort = filters.sorter;
         }
 
-        function get(index) {
-            var options = {
-                url: Settings.tvAPI[index].url + 'shows/' + filters.page + '?' + querystring.stringify(params).replace(/%25%20/g, '%20'),
-                json: true
-            };
-			
-			tvApiServer = Settings.tvAPI[index].url;
-			document.getElementById('TVApi').setAttribute('data-original-title', tvApiServer);
-			
-            var req = jQuery.extend(true, {}, Settings.tvAPI[index], options);
-            win.info('Request to TVApi', req.url);
-            request(req, function (err, res, data) {
-                if (err || res.statusCode >= 400) {
-                    win.warn('TVAPI endpoint \'%s\' failed.', Settings.tvAPI[index].url);
-                    if (index + 1 >= Settings.tvAPI.length) {
-                        return deferred.reject(err || 'Status Code is above 400');
-                    } else {
-                        get(index + 1);
-                    }
-                    return;
-                } else if (!data || (data.error && data.error !== 'No movies found')) {
-                    err = data ? data.status_message : 'No data returned';
-                    win.error('API error:', err);
-                    return deferred.reject(err);
-                } else {
-					document.getElementById('TVApi').setAttribute('data-original-title', tvApiServer)
-                    data.forEach(function (entry) {
-                        entry.type = 'show';
-                    });
-                    deferred.resolve({
-                        results: Common.sanitize(data),
-                        hasMore: true
-                    });
-                }
-            });
-        }
-        get(0);
+        var options = {
+            url: tvApiServer + 'shows/' + filters.page + '?' + querystring.stringify(params).replace(/%25%20/g, '%20'),
+            json: true
+        };
+
+        var req = jQuery.extend(true, {}, tvApiServer, options);
+        win.info('Request to TVApi', req.url);
+        request(req, function (err, res, data) {
+            if (err || res.statusCode >= 400) {
+                win.warn('TVAPI endpoint \'%s\' failed.', tvApiServer);
+                  return deferred.reject(err || 'Status Code is above 400');
+            } else if (!data || (data.error && data.error !== 'No movies found')) {
+                err = data ? data.status_message : 'No data returned';
+                win.error('API error:', err);
+                return deferred.reject(err);
+            } else {
+                data.forEach(function (entry) {
+                    entry.type = 'show';
+                });
+                deferred.resolve({
+                    results: Common.sanitize(data),
+                    hasMore: true
+                });
+            }
+        });
 
         return deferred.promise;
     };
@@ -92,80 +82,67 @@
     var queryTorrent = function (torrent_id, old_data, debug) {
         debug === undefined ? debug = true : '';
         return Q.Promise(function (resolve, reject) {
-
-            function get(index) {
-                var options = {
-                    url: Settings.tvAPI[index].url + 'show/' + torrent_id,
-                    json: true
-                };
-				document.getElementById('TVApi').setAttribute('data-original-title', tvApiServer);
-                var req = jQuery.extend(true, {}, Settings.tvAPI[index], options);
-                win.info('Request to TVApi', req.url);
-                request(req, function (error, response, data) {
-                    if (error || response.statusCode >= 400) {
-                        win.warn('TVAPI endpoint \'%s\' failed.', Settings.tvAPI[index].url);
-                        if (index + 1 >= Settings.tvAPI.length) {
-                            return reject(error || 'Status Code is above 400');
-                        } else {
-                            get(index + 1);
-                        }
-                        return;
-                    } else if (!data || (data.error && data.error !== 'No data returned') || data.episodes.length === 0) {
-
-                        var err = (data && data.episodes.length !== 0) ? data.error : 'No data returned';
-                        debug ? win.error('API error:', err) : '';
-                        reject(err);
-
-                    } else {
-                        data = Common.sanitize(data);
-                        // we cache our new element or translate synopsis
-
-                        if (Settings.translateSynopsis && Settings.language !== 'en') {
-                            var langAvailable;
-                            for (var x = 0; x < Settings.tvdbLangs.length; x++) {
-                                if (Settings.tvdbLangs[x].abbreviation.indexOf(Settings.language) > -1) {
-                                    langAvailable = true;
-                                    break;
-                                }
+            var options = {
+                url: tvApiServer + 'show/' + torrent_id,
+                json: true
+            };
+            var req = jQuery.extend(true, {}, tvApiServer, options);
+            win.info('Request to TVApi', req.url);
+            request(req, function (error, response, data) {
+                if (error || response.statusCode >= 400) {
+                    win.warn('TVAPI endpoint \'%s\' failed.', tvApiServer);
+                    return reject(error || 'Status Code is above 400');
+                } else if (!data || (data.error && data.error !== 'No data returned') || data.episodes.length === 0) {
+                    var err = (data && data.episodes.length !== 0) ? data.error : 'No data returned';
+                    debug ? win.error('API error:', err) : '';
+                    reject(err);
+                } else {
+                    data = Common.sanitize(data);
+                    // we cache our new element or translate synopsis
+                    if (Settings.translateSynopsis && Settings.language !== 'en') {
+                        var langAvailable;
+                        for (var x = 0; x < Settings.tvdbLangs.length; x++) {
+                            if (Settings.tvdbLangs[x].abbreviation.indexOf(Settings.language) > -1) {
+                                langAvailable = true;
+                                break;
                             }
-                            if (!langAvailable) {
+                        }
+                        if (!langAvailable) {
+                            resolve(data);
+                        } else {
+
+                            var reqTimeout = setTimeout(function () {
                                 resolve(data);
-                            } else {
+                            }, 2000);
 
-                                var reqTimeout = setTimeout(function () {
-                                    resolve(data);
-                                }, 2000);
-
-                                var Client = require('node-tvdb');
-                                var tvdb = new Client('7B95D15E1BE1D75A', Settings.language);
-                                win.info('Request to TVDB API: \'%s\' - %s', old_data.title, App.Localization.langcodes[Settings.language].name);
-                                tvdb.getSeriesAllById(old_data.tvdb_id)
-                                    .then(function (localization) {
-                                        clearTimeout(reqTimeout);
-                                        _.extend(data, {
-                                            synopsis: localization.Overview
-                                        });
-                                        for (var i = 0; i < localization.Episodes.length; i++) {
-                                            for (var j = 0; j < data.episodes.length; j++) {
-                                                if (localization.Episodes[i].id.toString() === data.episodes[j].tvdb_id.toString()) {
-                                                    data.episodes[j].overview = localization.Episodes[i].Overview;
-                                                    break;
-                                                }
+                            var Client = require('node-tvdb');
+                            var tvdb = new Client('7B95D15E1BE1D75A', Settings.language);
+                            win.info('Request to TVDB API: \'%s\' - %s', old_data.title, App.Localization.langcodes[Settings.language].name);
+                            tvdb.getSeriesAllById(old_data.tvdb_id)
+                                .then(function (localization) {
+                                    clearTimeout(reqTimeout);
+                                    _.extend(data, {
+                                        synopsis: localization.Overview
+                                    });
+                                    for (var i = 0; i < localization.Episodes.length; i++) {
+                                        for (var j = 0; j < data.episodes.length; j++) {
+                                            if (localization.Episodes[i].id.toString() === data.episodes[j].tvdb_id.toString()) {
+                                                data.episodes[j].overview = localization.Episodes[i].Overview;
+                                                break;
                                             }
                                         }
-                                        resolve(Common.sanitize(data));
-                                    })
-                                    .catch(function (error) {
-                                        resolve(data);
-                                    });
-                            }
-                        } else {
-                            resolve(data);
+                                    }
+                                    resolve(Common.sanitize(data));
+                                })
+                                .catch(function (error) {
+                                    resolve(data);
+                                });
                         }
+                    } else {
+                        resolve(data);
                     }
-                });
-            }
-            get(0);
+                }
+            });
         });
     };
 

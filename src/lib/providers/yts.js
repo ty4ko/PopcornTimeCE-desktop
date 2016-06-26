@@ -5,6 +5,8 @@
     var request = require('request');
     var inherits = require('util').inherits;
 
+    var ytsAPI = Settings.ytsAPI.url;
+
     function YTS() {
         if (!(this instanceof YTS)) {
             return new YTS();
@@ -41,7 +43,7 @@
                 image: movie.medium_cover_image,
                 cover: movie.medium_cover_image, //movie.large_cover_image,
                 backdrop: movie.background_image,
-                synopsis: movie.synopsis, 
+                synopsis: movie.synopsis,
                 trailer: 'https://www.youtube.com/watch?v=' + movie.yt_trailer_code || false,
 		google_video: movie.google_video || false,
                 certification: movie.mpa_rating,
@@ -122,67 +124,27 @@
 
         var defer = Q.defer();
 
-        function get(index) {
-            var options = {
-                uri: Settings.ytsAPI[index].url + 'api/v2/list_movies.json',
-                qs: params,
-                json: true,
-                timeout: 10000
-            };
-            var req = jQuery.extend(true, {}, Settings.ytsAPI[index], options);
-            request(req, function (err, res, data) {
-                if (err || res.statusCode >= 400 || (data && !data.data)) {
-                    win.warn('YTS API endpoint \'%s\' failed.', Settings.ytsAPI[index].url);
-                    if (index + 1 >= Settings.ytsAPI.length) {
-                        return defer.reject(err || 'Status Code is above 400');
-                    } else {
-                        get(index + 1);
-                    }
-                    return;
-                } else if (!data || data.status === 'error') {
-                    err = data ? data.status_message : 'No data returned';
-                    return defer.reject(err);
-                } else {
-                    return defer.resolve(format(data.data));
-                }
-            });
-        }
-        get(0);
+        var options = {
+            uri: ytsAPI + 'api/v2/list_movies.json',
+            qs: params,
+            json: true,
+            timeout: 10000
+        };
+        var req = jQuery.extend(true, {}, ytsAPI, options);
+        request(req, function (err, res, data) {
+            if (err || res.statusCode >= 400 || (data && !data.data)) {
+                win.warn('YTS API endpoint \'%s\' failed.', ytsAPI);
+                return defer.reject(err || 'Status Code is above 400');
+            } else if (!data || data.status === 'error') {
+                err = data ? data.status_message : 'No data returned';
+                return defer.reject(err);
+            } else {
+                return defer.resolve(format(data.data));
+            }
+        });
 
         return defer.promise;
     };
-
-    /*YTS.prototype.random = function () {
-        var defer = Q.defer();
-
-        function get(index) {
-            var options = {
-                uri: Settings.ytsAPI[index].url + 'api/v2/get_random_movie.json?' + Math.round((new Date()).valueOf() / 1000),
-                json: true,
-                timeout: 10000
-            };
-            var req = jQuery.extend(true, {}, Settings.ytsAPI[index], options);
-            request(req, function (err, res, data) {
-                if (err || res.statusCode >= 400 || (data && !data.data)) {
-                    win.warn('YTS API endpoint \'%s\' failed.', Settings.ytsAPI[index].url);
-                    if (index + 1 >= Settings.ytsAPI.length) {
-                        return defer.reject(err || 'Status Code is above 400');
-                    } else {
-                        get(index + 1);
-                    }
-                    return;
-                } else if (!data || data.status === 'error') {
-                    err = data ? data.status_message : 'No data returned';
-                    return defer.reject(err);
-                } else {
-                    return defer.resolve(Common.sanitize(data.data));
-                }
-            });
-        }
-        get(0);
-
-        return defer.promise;
-    };*/
 
     YTS.prototype.detail = function (torrent_id, old_data) {
         return Q(old_data);
