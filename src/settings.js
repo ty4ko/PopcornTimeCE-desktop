@@ -103,7 +103,7 @@ Settings.tvAPI = {
 };
 
 Settings.ytsAPI = {
-    url: 'http://yts.ag/',
+    url: 'https://yts.ag/',
     strictSSL: true
 };
 

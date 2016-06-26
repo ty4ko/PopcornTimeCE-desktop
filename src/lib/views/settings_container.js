@@ -208,10 +208,10 @@
                 if (value.substr(0, 8) !== 'https://' && value.substr(0, 7) !== 'http://') {
                     value = 'http://' + value;
                 }
-                value = [{
+                value = {
                     url: value,
                     strictSSL: value.substr(0, 8) === 'https://'
-                }];
+                };
                 break;
             case 'tvAPI':
                 value = field.val();
@@ -221,10 +221,10 @@
                 if (value.substr(0, 8) !== 'https://' && value.substr(0, 7) !== 'http://') {
                     value = 'http://' + value;
                 }
-                value = [{
+                value = {
                     url: value,
                     strictSSL: value.substr(0, 8) === 'https://'
-                }];
+                };
                 break;
             case 'subtitle_size':
        			case 'stream_browser':
