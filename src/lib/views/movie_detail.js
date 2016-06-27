@@ -440,7 +440,7 @@
             nw.Shell.openExternal('http://www.yifysubtitles.com/movie-imdb/' + this.model.get('imdb_id'));
         },
         openYify: function() {
-            nw.Shell.openExternal(Settings.ytsAPI.url + 'index.php/movie/yifi_view/' + this.model.get('slug') + '/' + this.model.get('id'));
+            nw.Shell.openExternal(Settings.ytsAPI.url + '/movie/' + this.model.get('slug'));
         },
         openVideo2k: function() {
             nw.Shell.openExternal('http://video2k.is/index.php/movie/watch/' + this.model.get('slug') + '/' + this.model.get('id'));
