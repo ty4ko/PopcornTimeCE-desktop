@@ -235,30 +235,26 @@ var deleteCookies = function () {
 };
 
 var delCache = function () {
-    var reqDB = window.indexedDB.webkitGetDatabaseNames();
+    var reqDB = win.indexedDB.webkitGetDatabaseNames();
     reqDB.onsuccess = function (db) {
         if (db.timeStamp && (new Date().valueOf() - db.timeStamp > 259200000)) { // 3 days old
-            window.indexedDB.deleteDatabase('cache');
-            win.close(true);
-        } else {
-            win.close(true);
+            win.indexedDB.deleteDatabase('cache');
         }
     };
-    win.close(true);
 };
 
 // Wipe the tmpFolder when closing the app (this frees up disk space)
 win.on('close', function () {
-    if (App.settings.deleteTmpOnClose) {
-        deleteFolder(App.settings.tmpLocation);
-    }
-    if (fs.existsSync(path.join(nw.App.dataPath, 'logs.txt'))) {
-        fs.unlinkSync(path.join(nw.App.dataPath, 'logs.txt'));
-    }
     try {
+        if (App.settings.deleteTmpOnClose) {
+            deleteFolder(App.settings.tmpLocation);
+        }
+        if (fs.existsSync(path.join(nw.App.dataPath, 'logs.txt'))) {
+            fs.unlinkSync(path.join(nw.App.dataPath, 'logs.txt'));
+        }
         delCache();
-    } catch (e) {
-        win.close(true);
+    }finally {
+      win.close(true);
     }
 });
 
