@@ -107,6 +107,22 @@
         },
 
         showCover: function() {
+
+          var getBestImage = function (model) {
+              var images = model.get('images');
+              var image = model.get('image');
+              var cover = model.get('cover');
+              if (images && images.poster && images.poster.medium) {
+                  return images.poster.medium;
+              } else if (image && image instanceof String) {
+                  return image;
+              } else if (cover) {
+                  return cover;
+              }
+
+              return 'images/posterholder.png';
+          };
+
             var coverUrl;
             var itemtype = this.model.get('type');
             switch (itemtype) {
@@ -120,7 +136,7 @@
                                 break;
                         }
                     }
-                    coverUrl = this.model.get('image');
+                    coverUrl = getBestImage(this.model);
                     this.ui.bookmarkIcon.addClass('selected');
                     break;
                 case 'bookmarkedshow':
@@ -128,7 +144,7 @@
                     this.ui.bookmarkIcon.addClass('selected');
                     break;
                 case 'movie':
-                    coverUrl = this.model.get('image');
+                    coverUrl = getBestImage(this.model);
 
                     if (this.model.get('watched')) {
                         this.ui.watchedIcon.addClass('selected');

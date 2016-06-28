@@ -84,7 +84,7 @@
                         episode: show.episode.toString()
                     }))
                     .then(function (data) {
-                        if (data != null && data.length > 0) {
+                        if (data !== null && data.length > 0) {
                             deferred.resolve(null);
                         } else {
                             deferred.resolve(show);
@@ -112,7 +112,7 @@
             //Try to find it on the shows database and attach the next_episode info
             Database.getTVShowByImdb(show.show_id)
                 .then(function (data) {
-                    if (data != null) {
+                    if (data !== null) {
                         data.type = 'show';
                         data.image = data.images.poster;
                         data.imdb = data.imdb_id;

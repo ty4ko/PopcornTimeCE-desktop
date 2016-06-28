@@ -1,4 +1,4 @@
-(function (App) {
+(function(App) {
     'use strict';
 
     var SCROLL_MORE = 0.7; // 70% of window height
@@ -27,23 +27,23 @@
             retryButton: '.retry-button',
             onlineSearch: '.online-search'
         },
-        onBeforeRender: function () {
+        onBeforeRender: function() {
             this.model.set('error', this.error);
         },
-        onRender: function () {
+        onRender: function() {
             if (this.retry) {
                 switch (App.currentview) {
-                case 'movies':
-                case 'shows':
-                case 'anime':
-                    this.ui.onlineSearch.css('visibility', 'visible');
-                    this.ui.retryButton.css('visibility', 'visible');
-                    break;
-                case 'Watchlist':
-                    this.ui.retryButton.css('visibility', 'visible');
-                    this.ui.retryButton.css('margin-left', 'calc(50% - 100px)');
-                    break;
-                default:
+                    case 'movies':
+                    case 'shows':
+                    case 'anime':
+                        this.ui.onlineSearch.css('visibility', 'visible');
+                        this.ui.retryButton.css('visibility', 'visible');
+                        break;
+                    case 'Watchlist':
+                        this.ui.retryButton.css('visibility', 'visible');
+                        this.ui.retryButton.css('margin-left', 'calc(50% - 100px)');
+                        break;
+                    default:
                 }
             }
         }
@@ -69,55 +69,55 @@
         },
 
 
-        isEmpty: function () {
+        isEmpty: function() {
             return !this.collection.length && this.collection.state !== 'loading';
         },
 
-        getEmptyView: function () {
+        getEmptyView: function() {
             switch (App.currentview) {
-            case 'movies':
-            case 'shows':
-            case 'anime':
-                if (this.collection.state === 'error') {
-                    return ErrorView.extend({
-                        retry: true,
-                        error: i18n.__('The remote ' + App.currentview + ' API failed to respond, please check %s and try again later', '<a class="links" href="http://status.popcorntime.ag/">http://status.popcorntime.ag</a>')
-                    });
-                } else if (this.collection.state !== 'loading') {
-                    return ErrorView.extend({
-                        error: i18n.__('No ' + App.currentview + ' found...')
-                    });
-                }
-                break;
+                case 'movies':
+                case 'shows':
+                case 'anime':
+                    if (this.collection.state === 'error') {
+                        return ErrorView.extend({
+                            retry: true,
+                            error: i18n.__('The remote ' + App.currentview + ' API failed to respond, please check %s and try again later', '<a class="links" href="http://status.popcorntime.ag/">http://status.popcorntime.ag</a>')
+                        });
+                    } else if (this.collection.state !== 'loading') {
+                        return ErrorView.extend({
+                            error: i18n.__('No ' + App.currentview + ' found...')
+                        });
+                    }
+                    break;
 
-            case 'Favorites':
-                if (this.collection.state === 'error') {
-                    return ErrorView.extend({
-                        retry: true,
-                        error: i18n.__('Error, database is probably corrupted. Try flushing the bookmarks in settings.')
-                    });
-                } else if (this.collection.state !== 'loading') {
-                    return ErrorView.extend({
-                        error: i18n.__('No ' + App.currentview + ' found...')
-                    });
-                }
-                break;
-            case 'Watchlist':
-                if (this.collection.state === 'error') {
-                    return ErrorView.extend({
-                        retry: true,
-                        error: i18n.__('This feature only works if you have your TraktTv account synced. Please go to Settings and enter your credentials.')
-                    });
-                } else if (this.collection.state !== 'loading') {
-                    return ErrorView.extend({
-                        error: i18n.__('No ' + App.currentview + ' found...')
-                    });
-                }
-                break;
+                case 'Favorites':
+                    if (this.collection.state === 'error') {
+                        return ErrorView.extend({
+                            retry: true,
+                            error: i18n.__('Error, database is probably corrupted. Try flushing the bookmarks in settings.')
+                        });
+                    } else if (this.collection.state !== 'loading') {
+                        return ErrorView.extend({
+                            error: i18n.__('No ' + App.currentview + ' found...')
+                        });
+                    }
+                    break;
+                case 'Watchlist':
+                    if (this.collection.state === 'error') {
+                        return ErrorView.extend({
+                            retry: true,
+                            error: i18n.__('This feature only works if you have your TraktTv account synced. Please go to Settings and enter your credentials.')
+                        });
+                    } else if (this.collection.state !== 'loading') {
+                        return ErrorView.extend({
+                            error: i18n.__('No ' + App.currentview + ' found...')
+                        });
+                    }
+                    break;
             }
         },
 
-        initialize: function () {
+        initialize: function() {
             _this = this;
             this.listenTo(this.collection, 'loading', this.onLoading);
             this.listenTo(this.collection, 'loaded', this.onLoaded);
@@ -128,7 +128,7 @@
             _this.initPosterResizeKeys();
         },
 
-        initKeyboardShortcuts: function () {
+        initKeyboardShortcuts: function() {
             Mousetrap.bind('up', _this.moveUp);
 
             Mousetrap.bind('down', _this.moveDown);
@@ -145,33 +145,33 @@
 
             Mousetrap.bind(['ctrl+f', 'command+f'], _this.focusSearch);
 
-            Mousetrap(document.querySelector('input')).bind(['ctrl+f', 'command+f', 'esc'], function (e, combo) {
+            Mousetrap(document.querySelector('input')).bind(['ctrl+f', 'command+f', 'esc'], function(e, combo) {
                 $('.search input').blur();
             });
 
-            Mousetrap.bind(['tab', 'shift+tab'], function (e, combo) {
+            Mousetrap.bind(['tab', 'shift+tab'], function(e, combo) {
                 if ((App.PlayerView === undefined || App.PlayerView.isDestroyed) && $('#about-container').children().length <= 0 && $('#player').children().length <= 0) {
                     if (combo === 'tab') {
                         switch (App.currentview) {
-                        case 'movies':
-                            App.currentview = 'shows';
-                            break;
-                        case 'shows':
-                            App.currentview = 'anime';
-                            break;
-                        default:
-                            App.currentview = 'movies';
+                            case 'movies':
+                                App.currentview = 'shows';
+                                break;
+                            case 'shows':
+                                App.currentview = 'anime';
+                                break;
+                            default:
+                                App.currentview = 'movies';
                         }
                     } else if (combo === 'shift+tab') {
                         switch (App.currentview) {
-                        case 'movies':
-                            App.currentview = 'anime';
-                            break;
-                        case 'anime':
-                            App.currentview = 'shows';
-                            break;
-                        default:
-                            App.currentview = 'movies';
+                            case 'movies':
+                                App.currentview = 'anime';
+                                break;
+                            case 'anime':
+                                App.currentview = 'shows';
+                                break;
+                            default:
+                                App.currentview = 'movies';
                         }
                     }
 
@@ -182,18 +182,18 @@
                 }
             });
 
-            Mousetrap.bind(['ctrl+1', 'ctrl+2', 'ctrl+3'], function (e, combo) {
+            Mousetrap.bind(['ctrl+1', 'ctrl+2', 'ctrl+3'], function(e, combo) {
                 if ((App.PlayerView === undefined || App.PlayerView.isDestroyed) && $('#about-container').children().length <= 0 && $('#player').children().length <= 0) {
                     switch (combo) {
-                    case 'ctrl+1':
-                        App.currentview = 'movies';
-                        break;
-                    case 'ctrl+2':
-                        App.currentview = 'shows';
-                        break;
-                    case 'ctrl+3':
-                        App.currentview = 'anime';
-                        break;
+                        case 'ctrl+1':
+                            App.currentview = 'movies';
+                            break;
+                        case 'ctrl+2':
+                            App.currentview = 'shows';
+                            break;
+                        case 'ctrl+3':
+                            App.currentview = 'anime';
+                            break;
                     }
 
                     App.vent.trigger('torrentCollection:close');
@@ -203,13 +203,13 @@
                 }
             });
 
-            Mousetrap.bind(['`', 'b'], function () {
+            Mousetrap.bind(['`', 'b'], function() {
                 if ((App.PlayerView === undefined || App.PlayerView.isDestroyed) && $('#about-container').children().length <= 0 && $('#player').children().length <= 0) {
                     $('.favorites').click();
                 }
             });
 
-            Mousetrap.bind('i', function () {
+            Mousetrap.bind('i', function() {
                 if ((App.PlayerView === undefined || App.PlayerView.isDestroyed) && $('#player').children().length <= 0) {
                     $('.about').click();
                 }
@@ -217,9 +217,9 @@
 
         },
 
-        initPosterResizeKeys: function () {
+        initPosterResizeKeys: function() {
             $(window)
-                .on('mousewheel', function (event) { // Ctrl + wheel doesnt seems to be working on node-webkit (works just fine on chrome)
+                .on('mousewheel', function(event) { // Ctrl + wheel doesnt seems to be working on node-webkit (works just fine on chrome)
                     if (event.altKey === true) {
                         event.preventDefault();
                         if (event.originalEvent.wheelDelta > 0) {
@@ -229,7 +229,7 @@
                         }
                     }
                 })
-                .on('keydown', function (event) {
+                .on('keydown', function(event) {
                     if (event.ctrlKey === true || event.metaKey === true) {
 
                         if ($.inArray(event.keyCode, [107, 187]) !== -1) {
@@ -244,60 +244,60 @@
                 });
         },
 
-        onShow: function () {
+        onShow: function() {
             if (this.collection.state === 'loading') {
                 this.onLoading();
             }
         },
 
-        onLoading: function () {
+        onLoading: function() {
             $('.status-loadmore').hide();
             $('#loading-more-animi').show();
         },
 
-        onLoaded: function () {
+        onLoaded: function() {
             App.vent.trigger('list:loaded');
             this.checkEmpty();
             var self = this;
             this.addloadmore();
 
             this.AddGhostsToBottomRow();
-            $(window).resize(function () {
+            $(window).resize(function() {
                 var addghost;
                 clearTimeout(addghost);
-                addghost = setTimeout(function () {
+                addghost = setTimeout(function() {
                     self.AddGhostsToBottomRow();
                 }, 100);
             });
 
-            if (typeof (this.ui.spinner) === 'object') {
+            if (typeof(this.ui.spinner) === 'object') {
                 this.ui.spinner.hide();
             }
 
-            $('.filter-bar').on('mousedown', function (e) {
+            $('.filter-bar').on('mousedown', function(e) {
                 if (e.target.localName !== 'div') {
                     return;
                 }
-                _.defer(function () {
+                _.defer(function() {
                     self.$('.items:first').focus();
                 });
             });
             $('.items').attr('tabindex', '1');
-            _.defer(function () {
+            _.defer(function() {
                 self.checkFetchMore();
                 self.$('.items:first').focus();
             });
 
         },
 
-        checkFetchMore: function () {
+        checkFetchMore: function() {
             // if load more is visible onLoaded, fetch more results
             if (elementInViewport(this.$el, $('#load-more-item'))) {
                 this.collection.fetchMore();
             }
         },
 
-        addloadmore: function () {
+        addloadmore: function() {
             var self = this;
 
             // maxResults to hide load-more on providers that return hasMore=true no matter what.
@@ -305,59 +305,49 @@
             var maxResults = currentPage * 50;
 
             switch (App.currentview) {
-            case 'movies':
-            case 'shows':
-            case 'anime':
-                $('#load-more-item').remove();
-                // we add a load more
-                if (this.collection.hasMore && !this.collection.filter.keywords && this.collection.state !== 'error' && this.collection.length !== 0 && this.collection.length >= maxResults) {
-                    $('.items').append('<div id="load-more-item" class="load-more"><span class="status-loadmore">' + i18n.__('Load More') + '</span><div id="loading-more-animi" class="loading-container"><div class="ball"></div><div class="ball1"></div></div></div>');
+                case 'movies':
+                case 'shows':
+                case 'anime':
+                    $('#load-more-item').remove();
+                    // we add a load more
+                    if (this.collection.hasMore && !this.collection.filter.keywords && this.collection.state !== 'error' && this.collection.length !== 0 && this.collection.length >= maxResults) {
+                        $('.items').append('<div id="load-more-item" class="load-more"><span class="status-loadmore">' + i18n.__('Load More') + '</span><div id="loading-more-animi" class="loading-container"><div class="ball"></div><div class="ball1"></div></div></div>');
 
-                    $('#load-more-item').click(function () {
-                        $('#load-more-item').off('click');
-                        self.collection.fetchMore();
-                    });
+                        $('#load-more-item').click(function() {
+                            $('#load-more-item').off('click');
+                            self.collection.fetchMore();
+                        });
 
-                    $('#loading-more-animi').hide();
-                    $('.status-loadmore').show();
-                }
-                break;
-
-            case 'Favorites':
-
-                break;
-            case 'Watchlist':
-
-                break;
-            }
-        },
-
-        AddGhostsToBottomRow: function () {
-            var divsInLastRow, divsInRow, to_add;
-            $('.ghost').remove();
-            divsInRow = 0;
-            $('.items .item').each(function () {
-                if ($(this).prev().length > 0) {
-                    if ($(this).position().top !== $(this).prev().position().top) {
-                        return false;
+                        $('#loading-more-animi').hide();
+                        $('.status-loadmore').show();
                     }
-                    divsInRow++;
-                } else {
-                    divsInRow++;
-                }
-            });
-            divsInLastRow = $('.items .item').length % divsInRow;
-            if (divsInLastRow === 0) {
-                divsInLastRow = -Math.abs(Math.round($('.items').width() / $('.item').outerWidth(true)) - divsInRow);
-            }
-            NUM_MOVIES_IN_ROW = divsInRow;
-            to_add = divsInRow - divsInLastRow;
-            while (to_add > 0) {
-                $('.items').append($('<li/>').addClass('item ghost'));
-                to_add--;
+                    break;
+
+                case 'Favorites':
+
+                    break;
+                case 'Watchlist':
+
+                    break;
             }
         },
-        onScroll: function () {
+
+        AddGhostsToBottomRow: function() {
+            $('.ghost').remove();
+            var listWidth = $('.items').width();
+            var itemWidth = $('.items .item').width() + (2 * parseInt($('.items .item').css('margin')));
+            var itemsPerRow = parseInt(listWidth / itemWidth);
+
+            NUM_MOVIES_IN_ROW = itemsPerRow;
+            var itemsInLastRow = $('.items .item').length % itemsPerRow;
+            var ghostsToAdd = itemsPerRow - itemsInLastRow;
+
+            while (ghostsToAdd > 0) {
+                $('.items').append($('<li/>').addClass('item ghost'));
+                ghostsToAdd--;
+            }
+        },
+        onScroll: function() {
             if (!this.collection.hasMore) {
                 return;
             }
@@ -371,11 +361,11 @@
             }
         },
 
-        focusSearch: function (e) {
+        focusSearch: function(e) {
             $('.search input').focus();
         },
 
-        increasePoster: function (e) {
+        increasePoster: function(e) {
             var postersWidthIndex = Settings.postersJump.indexOf(parseInt(Settings.postersWidth));
 
             if (postersWidthIndex !== -1 && postersWidthIndex + 1 in Settings.postersJump) {
@@ -383,7 +373,7 @@
                         key: 'postersWidth',
                         value: Settings.postersJump[postersWidthIndex + 1]
                     })
-                    .then(function () {
+                    .then(function() {
                         App.vent.trigger('updatePostersSizeStylesheet');
                     });
             } else {
@@ -391,7 +381,7 @@
             }
         },
 
-        decreasePoster: function (e) {
+        decreasePoster: function(e) {
             var postersWidth;
             var postersWidthIndex = Settings.postersJump.indexOf(parseInt(Settings.postersWidth));
 
@@ -405,13 +395,13 @@
                     key: 'postersWidth',
                     value: postersWidth
                 })
-                .then(function () {
+                .then(function() {
                     App.vent.trigger('updatePostersSizeStylesheet');
                 });
         },
 
 
-        selectItem: function (e) {
+        selectItem: function(e) {
             if (e.type) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -419,7 +409,7 @@
             $('.item.selected .cover').trigger('click');
         },
 
-        selectIndex: function (index) {
+        selectIndex: function(index) {
             if ($('.items .item').eq(index).length === 0 || $('.items .item').eq(index).children().length === 0) {
                 return;
             }
@@ -433,7 +423,7 @@
             }
         },
 
-        moveUp: function (e) {
+        moveUp: function(e) {
             if (e.type) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -450,7 +440,7 @@
             _this.selectIndex(index);
         },
 
-        moveDown: function (e) {
+        moveDown: function(e) {
             if (e.type) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -464,7 +454,7 @@
             _this.selectIndex(index);
         },
 
-        moveLeft: function (e) {
+        moveLeft: function(e) {
             if (e.type) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -480,7 +470,7 @@
             _this.selectIndex(index);
         },
 
-        moveRight: function (e) {
+        moveRight: function(e) {
             if (e.type) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -494,11 +484,11 @@
             _this.selectIndex(index);
         },
 
-        toggleSelectedFavourite: function (e) {
+        toggleSelectedFavourite: function(e) {
             $('.item.selected .actions-favorites').click();
         },
 
-        toggleSelectedWatched: function (e) {
+        toggleSelectedWatched: function(e) {
             $('.item.selected .actions-watched').click();
         },
     });

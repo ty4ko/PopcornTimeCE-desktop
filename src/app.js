@@ -443,6 +443,7 @@ var handleVideoFile = function (file) {
     App.vent.trigger('stream:ready', localVideo);
     App.Device.Collection.setDevice(tmpPlayer);
     $('.eye-info-player').hide();
+    $('.vjs-load-progress').css('width', '100%');
 };
 
 var handleTorrent = function (torrent) {
