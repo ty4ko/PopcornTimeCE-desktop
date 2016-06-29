@@ -7,15 +7,15 @@
         files;
 
     var readCollection = function (dir) {
-        return fs.readdirSync(dir).map(function(v) {
-          return {
-              name:v,
-              time:fs.statSync(dir + v).mtime.getTime()
-          };
-        }).sort(function(a, b) {
-          return b.time - a.time;
-        }).map(function(v) {
-          return v.name;
+        return fs.readdirSync(dir).map(function (v) {
+            return {
+                name: v,
+                time: fs.statSync(dir + v).mtime.getTime()
+            };
+        }).sort(function (a, b) {
+            return b.time - a.time;
+        }).map(function (v) {
+            return v.name;
         });
     };
 
@@ -95,21 +95,21 @@
 
         createMagnetURI: function (torrentHash) {
             return parseTorrent.toMagnetURI({
-              infoHash: torrentHash,
-              "tr": [
-                "udp://p4p.arenabg.com:1337",
-                "udp://9.rarbg.me:2710/announce",
-                "udp://9.rarbg.me:2710/announce",
-                "udp://glotorrents.pw:6969/announce",
-                "udp://torrent.gresille.org:80/announce",
-                "udp://tracker.internetwarriors.net:1337",
-                "udp://tracker.opentrackr.org:1337/announce",
-                "udp://tracker.leechers-paradise.org:696931622A",
-                "udp://open.demonii.com:1337",
-                "udp://tracker.coppersurfer.tk:6969",
-                "udp://tracker.leechers-paradise.org:6969",
-                "udp://exodus.desync.com:696931622A",
-              ]
+                infoHash: torrentHash,
+                'tr': [
+                    'udp://p4p.arenabg.com:1337',
+                    'udp://9.rarbg.me:2710/announce',
+                    'udp://9.rarbg.me:2710/announce',
+                    'udp://glotorrents.pw:6969/announce',
+                    'udp://torrent.gresille.org:80/announce',
+                    'udp://tracker.internetwarriors.net:1337',
+                    'udp://tracker.opentrackr.org:1337/announce',
+                    'udp://tracker.leechers-paradise.org:696931622A',
+                    'udp://open.demonii.com:1337',
+                    'udp://tracker.coppersurfer.tk:6969',
+                    'udp://tracker.leechers-paradise.org:6969',
+                    'udp://exodus.desync.com:696931622A',
+                ]
             });
         },
 
@@ -197,7 +197,7 @@
             var ratio = item.peers > 0 ? item.seeds / item.peers : +item.seeds;
             $('.onlinesearch-info>ul.file-list').append(
                 '<li class="result-item" data-index="' + item.index + '" data-file="' + item.magnet + '"><a>' + item.title + '</a><div class="item-icon magnet-icon tooltipped" data-toogle="tooltip" data-placement="right" title="' + i18n.__('Magnet link') + '"></div><i class="online-size tooltipped" data-toggle="tooltip" data-placement="left" title="' + i18n.__('Ratio:') + ' ' + ratio.toFixed(2) + '<br>' + i18n.__('Seeds:') + ' ' + item.seeds + ' - ' + i18n.__('Peers:') + ' ' + item.peers + '">' + item.size + '</i></li>'
-                );
+            );
             if (item.seeds === 0) { // recalc the peers/seeds
                 var torrent = item.magnet.split('&tr')[0] + '&tr=udp://tracker.openbittorrent.com:80/announce' + '&tr=udp://open.demonii.com:1337/announce' + '&tr=udp://tracker.coppersurfer.tk:6969';
                 require('torrent-tracker-health')(torrent, {
@@ -396,7 +396,7 @@
                     dataTransfer: {
                         files: [file]
                     },
-                    preventDefault: function () { }
+                    preventDefault: function () {}
                 });
             }, false);
 

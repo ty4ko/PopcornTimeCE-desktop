@@ -43,7 +43,7 @@ var request = require('request');
             focus: true,
             width: 500,
             height: 500
-        }, function(vpnClient){
+        }, function (vpnClient) {
             vpnClient.on('loaded', function () {
                 vpnClient.window.imReady(window);
             });

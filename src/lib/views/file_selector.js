@@ -33,9 +33,9 @@
         },
 
         onBeforeRender: function () {
-            if(AdvSettings.get('activateFakeSkan')===true) {
-				this.bitsnoopRequest(this.model.get('torrent').infoHash);
-			}
+            if (AdvSettings.get('activateFakeSkan') === true) {
+                this.bitsnoopRequest(this.model.get('torrent').infoHash);
+            }
         },
 
         onShow: function () {
@@ -49,31 +49,31 @@
             App.Device.ChooserView('#player-chooser2').render();
             this.$('#watch-now').text('');
 
-			// get all a in file-selector and click the one with highest size
-			var li = document.getElementsByTagName("li");
-			var length = li.length;
-			// variable for the highest one
-			var highest = 0;
-			// loop over to find the highest ID by looking at the property parsed as an int
-			for(var i = 0; i < length; i++) {
-				var id= parseInt(li[i].id.substring(1, li[i].id.length), 10);
-				if(id > highest) {
-					highest = id;
-				}
-			}
+            // get all a in file-selector and click the one with highest size
+            var li = document.getElementsByTagName('li');
+            var length = li.length;
+            // variable for the highest one
+            var highest = 0;
+            // loop over to find the highest ID by looking at the property parsed as an int
+            for (var i = 0; i < length; i++) {
+                var id = parseInt(li[i].id.substring(1, li[i].id.length), 10);
+                if (id > highest) {
+                    highest = id;
+                }
+            }
 
-			if (AdvSettings.get('autoStoreTorrents')===true && !this.isTorrentStored()){
-				this.storeTorrent();
-			}
+            if (AdvSettings.get('autoStoreTorrents') === true && !this.isTorrentStored()) {
+                this.storeTorrent();
+            }
 
-			//XXX: Workaround by nasabeyonds
-			if (AdvSettings.get('chosenPlayer')=='html5'){
-				AdvSettings.set('chosenPlayer', 'local');
-			}
+            //XXX: Workaround by nasabeyonds
+            if (AdvSettings.get('chosenPlayer') === 'html5') {
+                AdvSettings.set('chosenPlayer', 'local');
+            }
 
-			if(AdvSettings.get('activateAutoplay')===true){
-				$('#s'+highest).click();
-			}
+            if (AdvSettings.get('activateAutoplay') === true) {
+                $('#s' + highest).click();
+            }
         },
 
         bitsnoopRequest: function (hash) {
@@ -106,7 +106,9 @@
                 file_index: actualIndex,
                 device: App.Device.Collection.selected
             });
-            try { App.MovieDetailView.closeDetails(); } catch(e) {}
+            try {
+                App.MovieDetailView.closeDetails();
+            } catch (e) {}
             App.vent.trigger('stream:start', torrentStart);
             App.vent.trigger('system:closeFileSelector');
         },
@@ -128,16 +130,16 @@
             var file, _file;
             if (Settings.droppedTorrent) {
                 file = Settings.droppedTorrent;
-				//alert("droppedTorrent: "+file);
+                //alert("droppedTorrent: "+file);
             } else if (!Settings.droppedStoredMagnet) {
-				//else if (Settings.droppedMagnet && !Settings.droppedStoredMagnet) {
+                //else if (Settings.droppedMagnet && !Settings.droppedStoredMagnet) {
                 _file = Settings.droppedMagnet,
                     file = formatMagnet(_file) + '.torrent';
-					//alert("droppedMagnet, droppedStoredMagnet=false: "+file);
+                //alert("droppedMagnet, droppedStoredMagnet=false: "+file);
             } else if (Settings.droppedStoredMagnet) {
-				//else if (Settings.droppedMagnet && Settings.droppedStoredMagnet) {
+                //else if (Settings.droppedMagnet && Settings.droppedStoredMagnet) {
                 file = Settings.droppedStoredMagnet;
-				//alert("droppedMagnet, droppedStoredMagnet=true: "+file);
+                //alert("droppedMagnet, droppedStoredMagnet=true: "+file);
             }
 
             // check if torrent stored

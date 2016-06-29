@@ -23,113 +23,6 @@
         },
         pmod = mod.prototype;
 
-    pmod.getTmpDir = function () {
-        return tpmDir;
-    };
-
-    pmod.clearTmpDir = function () {
-        var self = this;
-        rimraf(tpmDir, function (err) {
-            if (err) {
-                win.error('TorrentCache.clearTmpDir()', err);
-            }
-            self._checkTmpDir();
-        });
-    };
-
-    pmod._checkTmpDir = function () {
-        mkdirp(tpmDir, function (err) {
-            if (err) {
-                win.error('TorrentCache._checkTmpDir()', err);
-            }
-        });
-    };
-
-    pmod.getType = function (torrent) {
-        if (typeof torrent === 'string') {
-            if (torrent.substring(0, 8) === 'magnet:?') {
-                return 'magnet';
-            }
-            if (torrent.indexOf('.torrent') !== -1) {
-                if (torrent.indexOf('http://') === 0) {
-                    return 'torrenturl';
-                }
-                return 'torrent';
-            }
-        }
-        return 'unknown';
-    };
-
-    pmod.resolve = function (torrent) {
-        var type = this.getType(torrent);
-        stateModel = new Backbone.Model({
-            state: 'Resolving..',
-            backdrop: '',
-            title: '',
-            player: '',
-            show_controls: false
-        });
-        App.vent.trigger('stream:started', stateModel);
-        switch (type) {
-        case 'torrenturl':
-        case 'torrent':
-        case 'magnet':
-            this.checkCache(torrent).then(function (result) {
-                var filePath = result[0],
-                    exists = result[1];
-                if (exists) {
-                    return handlers.handleSuccess(filePath);
-                }
-                // try to store this torrent into our cache
-                handlers['handle' + type](filePath, torrent).then(handlers.handleSuccess);
-            }.bind(this));
-            break;
-        default:
-            handlers.handleError('TorrentCache.resolve(): Unknown torrent type', torrent);
-            return false;
-        }
-        return true;
-    };
-
-    pmod._getKey = function (name) {
-        return Common.md5(path.basename(name));
-    };
-
-    pmod.checkCache = function (torrent) {
-        var deferred = Q.defer(),
-            name = this._getKey(torrent) + '.torrent',
-            targetPath = path.join(tpmDir, name);
-
-        // check if file already exists
-        fs.readdir(tpmDir, function (err, files) {
-            if (err) {
-                handlers.handleError('TorrentCache.checkCache() readdir:' + err, torrent);
-                return deferred.reject(err);
-            }
-            var idx = files.indexOf(name);
-            if (idx === -1) {
-                return deferred.resolve([targetPath, false]);
-            }
-            // check if it actually is a file, not dir..
-            fs.lstat(targetPath, function (err, stats) {
-                if (err) {
-                    handlers.handleError('TorrentCache.checkCache() lstat:' + err, torrent);
-                    return deferred.reject(err);
-                }
-                if (stats.isFile()) {
-                    return deferred.resolve([targetPath, true]);
-                }
-                handlers.handleError('TorrentCache.checkCache() target torrent is directory', torrent);
-                deferred.reject('Target torrent is directory');
-            });
-        });
-        return deferred.promise;
-    };
-
-    pmod.stop = function () {
-        stateModel = null;
-    };
-
     var handlers = {
         handletorrent: function (filePath, torrent) {
             // just copy the torrent file
@@ -282,6 +175,112 @@
         }
     };
 
+    pmod.getTmpDir = function () {
+        return tpmDir;
+    };
+
+    pmod.clearTmpDir = function () {
+        var self = this;
+        rimraf(tpmDir, function (err) {
+            if (err) {
+                win.error('TorrentCache.clearTmpDir()', err);
+            }
+            self._checkTmpDir();
+        });
+    };
+
+    pmod._checkTmpDir = function () {
+        mkdirp(tpmDir, function (err) {
+            if (err) {
+                win.error('TorrentCache._checkTmpDir()', err);
+            }
+        });
+    };
+
+    pmod.getType = function (torrent) {
+        if (typeof torrent === 'string') {
+            if (torrent.substring(0, 8) === 'magnet:?') {
+                return 'magnet';
+            }
+            if (torrent.indexOf('.torrent') !== -1) {
+                if (torrent.indexOf('http://') === 0) {
+                    return 'torrenturl';
+                }
+                return 'torrent';
+            }
+        }
+        return 'unknown';
+    };
+
+    pmod.resolve = function (torrent) {
+        var type = this.getType(torrent);
+        stateModel = new Backbone.Model({
+            state: 'Resolving..',
+            backdrop: '',
+            title: '',
+            player: '',
+            show_controls: false
+        });
+        App.vent.trigger('stream:started', stateModel);
+        switch (type) {
+        case 'torrenturl':
+        case 'torrent':
+        case 'magnet':
+            this.checkCache(torrent).then(function (result) {
+                var filePath = result[0],
+                    exists = result[1];
+                if (exists) {
+                    return handlers.handleSuccess(filePath);
+                }
+                // try to store this torrent into our cache
+                handlers['handle' + type](filePath, torrent).then(handlers.handleSuccess);
+            }.bind(this));
+            break;
+        default:
+            handlers.handleError('TorrentCache.resolve(): Unknown torrent type', torrent);
+            return false;
+        }
+        return true;
+    };
+
+    pmod._getKey = function (name) {
+        return Common.md5(path.basename(name));
+    };
+
+    pmod.checkCache = function (torrent) {
+        var deferred = Q.defer(),
+            name = this._getKey(torrent) + '.torrent',
+            targetPath = path.join(tpmDir, name);
+
+        // check if file already exists
+        fs.readdir(tpmDir, function (err, files) {
+            if (err) {
+                handlers.handleError('TorrentCache.checkCache() readdir:' + err, torrent);
+                return deferred.reject(err);
+            }
+            var idx = files.indexOf(name);
+            if (idx === -1) {
+                return deferred.resolve([targetPath, false]);
+            }
+            // check if it actually is a file, not dir..
+            fs.lstat(targetPath, function (err, stats) {
+                if (err) {
+                    handlers.handleError('TorrentCache.checkCache() lstat:' + err, torrent);
+                    return deferred.reject(err);
+                }
+                if (stats.isFile()) {
+                    return deferred.resolve([targetPath, true]);
+                }
+                handlers.handleError('TorrentCache.checkCache() target torrent is directory', torrent);
+                deferred.reject('Target torrent is directory');
+            });
+        });
+        return deferred.promise;
+    };
+
+    pmod.stop = function () {
+        stateModel = null;
+    };
 
     var singleton = new mod();
 

@@ -12,6 +12,14 @@
         CLIENT_SECRET = '476cf15ed52542c2c8dc502821280aa5f61a012db57f1ed1f479aaf88ab385cb',
         REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob';
 
+    var isValid = function (id) {
+        if (!id || id.toString().indexOf('mal') > -1 || id.toString().indexOf('-') > -1) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+
     function TraktTv() {
         App.Providers.CacheProviderV2.call(this, 'metadata');
 
@@ -206,6 +214,7 @@
     };
 
     TraktTv.prototype.scrobble = function (action, type, id, progress) {
+
         if (!isValid(id)) {
             return;
         }
@@ -440,32 +449,32 @@
                 width: 600,
                 height: 600,
                 focus: true
-            }, function(loginWindow){
-              loginWindow.setResizable(false);
-              loginWindow.on('closed', function () {
-                  if (url) {
-                      defer.resolve(url);
-                  } else {
-                      AdvSettings.set('traktToken', '');
-                      AdvSettings.set('traktTokenTTL', '');
-                      AdvSettings.set('traktTokenRefresh', '');
-                      defer.reject('Trakt window closed without exchange token');
-                  }
-              });
-              loginWindow.on('loaded', function () {
-                  url = this.window.document.URL;
-                  if (url.indexOf('&') === -1 && url.indexOf('auth/signin') === -1) {
-                      if (url.indexOf('oauth/authorize/') !== -1) {
-                          url = url.split('/');
-                          url = url[url.length - 1];
-                      } else {
-                          nw.Shell.openExternal(url);
-                      }
-                      this.close(true);
-                  } else {
-                      url = false;
-                  }
-              });
+            }, function (loginWindow) {
+                loginWindow.setResizable(false);
+                loginWindow.on('closed', function () {
+                    if (url) {
+                        defer.resolve(url);
+                    } else {
+                        AdvSettings.set('traktToken', '');
+                        AdvSettings.set('traktTokenTTL', '');
+                        AdvSettings.set('traktTokenRefresh', '');
+                        defer.reject('Trakt window closed without exchange token');
+                    }
+                });
+                loginWindow.on('loaded', function () {
+                    url = this.window.document.URL;
+                    if (url.indexOf('&') === -1 && url.indexOf('auth/signin') === -1) {
+                        if (url.indexOf('oauth/authorize/') !== -1) {
+                            url = url.split('/');
+                            url = url[url.length - 1];
+                        } else {
+                            nw.Shell.openExternal(url);
+                        }
+                        this.close(true);
+                    } else {
+                        url = false;
+                    }
+                });
             });
 
             return defer.promise;
@@ -697,14 +706,6 @@
             break;
         }
     }
-
-    var isValid = function (id) {
-        if (!id || id.toString().indexOf('mal') > -1 || id.toString().indexOf('-') > -1) {
-            return false;
-        } else {
-            return true;
-        }
-    };
 
     App.vent.on('show:watched', onShowWatched);
     App.vent.on('show:unwatched', onShowUnWatched);

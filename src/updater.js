@@ -27,7 +27,7 @@
         'GOm3OxA3zKXG4cjy6TyEKajYlT45Q+tgt1L1HuGAJjWFRSA0PP9ctC6nH+2N3HmW\n' +
         'RTcms0CPio56gg==\n' +
         '-----END PUBLIC KEY-----\n',*/
-		FILENAME = 'package.nw.new';
+        FILENAME = 'package.nw.new';
 
 
     function forcedBind(func, thisVar) {
@@ -49,7 +49,7 @@
         });
 
         //this.outputDir = App.settings.os === 'linux' ? process.execPath : process.cwd();
-		    this.outputDir = process.execPath;
+        this.outputDir = process.execPath;
 
         this.updateData = null;
     }
@@ -125,7 +125,7 @@
     function installWindows(downloadPath, updateData) {
         var defer = Q.defer();
         var pack = new AdmZip(downloadPath);
-		    var outputDir = path.dirname(downloadPath);
+        var outputDir = path.dirname(downloadPath);
 
         if (updateData.extended) {
 
@@ -327,7 +327,7 @@
         return defer.promise;
     }
 
-	Updater.prototype.install = function (downloadPath) {
+    Updater.prototype.install = function (downloadPath) {
         var os = App.settings.os;
         var promise;
         if (os === 'windows') {

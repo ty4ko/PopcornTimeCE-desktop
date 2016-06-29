@@ -34,14 +34,14 @@
         sorters: [
             //'trending',
             'last added',
-	    	    'last added & google cloud',
-	           //'popularity',
+            'last added & google cloud',
+            //'popularity',
             'year',
             //'title',
             'rating',
-	    	    'views',
-		        'downloads',
-		        'likes'
+            'views',
+            'downloads',
+            'likes'
         ],
 
         sorters_tv: [

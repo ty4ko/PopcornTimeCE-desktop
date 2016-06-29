@@ -42,7 +42,7 @@
             params.sort = filters.sorter;
         }
         if (filters.sort === 'name') {
-            params.order * -1;
+            params.order = params.order * -1;
         }
 
         switch (filters.order) {
@@ -91,72 +91,6 @@
             return win.error('couldn\'t parse time:', time);
         }
         return (time[1] ? time[1] : 0) * 60 + Number(time[2]);
-    };
-
-    var formatForPopcorn = function (items) {
-        var results = _.map(items, function (item) {
-            var img = item.malimg;
-            var type = (item.type === 'Movie') ? 'movie' : 'show';
-            var aired = (item.aired.indexOf(', ') !== -1) ? item.aired.split(', ')[1] : item.aired;
-
-            var ret = {
-                images: {
-                    poster: img,
-                    fanart: img,
-                    banner: img
-                },
-                mal_id: item.MAL,
-                haru_id: item.id,
-                tvdb_id: 'mal-' + item.id,
-                imdb_id: 'mal-' + item.id,
-                slug: item.name.toLowerCase().replace(/\s/g, '-'),
-                title: item.name,
-                year: aired.replace(/ to.*/, ''),
-                type: type,
-                item_data: item.type
-            };
-            return ret;
-        });
-
-        return {
-            results: Common.sanitize(results),
-            hasMore: true
-        };
-    };
-
-    // Single element query
-    var queryTorrent = function (torrent_id, prev_data) {
-        return Q.Promise(function (resolve, reject) {
-            var id = torrent_id.split('-')[1];
-            var url = URL + 'anime.php?id=' + id;
-
-            win.info('Request to Hurahican API', url);
-            request({
-                url: url,
-                json: true
-            }, function (error, response, data) {
-                var err;
-                if (error || response.statusCode >= 400) {
-                    reject(error);
-                } else if (!data || (data.error && data.error !== 'No data returned')) {
-
-                    err = data ? data.error : 'No data returned';
-                    win.error('API error:', err);
-                    reject(err);
-
-                } else if (data.episodes.length === 0) {
-
-                    err = 'No torrents returned';
-                    win.error('API error:', err);
-                    reject(err);
-
-                } else {
-
-                    // we cache our new element
-                    resolve(formatDetailForPopcorn(data, prev_data));
-                }
-            });
-        });
     };
 
     var movieTorrents = function (id, dl) {
@@ -236,6 +170,37 @@
         });
     };
 
+    var formatForPopcorn = function (items) {
+        var results = _.map(items, function (item) {
+            var img = item.malimg;
+            var type = (item.type === 'Movie') ? 'movie' : 'show';
+            var aired = (item.aired.indexOf(', ') !== -1) ? item.aired.split(', ')[1] : item.aired;
+
+            var ret = {
+                images: {
+                    poster: img,
+                    fanart: img,
+                    banner: img
+                },
+                mal_id: item.MAL,
+                haru_id: item.id,
+                tvdb_id: 'mal-' + item.id,
+                imdb_id: 'mal-' + item.id,
+                slug: item.name.toLowerCase().replace(/\s/g, '-'),
+                title: item.name,
+                year: aired.replace(/ to.*/, ''),
+                type: type,
+                item_data: item.type
+            };
+            return ret;
+        });
+
+        return {
+            results: Common.sanitize(results),
+            hasMore: true
+        };
+    };
+
     var formatDetailForPopcorn = function (item, prev) {
         var img = item.malimg;
         var type = prev.type;
@@ -279,6 +244,40 @@
         }
 
         return Common.sanitize(ret);
+    };
+
+    // Single element query
+    var queryTorrent = function (torrent_id, prev_data) {
+        return Q.Promise(function (resolve, reject) {
+            var id = torrent_id.split('-')[1];
+            var url = URL + 'anime.php?id=' + id;
+
+            win.info('Request to Hurahican API', url);
+            request({
+                url: url,
+                json: true
+            }, function (error, response, data) {
+                var err;
+                if (error || response.statusCode >= 400) {
+                    reject(error);
+                } else if (!data || (data.error && data.error !== 'No data returned')) {
+
+                    err = data ? data.error : 'No data returned';
+                    win.error('API error:', err);
+                    reject(err);
+
+                } else if (data.episodes.length === 0) {
+
+                    err = 'No torrents returned';
+                    win.error('API error:', err);
+                    reject(err);
+
+                } else {
+                    // we cache our new element
+                    resolve(formatDetailForPopcorn(data, prev_data));
+                }
+            });
+        });
     };
 
     Haruhichan.prototype.extractIds = function (items) {

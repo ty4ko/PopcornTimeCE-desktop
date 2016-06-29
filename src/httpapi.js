@@ -7,6 +7,14 @@
     var httpServer;
     var Q = require('q');
 
+    function popcornCallback(callback, err, result) {
+        if (result === undefined) {
+            result = {};
+        }
+        result.popcornVersion = App.settings.version;
+        callback(err, result);
+    }
+
     var initServer = function () {
         return Q.Promise(function (resolve, reject) {
             server = rpc.Server({
@@ -702,14 +710,6 @@
             win.info('HTTP API: socket #' + i + ' destroyed');
             sockets[i].destroy();
         }
-    }
-
-    function popcornCallback(callback, err, result) {
-        if (result === undefined) {
-            result = {};
-        }
-        result.popcornVersion = App.settings.version;
-        callback(err, result);
     }
 
     App.vent.on('initHttpApi', function () {

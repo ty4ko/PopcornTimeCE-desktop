@@ -1,4 +1,4 @@
-(function(App) {
+(function (App) {
     'use strict';
 
     var request = require('request'),
@@ -23,7 +23,7 @@
         name: 'TVShowTime'
     };
 
-    TVShowTime.prototype.restoreToken = function() {
+    TVShowTime.prototype.restoreToken = function () {
         var tvstAccessToken = AdvSettings.get('tvstAccessToken');
         if (tvstAccessToken !== '') {
             this.authenticated = true;
@@ -43,7 +43,7 @@
     // Inherit the Cache Provider
     inherits(TVShowTime, App.Providers.CacheProviderV2);
 
-    TVShowTime.prototype.post = function(endpoint, postVariables) {
+    TVShowTime.prototype.post = function (endpoint, postVariables) {
         var defer = Q.defer();
 
         postVariables = postVariables || {};
@@ -53,7 +53,7 @@
 
         request.post(requestUri.toString(), {
             form: postVariables
-        }, function(err, res, body) {
+        }, function (err, res, body) {
             if (err || !body || res.statusCode >= 400) {
                 defer.reject(err);
             } else {
@@ -64,22 +64,22 @@
         return defer.promise;
     };
 
-    TVShowTime.prototype.authenticate = function(callback) {
+    TVShowTime.prototype.authenticate = function (callback) {
         var self = this;
         this
             .post('oauth/device/code', {
                 'client_id': API_CLIENT_ID
             })
-            .then(function(data) {
+            .then(function (data) {
                 data = Common.sanitize(JSON.parse(data));
                 if (data.result === 'OK') {
                     var activateUri = data.verification_url + '?user_code=' + data.user_code;
-                    self.oauthAuthorizing = setInterval(function() {
+                    self.oauthAuthorizing = setInterval(function () {
                         self.post('oauth/access_token', {
                             'client_id': API_CLIENT_ID,
                             'client_secret': API_CLIENT_SECRET,
                             'code': data.device_code
-                        }).then(function(data) {
+                        }).then(function (data) {
                             data = JSON.parse(data);
                             if (data.result === 'OK') {
                                 clearInterval(self.oauthAuthorizing);
@@ -97,14 +97,14 @@
     };
 
 
-    TVShowTime.prototype.disconnect = function(callback) {
+    TVShowTime.prototype.disconnect = function (callback) {
         this.authenticated = false;
         AdvSettings.set('tvstAccessToken', '');
         callback();
     };
 
 
-    TVShowTime.prototype.checkin = function(show) {
+    TVShowTime.prototype.checkin = function (show) {
         this
             .post('checkin', {
                 'show_id': show.tvdb_id,
@@ -112,12 +112,12 @@
                 'number': show.episode,
                 'access_token': this._credentials.token
             })
-            .then(function(data) {
+            .then(function (data) {
                 //console.log(data);
             });
     };
 
-    TVShowTime.prototype.checkout = function(show) {
+    TVShowTime.prototype.checkout = function (show) {
         this
             .post('checkout', {
                 'show_id': show.tvdb_id,
@@ -125,7 +125,7 @@
                 'number': show.episode,
                 'access_token': this._credentials.token
             })
-            .then(function(data) {
+            .then(function (data) {
                 //console.log(data);
             });
     };

@@ -188,18 +188,18 @@ var AdvSettings = {
         }
 
         switch (process.platform) {
-            case 'darwin':
-                AdvSettings.set('os', 'mac');
-                break;
-            case 'win32':
-                AdvSettings.set('os', 'windows');
-                break;
-            case 'linux':
-                AdvSettings.set('os', 'linux');
-                break;
-            default:
-                AdvSettings.set('os', 'unknown');
-                break;
+        case 'darwin':
+            AdvSettings.set('os', 'mac');
+            break;
+        case 'win32':
+            AdvSettings.set('os', 'windows');
+            break;
+        case 'linux':
+            AdvSettings.set('os', 'linux');
+            break;
+        default:
+            AdvSettings.set('os', 'unknown');
+            break;
         }
 
         return Q();
@@ -223,6 +223,7 @@ var AdvSettings = {
     },
 
     checkApiEndpoint: function (endpoint, defer) {
+
         if (Settings.automaticUpdating === false) {
             return;
         }
@@ -238,20 +239,24 @@ var AdvSettings = {
         var url = uri.parse(endpoint.url);
         win.debug('Checking %s endpoint', url.hostname);
 
+        function tryNextEndpoint() {
+            if (endpoint.index < endpoint.proxies.length - 1) {
+                endpoint.index++;
+                AdvSettings.checkApiEndpoint(endpoint, defer);
+            } else {
+                endpoint.index = 0;
+                endpoint.ssl = undefined;
+                _.extend(endpoint, endpoint.proxies[endpoint.index]);
+                defer.resolve();
+            }
+        }
+
         if (endpoint.ssl === false) {
-            var timeoutWrapper = function (req) {
-                return function () {
-                    win.warn('[%s] Endpoint timed out',
-                        url.hostname);
-                    req.abort();
-                    tryNextEndpoint();
-                };
-            };
+
             var request = http.get({
                 hostname: url.hostname
             }, function (res) {
                 res.once('data', function (body) {
-                    clearTimeout(timeout);
                     res.removeAllListeners('error');
                     // Doesn't match the expected response
                     /*if (!_.isRegExp(endpoint.fingerprint) || !endpoint.fingerprint.test(body.toString('utf8'))) {
@@ -261,19 +266,17 @@ var AdvSettings = {
                             body.toString('utf8'));
                         tryNextEndpoint();
                     } else {*/
-                        defer.resolve();
+                    defer.resolve();
                     //}
                 }).once('error', function (e) {
-                    win.warn('[%s] Endpoint failed [%s]',
-                        url.hostname,
-                        e.message);
-                    clearTimeout(timeout);
+                    win.warn('[%s] Endpoint failed [%s]', url.hostname, e.message);
+                    tryNextEndpoint();
+                }).setTimeout(5000, function () {
+                    win.warn('[%s] Endpoint timed out', url.hostname);
+                    request.abort();
                     tryNextEndpoint();
                 });
             });
-
-            var fn = timeoutWrapper(request);
-            var timeout = setTimeout(fn, 5000);
         } else {
             tls.connect(443, url.hostname, {
                 servername: url.hostname,
@@ -292,7 +295,7 @@ var AdvSettings = {
                         this.getPeerCertificate().fingerprint);
                     tryNextEndpoint();
                 } else {*/
-                    defer.resolve();
+                defer.resolve();
                 //}
                 this.end();
             }).once('error', function (e) {
@@ -308,18 +311,6 @@ var AdvSettings = {
                 this.end();
                 tryNextEndpoint();
             }).setTimeout(5000);
-        }
-
-        function tryNextEndpoint() {
-            if (endpoint.index < endpoint.proxies.length - 1) {
-                endpoint.index++;
-                AdvSettings.checkApiEndpoint(endpoint, defer);
-            } else {
-                endpoint.index = 0;
-                endpoint.ssl = undefined;
-                _.extend(endpoint, endpoint.proxies[endpoint.index]);
-                defer.resolve();
-            }
         }
 
         return defer.promise;

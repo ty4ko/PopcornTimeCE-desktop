@@ -429,7 +429,7 @@ var Database = {
                 App.Trakt = App.Config.getProvider('metadata');
                 App.TVShowTime = App.Config.getProvider('tvst');
                 App.TVShowTime.restoreToken();
-                
+
                 // check update
                 var updater = new App.Updater();
 

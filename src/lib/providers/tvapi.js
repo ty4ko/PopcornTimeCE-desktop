@@ -1,4 +1,4 @@
-(function(App) {
+(function (App) {
     'use strict';
     var querystring = require('querystring');
     var request = require('request');
@@ -8,12 +8,12 @@
     var tvApi = Settings.tvAPI;
 
     var URL = false;
-    var TVApi = function() {
+    var TVApi = function () {
         try {
             var Client = require('node-tvdb');
             var tvdb = new Client('7B95D15E1BE1D75A');
             tvdb.getLanguages()
-                .then(function(langlist) {
+                .then(function (langlist) {
                     AdvSettings.set('tvdbLangs', langlist);
                 });
         } catch (e) {
@@ -25,7 +25,7 @@
 
     inherits(TVApi, App.Providers.Generic);
 
-    var queryTorrents = function(filters) {
+    var queryTorrents = function (filters) {
 
         var deferred = Q.defer();
 
@@ -56,7 +56,7 @@
 
         var req = jQuery.extend(true, {}, tvApi, options);
         win.info('Request to TVApi', req.uri);
-        request(req, function(err, res, data) {
+        request(req, function (err, res, data) {
             if (err || res.statusCode >= 400) {
                 win.warn('TVAPI endpoint \'%s\' failed.', req.uri);
                 return deferred.reject(err || 'Status Code is above 400');
@@ -65,7 +65,7 @@
                 win.error('API error:', err);
                 return deferred.reject(err);
             } else {
-                data.forEach(function(entry) {
+                data.forEach(function (entry) {
                     entry.type = 'show';
                 });
                 deferred.resolve({
@@ -79,16 +79,16 @@
     };
 
     // Single element query
-    var queryTorrent = function(torrent_id, old_data, debug) {
+    var queryTorrent = function (torrent_id, old_data, debug) {
         debug === undefined ? debug = true : '';
-        return Q.Promise(function(resolve, reject) {
+        return Q.Promise(function (resolve, reject) {
             var options = {
                 uri: tvApi.url + 'show/' + torrent_id,
                 json: true
             };
             var req = jQuery.extend(true, {}, tvApi, options);
             win.info('Request to TVApi', req.uri);
-            request(req, function(error, response, data) {
+            request(req, function (error, response, data) {
                 if (error || response.statusCode >= 400) {
                     win.warn('TVAPI endpoint \'%s\' failed.', req.uri);
                     return reject(error || 'Status Code is above 400');
@@ -111,7 +111,7 @@
                             resolve(data);
                         } else {
 
-                            var reqTimeout = setTimeout(function() {
+                            var reqTimeout = setTimeout(function () {
                                 resolve(data);
                             }, 2000);
 
@@ -119,7 +119,7 @@
                             var tvdb = new Client('7B95D15E1BE1D75A', Settings.language);
                             win.info('Request to TVDB API: \'%s\' - %s', old_data.title, App.Localization.langcodes[Settings.language].name);
                             tvdb.getSeriesAllById(old_data.tvdb_id)
-                                .then(function(localization) {
+                                .then(function (localization) {
                                     clearTimeout(reqTimeout);
                                     _.extend(data, {
                                         synopsis: localization.Overview
@@ -134,7 +134,7 @@
                                     }
                                     resolve(Common.sanitize(data));
                                 })
-                                .catch(function(error) {
+                                .catch(function (error) {
                                     resolve(data);
                                 });
                         }
@@ -146,15 +146,15 @@
         });
     };
 
-    TVApi.prototype.extractIds = function(items) {
+    TVApi.prototype.extractIds = function (items) {
         return _.pluck(items.results, 'imdb_id');
     };
 
-    TVApi.prototype.fetch = function(filters) {
+    TVApi.prototype.fetch = function (filters) {
         return queryTorrents(filters);
     };
 
-    TVApi.prototype.detail = function(torrent_id, old_data, debug) {
+    TVApi.prototype.detail = function (torrent_id, old_data, debug) {
         return queryTorrent(torrent_id, old_data, debug);
     };
 

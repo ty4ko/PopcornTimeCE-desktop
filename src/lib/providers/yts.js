@@ -1,4 +1,4 @@
-(function(App) {
+(function (App) {
     'use strict';
 
     var Q = require('q');
@@ -14,11 +14,11 @@
     }
     inherits(YTS, App.Providers.Generic);
 
-    YTS.prototype.extractIds = function(items) {
+    YTS.prototype.extractIds = function (items) {
         return _.pluck(items.results, 'imdb_id');
     };
 
-    var format = function(data) {
+    var format = function (data) {
         var results = _.chain(data.movies)
             /*
                      .filter(function (movie) {
@@ -27,7 +27,7 @@
                      return torrent.quality !== '3D';
                      });
                      })*/
-            .map(function(movie) {
+            .map(function (movie) {
                 return {
                     type: 'movie',
                     id: movie.id,
@@ -47,25 +47,25 @@
                     trailer: 'https://www.youtube.com/watch?v=' + movie.yt_trailer_code || false,
                     google_video: movie.google_video || false,
                     certification: movie.mpa_rating,
-                    torrents: _.reduce(movie.torrents, function(torrents, torrent) {
+                    torrents: _.reduce(movie.torrents, function (torrents, torrent) {
                         if (torrent.quality !== '3D') {
                             torrents[torrent.quality] = {
                                 url: torrent.url,
                                 magnet: require('parse-torrent').toMagnetURI({
                                     infoHash: torrent.hash,
-                                    "tr": [
-                                        "udp://p4p.arenabg.com:1337",
-                                        "udp://9.rarbg.me:2710/announce",
-                                        "udp://9.rarbg.me:2710/announce",
-                                        "udp://glotorrents.pw:6969/announce",
-                                        "udp://torrent.gresille.org:80/announce",
-                                        "udp://tracker.internetwarriors.net:1337",
-                                        "udp://tracker.opentrackr.org:1337/announce",
-                                        "udp://tracker.leechers-paradise.org:696931622A",
-                                        "udp://open.demonii.com:1337",
-                                        "udp://tracker.coppersurfer.tk:6969",
-                                        "udp://tracker.leechers-paradise.org:6969",
-                                        "udp://exodus.desync.com:696931622A",
+                                    'tr': [
+                                        'udp://p4p.arenabg.com:1337',
+                                        'udp://9.rarbg.me:2710/announce',
+                                        'udp://9.rarbg.me:2710/announce',
+                                        'udp://glotorrents.pw:6969/announce',
+                                        'udp://torrent.gresille.org:80/announce',
+                                        'udp://tracker.internetwarriors.net:1337',
+                                        'udp://tracker.opentrackr.org:1337/announce',
+                                        'udp://tracker.leechers-paradise.org:696931622A',
+                                        'udp://open.demonii.com:1337',
+                                        'udp://tracker.coppersurfer.tk:6969',
+                                        'udp://tracker.leechers-paradise.org:6969',
+                                        'udp://exodus.desync.com:696931622A',
                                     ]
                                 }),
                                 size: torrent.size_bytes,
@@ -85,7 +85,7 @@
         };
     };
 
-    YTS.prototype.fetch = function(filters) {
+    YTS.prototype.fetch = function (filters) {
 
         var ytsAPI = Settings.ytsAPI;
 
@@ -113,21 +113,21 @@
 
         if (filters.sorter && filters.sorter !== 'popularity') {
             switch (filters.sorter) {
-                case 'last added':
-                    params.sort_by = 'date_added';
-                    break;
-                case 'last added & google cloud':
-                    params.sort_by = 'google_cloud';
-                    App.settings.chosenPlayer = 'googlecloud';
-                    break;
-                case 'downloads':
-                    params.sort_by = 'download_count';
-                    break;
-                case 'likes':
-                    params.sort_by = 'like_count';
-                    break;
-                default:
-                    params.sort_by = filters.sorter;
+            case 'last added':
+                params.sort_by = 'date_added';
+                break;
+            case 'last added & google cloud':
+                params.sort_by = 'google_cloud';
+                App.settings.chosenPlayer = 'googlecloud';
+                break;
+            case 'downloads':
+                params.sort_by = 'download_count';
+                break;
+            case 'likes':
+                params.sort_by = 'like_count';
+                break;
+            default:
+                params.sort_by = filters.sorter;
             }
         }
 
@@ -148,7 +148,7 @@
             timeout: 10000
         };
         var req = jQuery.extend(true, {}, ytsAPI, options);
-        request(req, function(err, res, data) {
+        request(req, function (err, res, data) {
             if (err || res.statusCode >= 400 || (data && !data.data)) {
                 win.warn('YTS API endpoint \'%s\' failed.', req.uri);
                 return defer.reject(err || 'Status Code is above 400');
@@ -163,7 +163,7 @@
         return defer.promise;
     };
 
-    YTS.prototype.detail = function(torrent_id, old_data) {
+    YTS.prototype.detail = function (torrent_id, old_data) {
         return Q(old_data);
     };
 

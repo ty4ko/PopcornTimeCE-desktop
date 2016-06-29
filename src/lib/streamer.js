@@ -130,10 +130,10 @@
                 // clear downloaded so change:downloaded gets triggered for the first time
                 streamInfo.set('downloaded', 0);
 
-if(AdvSettings.get('chosenPlayer') != 'html5'){
-                App.vent.trigger('stream:ready', streamInfo);
-                stateModel.destroy();
-}
+                if (AdvSettings.get('chosenPlayer') !== 'html5') {
+                    App.vent.trigger('stream:ready', streamInfo);
+                    stateModel.destroy();
+                }
             }
         };
 
@@ -158,27 +158,27 @@ if(AdvSettings.get('chosenPlayer') != 'html5'){
         engine.server.on('listening', function () {
             if (engine) {
                 //streamInfo.set('src', 'http://127.0.0.1:' + engine.server.address().port + '/');
-				streamInfo.set('src', 'http://127.0.0.1:' + engine.server.address().port);
+                streamInfo.set('src', 'http://127.0.0.1:' + engine.server.address().port);
                 streamInfo.set('type', 'video/mp4');
                 stateModel.on('change:state', checkReady);
 
 
-if(AdvSettings.get('chosenPlayer')=='html5'){
-	$('.vjs-play-control').click();
+                if (AdvSettings.get('chosenPlayer') === 'html5') {
+                    $('.vjs-play-control').click();
 
-	//var src = $('#video_player video').attr('src').replace("http://127.0.0.1:", "").replace("/", "");
-	var tt_src = 'http://127.0.0.1:' + engine.server.address().port;
-	var tt_subtitle = AdvSettings.get('LastSubtitle');
-	var tt_poster = $('#yts').attr('data-poster');
+                    //var src = $('#video_player video').attr('src').replace("http://127.0.0.1:", "").replace("/", "");
+                    var tt_src = 'http://127.0.0.1:' + engine.server.address().port;
+                    var tt_subtitle = AdvSettings.get('LastSubtitle');
+                    var tt_poster = $('#yts').attr('data-poster');
 
-	if($('#yts').attr('data-id')){
-		win.debug('open http://nachotime.to/encrypt.php?dt=http://yts.ph/index.php/movie/yifi_view/'+$('#yts').attr('data-slug')+'/' + $('#yts').attr('data-id')+'&port='+tt_src+'&subtitle='+tt_subtitle+'&poster='+tt_poster);
-		nw.Shell.openExternal('http://nachotime.to/encrypt.php?dt=http://yts.ph/index.php/movie/yifi_view/'+$('#yts').attr('data-slug')+'/' + $('#yts').attr('data-id')+'&port='+tt_src+'&subtitle='+tt_subtitle+'&poster='+tt_poster);
-	}
-	//Mousetrap.trigger('u'); //stream to browser
-}//else{
-	checkReady();
-//}
+                    if ($('#yts').attr('data-id')) {
+                        win.debug('open http://nachotime.to/encrypt.php?dt=http://yts.ph/index.php/movie/yifi_view/' + $('#yts').attr('data-slug') + '/' + $('#yts').attr('data-id') + '&port=' + tt_src + '&subtitle=' + tt_subtitle + '&poster=' + tt_poster);
+                        nw.Shell.openExternal('http://nachotime.to/encrypt.php?dt=http://yts.ph/index.php/movie/yifi_view/' + $('#yts').attr('data-slug') + '/' + $('#yts').attr('data-id') + '&port=' + tt_src + '&subtitle=' + tt_subtitle + '&poster=' + tt_poster);
+                    }
+                    //Mousetrap.trigger('u'); //stream to browser
+                } //else{
+                checkReady();
+                //}
             }
         });
 
@@ -203,64 +203,6 @@ if(AdvSettings.get('chosenPlayer')=='html5'){
         });
 
     };
-
-    var Preload = {
-        start: function (model) {
-
-            if (Streamer.currentTorrent && model.get('torrent') === Streamer.currentTorrent.get('torrent')) {
-                return;
-            }
-            this.currentTorrent = model;
-
-            win.debug('Preloading model:', model.get('title'));
-            var torrent_url = model.get('torrent');
-
-            parseTorrent.remote(torrent_url, function (err, torrent) {
-                win.debug('Preloading torrent:', torrent.name);
-                var tmpFilename = torrent.infoHash;
-                tmpFilename = tmpFilename.replace(/([^a-zA-Z0-9-_])/g, '_'); // +'-'+ (new Date()*1);
-                var tmpFile = path.join(App.settings.tmpLocation, tmpFilename);
-                subtitles = torrent.subtitle;
-
-                var torrentPeerId = crypto.pseudoRandomBytes(10).toString('hex');
-
-                win.debug('Preloading movie to %s', tmpFile);
-
-                preload_engine = peerflix(torrent_url, {
-                    connections: parseInt(Settings.connectionLimit, 10) || 100, // Max amount of peers to be connected to.
-                    dht: parseInt(Settings.dhtLimit, 10) || 50,
-                    port: 0,
-                    tmp: App.settings.tmpLocation,
-                    path: tmpFile, // we'll have a different file name for each stream also if it's same torrent in same session
-                    index: torrent.file_index,
-                    id: torrentPeerId
-                });
-
-            });
-
-
-        },
-
-        stop: function () {
-
-            if (preload_engine) {
-                if (preload_engine.server._handle) {
-                    preload_engine.server.close();
-                }
-                preload_engine.destroy();
-                win.info('Preloading stopped');
-            }
-
-            preload_engine = null;
-        }
-    };
-
-
-
-
-
-
-
 
 
     var Streamer = {
@@ -299,6 +241,8 @@ if(AdvSettings.get('chosenPlayer')=='html5'){
                     // did we need to extract subtitle ?
                     var extractSubtitle = model.get('extract_subtitle');
 
+                    var title = model.get('title');
+
                     var getSubtitles = function (data) {
                         win.debug('Subtitles data request:', data);
 
@@ -313,6 +257,15 @@ if(AdvSettings.get('chosenPlayer')=='html5'){
                                 hasSubtitles = true;
                                 downloadedSubtitles = true;
                                 win.warn('No subtitles returned');
+                                if (Settings.subtitle_language !== 'none') {
+                                    App.vent.trigger('notification:show', new App.Model.Notification({
+                                        title: i18n.__('No subtitles found'),
+                                        body: i18n.__('Try again later or drop a subtitle in the player'),
+                                        showRestart: false,
+                                        type: 'warning',
+                                        autoclose: true
+                                    }));
+                                }
                             }
                             hasSubtitles = true;
                         }).catch(function (err) {
@@ -371,8 +324,6 @@ if(AdvSettings.get('chosenPlayer')=='html5'){
                     }
 
                     //Try get subtitles for custom torrents
-                    var title = model.get('title');
-
                     if (!title) { //From ctrl+v magnet or drag torrent
                         for (var f in torrent.files) {
                             torrent.files[f].index = f;
@@ -498,6 +449,57 @@ if(AdvSettings.get('chosenPlayer')=='html5'){
             subtitleDownloading = false;
             App.vent.off('subtitle:downloaded');
             win.info('Streaming cancelled');
+        }
+    };
+
+    var Preload = {
+        start: function (model) {
+
+            if (Streamer.currentTorrent && model.get('torrent') === Streamer.currentTorrent.get('torrent')) {
+                return;
+            }
+            this.currentTorrent = model;
+
+            win.debug('Preloading model:', model.get('title'));
+            var torrent_url = model.get('torrent');
+
+            parseTorrent.remote(torrent_url, function (err, torrent) {
+                win.debug('Preloading torrent:', torrent.name);
+                var tmpFilename = torrent.infoHash;
+                tmpFilename = tmpFilename.replace(/([^a-zA-Z0-9-_])/g, '_'); // +'-'+ (new Date()*1);
+                var tmpFile = path.join(App.settings.tmpLocation, tmpFilename);
+                subtitles = torrent.subtitle;
+
+                var torrentPeerId = crypto.pseudoRandomBytes(10).toString('hex');
+
+                win.debug('Preloading movie to %s', tmpFile);
+
+                preload_engine = peerflix(torrent_url, {
+                    connections: parseInt(Settings.connectionLimit, 10) || 100, // Max amount of peers to be connected to.
+                    dht: parseInt(Settings.dhtLimit, 10) || 50,
+                    port: 0,
+                    tmp: App.settings.tmpLocation,
+                    path: tmpFile, // we'll have a different file name for each stream also if it's same torrent in same session
+                    index: torrent.file_index,
+                    id: torrentPeerId
+                });
+
+            });
+
+
+        },
+
+        stop: function () {
+
+            if (preload_engine) {
+                if (preload_engine.server._handle) {
+                    preload_engine.server.close();
+                }
+                preload_engine.destroy();
+                win.info('Preloading stopped');
+            }
+
+            preload_engine = null;
         }
     };
 

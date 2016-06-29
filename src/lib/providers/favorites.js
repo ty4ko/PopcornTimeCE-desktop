@@ -30,7 +30,7 @@
                             data.type = 'bookmarkedmovie';
                             // Fallback for old bookmarks without google_video in database
                             if (typeof (data.google_video) === 'undefined') {
-                              data.google_video = false;
+                                data.google_video = false;
                             }
                             if (/slurm.trakt.us/.test(data.image)) {
                                 data.image = data.image.replace(/slurm.trakt.us/, 'walter.trakt.us');
