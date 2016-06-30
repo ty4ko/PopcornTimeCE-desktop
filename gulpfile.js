@@ -7,8 +7,11 @@ var gulp = require('gulp'),
         base: './',
         build: './build',
         src: './src',
+        language: './src/language',
         lib: './src/lib',
-        icons: './src/images/icons'
+        icons: './src/images/icons',
+        themes: './src/themes',
+        vendor: './src/vendor'
     },
     detectCurrentPlatform = function () {
         switch (process.platform) {
@@ -32,8 +35,21 @@ gulp.task('jshint', function () {
 });
 
 // beautify entire code (tweak in .jsbeautifyrc)
-gulp.task('jsbeautifier', function () {
-    return gulp.src([paths.lib + '/*.js', paths.lib + '/**/*.js', paths.src + '/*.js', paths.src + '/vendor/videojshooks.js', paths.src + '/vendor/videojsplugins.js', '*.js', '*.json'], {
+gulp.task('beautify', function () {
+    return gulp.src([
+            '*.js',
+            '*.json',
+            paths.src + '/*.html',
+            paths.src + '/*.js',
+            paths.src + '/*.json',
+            paths.language + '/*.json',
+            paths.lib + '/*.js',
+            paths.lib + '/**/*.js',
+            paths.vendor + '/videojshooks.js',
+            paths.vendor + '/videojsplugins.js',
+            paths.themes + '/**/*.css',
+            '*.js', '*.json'
+        ], {
             base: paths.base
         })
         .pipe(glp.jsbeautifier({
