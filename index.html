@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <!-- inject:css -->
-    <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="vendor/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/animation.css">
-    <link rel="stylesheet" href="themes/Official_-_Dark_theme.css">
+    <link rel="stylesheet" href="/src/vendor/bootstrap/dist/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/src/vendor/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/src/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/src/css/animation.css">
     <!-- endinject -->
+    <link rel="stylesheet" type="text/css" id="theme" href="themes/Official_-_Dark_theme.css">
 </head>
 
 <body>
@@ -40,26 +40,22 @@
     <script id="keyboard-tpl" src="templates/keyboard.tpl" type="text/x-template"></script>
     <script id="notification-tpl" src="templates/notification.tpl" type="text/x-template"></script>
 
-    <!-- inject:vendor:js-->
-    <script src="vendor/videojshooks.js"></script>
-    <script src="vendor/videojsplugins.js"></script>
-    <script src="vendor/backbone/backbone-min.js"></script>
-    <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- 3rd party Dependencies -->
     <script src="vendor/jquery/dist/jquery.min.js"></script>
-    <script src="vendor/marionette/lib/backbone.marionette.min.js"></script>
-    <script src="vendor/mousetrap/mousetrap.min.js"></script>
-    <script src="vendor/mousetrap/plugins/global-bind/mousetrap-global-bind.min.js"></script>
-    <script src="vendor/mousetrap/plugins/bind-dictionary/mousetrap-bind-dictionary.min.js"></script>
     <script src="vendor/underscore/underscore-min.js"></script>
-    <script src="vendor/videojs/dist/video-js/video.dev.js"></script>
-    <script src="vendor/videojs-youtube/src/youtube.js"></script>
-    <!-- endinject -->
-
-    <!-- inject:lib:js -->
-    <!-- endinject -->
+    <script src="vendor/backbone/backbone-min.js"></script>
+    <script src="vendor/marionette/lib/backbone.marionette.min.js"></script>
+    <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="vendor/mousetrap/mousetrap.min.js"></script>
+    <script src="vendor/mousetrap/plugins/pause/mousetrap-pause.min.js"></script>
+    <script src="vendor/mousetrap/plugins/global-bind/mousetrap-global-bind.min.js"></script>
+    <script src="vendor/video.js/dist/video-js/video.dev.js"></script>
 
     <!-- Other dependencies -->
+    <script src="vendor/videojshooks.js"></script>
+    <script src="vendor/videojsplugins.js"></script>
     <script src="lib/jquery.plugins.js"></script>
+    <script src="vendor/videojs-youtube/src/youtube.js"></script>
 
     <!-- App Initialization -->
     <script src="database.js"></script>
