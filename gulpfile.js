@@ -7,11 +7,11 @@ var gulp = require('gulp'),
     paths = {
         base: './',
         build: './build',
-        css: './src/css',
         src: './src',
+        css: './src/css',
+        icons: './src/images/icons',
         language: './src/language',
         lib: './src/lib',
-        icons: './src/images/icons',
         templates: './src/templates',
         themes: './src/themes',
         vendor: './src/vendor'
@@ -30,37 +30,80 @@ var gulp = require('gulp'),
 gulp.task('pre-commit', ['jshint']);
 
 gulp.task('index', function () {
-  var target = gulp.src(paths.src + '/index.html');
-  // It's not necessary to read the files (will speed up things), we're only after their paths:
-  var css = gulp.src([
-    paths.vendor + '/bootstrap/**/*min.css',
-    paths.vendor + '/font-awesome/**/*min.css',
-    paths.css + '/**/*.css',
-    paths.themes + '/Official_-_Dark_theme.css',
-    paths.templates + '/**/.tpl',
-  ], {read: false});
 
-  var vendorJs = gulp.src([
-    paths.vendor + '/*.js',
-    paths.vendor + '/backbone/**/*min.js',
-    paths.vendor + '/bootstrap/**/*min.js',
-    paths.vendor + '/jquery/**/*min.js',
-    paths.vendor + '/marionette/**/*min.js',
-    paths.vendor + '/mousetrap/*min.js',
-    paths.vendor + '/mousetrap/plugins/*bind*/*min.js',
-    paths.vendor + '/underscore/**/*min.js',
-    paths.vendor + '/videojs/**/*dev.js',
-    paths.vendor + '/videojs-youtube/**/*.js',
-  ], {read: false});
+    var target = gulp.src(paths.src + '/index.html');
+    // It's not necessary to read the files (will speed up things), we're only after their paths:
+    var css = gulp.src([
+        paths.vendor + '/bootstrap/**/*min.css',
+        paths.vendor + '/font-awesome/**/*min.css',
+        paths.css + '/**/*.css',
+        paths.themes + '/Official_-_Dark_theme.css',
+    ], {
+        read: false
+    });
 
-  var lib = gulp.src([
-    paths.lib + '/*.js',
-  ], {read: false});
+    var vendorJs = gulp.src([
+        paths.vendor + '/jquery/**/*min.js',
+        paths.vendor + '/underscore/**/*min.js',
+        paths.vendor + '/backbone/**/*min.js',
+        paths.vendor + '/marionette/**/*min.js',
+        paths.vendor + '/bootstrap/**/*min.js',
+        paths.vendor + '/mousetrap/*min.js',
+        paths.vendor + '/mousetrap/plugins/*bind*/*min.js',
+        paths.vendor + '/videojs/**/*dev.js',
+        paths.vendor + '/videojs-youtube/**/*.js',
+        paths.vendor + '/*.js',
+    ], {
+        read: false
+    });
 
-  return target.pipe(inject(css, {relative: true}))
-    .pipe(inject(vendorJs, {relative: true, starttag: '<!-- inject:vendor:{{ext}} -->'}))
-    .pipe(inject(lib, {relative: true, starttag: '<!-- inject:lib:{{ext}} -->'}))
-    .pipe(gulp.dest(paths.src));
+    var tpl = gulp.src([
+        paths.templates + '/**/*.tpl',
+    ], {
+        read: false
+    });
+
+    var lib = gulp.src([
+        paths.lib + '/**/*.js',
+    ], {
+        read: false
+    });
+
+    var app = gulp.src([
+        paths.src + '/*.js', !paths.src + '/bootstrap.js'
+    ], {
+        read: false
+    });
+
+    var bootstrap = gulp.src([
+        paths.src + '/bootstrap.js',
+    ], {
+        read: false
+    });
+
+    return target.pipe(inject(css, {
+            relative: true
+        }))
+        .pipe(inject(tpl, {
+            relative: true,
+            starttag: '<!-- inject:templates -->',
+            transform: function (filepath, file) {
+                return '<script id="' + filepath.substr(filepath.lastIndexOf('/') + 1).replace('.', '-') + '" src="' + filepath + '" type="text/x-template"></script>';
+            }
+        }))
+        .pipe(inject(vendorJs, {
+            relative: true,
+            starttag: '<!-- inject:vendor:{{ext}} -->'
+        }))
+        .pipe(inject(lib, {
+            relative: true,
+            starttag: '<!-- inject:lib:{{ext}} -->'
+        }))
+        .pipe(inject(app, {
+            relative: true,
+            starttag: '<!-- inject:app:{{ext}} -->'
+        }))
+        .pipe(gulp.dest(paths.src));
 });
 
 // check entire sources for potential coding issues (tweak in .jshintrc)
