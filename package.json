@@ -22,6 +22,7 @@
         "jshint": "^2.9.2",
         "jshint-stylish": "^2.2.0",
         "nwjs-builder": "latest",
+        "webtorrent": "^0.95.2",
         "yargs": "^4.7.1"
     }
 }
