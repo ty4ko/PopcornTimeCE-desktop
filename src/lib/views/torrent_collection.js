@@ -280,8 +280,7 @@
             e.preventDefault();
             e.stopPropagation();
 
-            var magnetLink,
-                torrentInfo;
+            var magnetLink;
 
             if ($(e.currentTarget.parentNode).context.className === 'file-item') {
                 // stored
@@ -289,8 +288,7 @@
                     file = _file.substring(0, _file.length - 2); // avoid ENOENT
 
                 if (file.indexOf('.torrent') !== -1) {
-                    torrentInfo = parseTorrent(fs.readFileSync(collection + file));
-                    magnetLink = parseTorrent.toMagnetURI(torrentInfo);
+                    magnetLink = parseTorrent.toMagnetURI(parseTorrent(fs.readFileSync(collection + file)));
                 } else { // Only for compatability
                     magnetLink = fs.readFileSync(collection + file, 'utf8');
                 }

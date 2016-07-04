@@ -69,7 +69,7 @@ Settings.tvstAccessToken = '';
 Settings.connectionLimit = 100;
 Settings.dhtLimit = 500;
 Settings.streamPort = 0; // 0 = Random
-Settings.tmpLocation = path.join(os.tmpDir(), 'Popcorn-Time-CE');
+Settings.tmpLocation = path.join(os.tmpDir(), require('./package.json').name);
 Settings.databaseLocation = path.join(data_path, 'data');
 Settings.deleteTmpOnClose = false;
 Settings.automaticUpdating = true;

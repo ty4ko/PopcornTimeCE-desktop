@@ -155,7 +155,7 @@
         storeTorrent: function () {
             var torrent_display_name, torrent_file_name, cached_torrent_hashname;
 
-            var source = require('os').tmpDir() + App.settings['tmpLocation'] + '/TorrentCache/',
+            var source = Settings.tmpLocation + '/TorrentCache/',
                 target = nw.App.dataPath + '/TorrentCollection/';
 
             if (Settings.droppedTorrent) {
