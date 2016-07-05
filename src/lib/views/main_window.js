@@ -22,7 +22,6 @@
             Keyboard: '#keyboard-container',
             Help: '#help-container',
             TorrentCollection: '#torrent-collection-container',
-            Issue: '#issue-container',
             Notification: '#notification'
         },
 
@@ -103,10 +102,6 @@
             App.vent.on('help:show', _.bind(this.showHelp, this));
             App.vent.on('help:close', _.bind(this.Help.destroy, this.Help));
             App.vent.on('help:toggle', _.bind(this.toggleHelp, this));
-
-            // Issue
-            App.vent.on('issue:new', _.bind(this.showIssue, this));
-            App.vent.on('issue:close', _.bind(this.Issue.destroy, this.Issue));
 
             // Movies
             App.vent.on('movie:showDetail', _.bind(this.showMovieDetail, this));
@@ -372,10 +367,6 @@
             } else {
                 this.showHelp();
             }
-        },
-
-        showIssue: function (e) {
-            this.Issue.show(new App.View.Issue());
         },
 
         preventDefault: function (e) {

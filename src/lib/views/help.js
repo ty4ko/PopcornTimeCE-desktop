@@ -36,10 +36,6 @@
             $('.randomized-dyk').html(dyk);
         },
 
-        reportIssue: function () {
-            App.vent.trigger('issue:new');
-        },
-
         onDestroy: function () {},
 
         closeHelp: function () {
