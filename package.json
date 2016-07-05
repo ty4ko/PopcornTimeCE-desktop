@@ -11,18 +11,17 @@
         "postinstall": "(cd src && npm install)"
     },
     "devDependencies": {
-        "del": "^2.2.1",
         "gulp": "^3.9.1",
-        "gulp-filter": "^4.0.0",
+        "gulp-clean": "^0.3.2",
         "gulp-jsbeautifier": "^2.0.3",
         "gulp-jshint": "^2.0.1",
         "gulp-load-plugins": "^1.2.4",
+        "gulp-run": "^1.7.1",
         "gulp-stylus": "^2.5.0",
         "guppy-pre-commit": "^0.3.0",
         "jshint": "^2.9.2",
         "jshint-stylish": "^2.2.0",
         "nwjs-builder": "latest",
-        "webtorrent": "^0.95.2",
         "yargs": "^4.7.1"
     }
 }

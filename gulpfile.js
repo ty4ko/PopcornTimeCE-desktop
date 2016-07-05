@@ -1,6 +1,6 @@
 var gulp = require('gulp'),
     glp = require('gulp-load-plugins')(),
-    del = require('del'),
+    clean = require('gulp-clean'),
     nwb = require('nwjs-builder'),
     argv = require('yargs').alias('p', 'platforms').argv,
     paths = {
@@ -99,6 +99,12 @@ gulp.task('build', ['clean'], function () {
     });
 });
 
-gulp.task('clean', function () {
-    return del(paths.build);
+gulp.task('clean-build', function () {
+    return gulp.src(paths.build, {read: false}).pipe(clean());
+});
+
+gulp.task('clean-deps', function () {
+    return gulp.src([paths.base + 'node_modules', paths.src + 'node_modules'], {
+        read: false
+    }).pipe(clean());
 });
