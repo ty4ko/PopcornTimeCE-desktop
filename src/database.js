@@ -11,7 +11,7 @@ async = require('async'),
     TTL = 1000 * 60 * 60 * 24;
 
 var startupTime = window.performance.now();
-console.debug('Database path: ' + data_path);
+win.info('Database path', data_path);
 
 process.env.TZ = 'America/New_York'; // set same api tz
 

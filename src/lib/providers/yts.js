@@ -25,8 +25,9 @@
             json: true,
             timeout: 10000
         };
-        console.log('Getting random movie');
+
         var req = jQuery.extend(true, {}, Settings.ytsAPI.url, options);
+        win.info('Request to YTSApi for random movie', req.url);
         request(req, function (err, res, data) {
             if (err || res.statusCode >= 400 || (data && !data.data)) {
                 win.warn('YTS API endpoint \'%s\' failed.', Settings.ytsAPI.url);
@@ -186,6 +187,7 @@
             timeout: 10000
         };
         var req = jQuery.extend(true, {}, ytsAPI, options);
+        win.info('Request to YTSApi for movies', req.url);
         request(req, function (err, res, data) {
             if (err || res.statusCode >= 400 || (data && !data.data)) {
                 win.warn('YTS API endpoint \'%s\' failed.', req.uri);

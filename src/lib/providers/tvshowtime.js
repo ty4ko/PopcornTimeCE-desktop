@@ -113,7 +113,7 @@
                 'access_token': this._credentials.token
             })
             .then(function (data) {
-                //console.log(data);
+                win.info('TVShowTime checkin data', data);
             });
     };
 
@@ -126,7 +126,7 @@
                 'access_token': this._credentials.token
             })
             .then(function (data) {
-                //console.log(data);
+                win.info('TVShowTime checkout data', data);
             });
     };
 
