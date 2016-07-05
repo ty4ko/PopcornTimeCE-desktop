@@ -66,6 +66,11 @@
             Mousetrap.bind('backspace', function (e) {
                 App.vent.trigger('settings:close');
             });
+
+            var el = $('#chosenPlayer');
+            App.Device.Collection.forEach(function (device) {
+                el.append(new Option(device.get('name'), device.get('id'), false, Settings.chosenPlayer === device.get('id') ? true : false));
+            });
         },
 
         onRender: function () {
@@ -237,11 +242,7 @@
                 }
                 break;
             case 'chosenPlayer':
-                value = 'local';
-                if (field.is(':checked')) {
-                    value = 'VLC';
-                }
-                AdvSettings.set('chosenPlayer', value);
+                value = $('option:selected', field).val();
                 break;
             case 'tv_detail_jump_to':
             case 'subtitle_language':

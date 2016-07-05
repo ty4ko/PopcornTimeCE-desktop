@@ -1,28 +1,28 @@
 {
-  "name": "Popcorn-Time-CE-dev",
-  "homepage": "http://popcorntime.ag",
-  "bugs": "https://github.com/PopcornTimeCommunity/desktop/issues",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/PopcornTimeCommunity/desktop.git"
-  },
-  "license": "GPL-3.0",
-  "scripts": {
-    "postinstall": "(cd src && npm install)"
-  },
-  "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-clean": "^0.3.2",
-    "gulp-jsbeautifier": "^2.0.3",
-    "gulp-jshint": "^2.0.1",
-    "gulp-load-plugins": "^1.2.4",
-    "gulp-run": "^1.7.1",
-    "gulp-stylus": "^2.5.0",
-    "guppy-pre-commit": "^0.3.0",
-    "jshint": "^2.9.2",
-    "jshint-stylish": "^2.2.0",
-    "mathjs": "^3.2.1",
-    "nwjs-builder": "latest",
-    "yargs": "^4.7.1"
-  }
+    "name": "Popcorn-Time-CE-dev",
+    "homepage": "http://popcorntime.ag",
+    "bugs": "https://github.com/PopcornTimeCommunity/desktop/issues",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/PopcornTimeCommunity/desktop.git"
+    },
+    "license": "GPL-3.0",
+    "scripts": {
+        "postinstall": "(cd src && npm install)"
+    },
+    "devDependencies": {
+        "gulp": "^3.9.1",
+        "gulp-clean": "^0.3.2",
+        "gulp-jsbeautifier": "^2.0.3",
+        "gulp-jshint": "^2.0.1",
+        "gulp-load-plugins": "^1.2.4",
+        "gulp-run": "^1.7.1",
+        "gulp-stylus": "^2.5.0",
+        "guppy-pre-commit": "^0.3.0",
+        "jshint": "^2.9.2",
+        "jshint-stylish": "^2.2.0",
+        "mathjs": "^3.2.1",
+        "nwjs-builder": "latest",
+        "yargs": "^4.7.1"
+    }
 }

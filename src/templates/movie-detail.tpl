@@ -104,18 +104,18 @@ for(var i = 0; i < genre.length; i++){ genre[i] = i18n.__(genre[i]); };
 
 
             <div class="button dropup" style="text-transform:uppercase;" id="player-chooser"></div>
-            <!- data-placement="left" title="YIFY torrent - best quality at the smallest filesize"
+            <!-- data-placement="left" title="YIFY torrent - best quality at the smallest filesize"
 	Stream torrent - best quality at the smallest filesize but speed potentially throttled, ISP monitor & limited download bandwidth (by seeders)-->
 
 
             <!--<div id="watch-googlevideo" class="button" style="text-transform:uppercase;" data-placement="bottom" title="Google Cloud - very fast speed, no ISP monitor & unlimited download bandwidth">Stream</div>-->
-            <!-Play via Google Cloud - possibly bad quality but very fast speed, no ISP monitor & unlimited download bandwidth-->
+            <!--Play via Google Cloud - possibly bad quality but very fast speed, no ISP monitor & unlimited download bandwidth-->
 
 
             <div id="watch-trailer" class="button" data-placement="bottom">
                 <%=i18n.__("Watch Trailer") %>
             </div>
-            <!- title="Watch youtube trailer" -->
+            <!-- title="Watch youtube trailer" -->
 
             <div class="movie-quality-container">
                 <% if (torrents["720p"] !== undefined && torrents["1080p"] !== undefined) { %>

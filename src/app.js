@@ -180,11 +180,9 @@ App.addInitializer(function (options) {
 });
 
 var deleteFolder = function (path) {
-
     if (typeof path !== 'string') {
         return;
     }
-
     try {
         var files = [];
         if (fs.existsSync(path)) {
@@ -206,7 +204,6 @@ var deleteFolder = function (path) {
 };
 
 var deleteCookies = function () {
-
     var nwWin = nw.Window.get();
 
     function removeCookie(cookie) {
@@ -355,18 +352,15 @@ window.ondragenter = function (e) {
 
 var minimizeToTray = function () {
     win.hide();
-
     var tray = new nw.Tray({
         title: 'Popcorn Time',
         icon: 'images/icon.png'
     });
     tray.tooltip = 'Popcorn Time';
-
     var openFromTray = function () {
         win.show();
         tray.remove();
     };
-
     var menu = new nw.Menu();
     menu.append(new nw.MenuItem({
         type: 'normal',

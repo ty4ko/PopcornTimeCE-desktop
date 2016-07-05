@@ -317,7 +317,12 @@
                     <div class="dropdown-arrow"></div>
                 </div>
             </span>
-            <span title="Default player">
+            <span title="Default player selection">
+                <div class="dropdown">
+                  <p><%= i18n.__("Default player") %></p>
+                  <select name="chosenPlayer" id="chosenPlayer" style="width: 160px;"></select>
+                  <div class="dropdown-arrow"></div>
+                </div>
             </span>
             <span>
                 <p><%= i18n.__("Cache Directory") %></p>
