@@ -18,6 +18,44 @@
         return _.pluck(items.results, 'imdb_id');
     };
 
+    YTS.prototype.random = function () {
+        var defer = Q.defer();
+        var options = {
+            uri: Settings.ytsAPI.url + 'api/v2/list_movies.json' + '?page=1&limit=1',
+            json: true,
+            timeout: 10000
+        };
+        console.log('Getting random movie');
+        var req = jQuery.extend(true, {}, Settings.ytsAPI.url, options);
+        request(req, function (err, res, data) {
+            if (err || res.statusCode >= 400 || (data && !data.data)) {
+                win.warn('YTS API endpoint \'%s\' failed.', Settings.ytsAPI.url);
+                return defer.reject(err || 'Status Code is above 400');
+            } else if (!data || data.status === 'error') {
+                err = data ? data.status_message : 'No data returned';
+                return defer.reject(err);
+            } else {
+                options = {
+                    uri: Settings.ytsAPI.url + 'api/v2/movie_details.json' + '?movie_id=' + require('mathjs').randomInt(1, parseInt(data.data.movie_count)),
+                    json: true,
+                    timeout: 10000
+                };
+                request(jQuery.extend(true, {}, Settings.ytsAPI.url, options), function (err, res, data) {
+                    if (err || res.statusCode >= 400 || (data && !data.data)) {
+                        win.warn('YTS API endpoint \'%s\' failed.', Settings.ytsAPI.url);
+                        return defer.reject(err || 'Status Code is above 400');
+                    } else if (!data || data.status === 'error') {
+                        err = data ? data.status_message : 'No data returned';
+                        return defer.reject(err);
+                    } else {
+                        return defer.resolve(Common.sanitize(data.data));
+                    }
+                });
+            }
+        });
+        return defer.promise;
+    };
+
     var format = function (data) {
         var results = _.chain(data.movies)
             /*

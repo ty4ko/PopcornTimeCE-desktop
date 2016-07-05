@@ -64,11 +64,8 @@
             <span class="advanced">
                 <div class="dropdown start-screen">
                     <p><%= i18n.__("Start Screen") %></p>
-							<!--var arr_screens = ["Movies","TV Series","Favorites","Anime", "Watchlist", "Last Open"];-->
                         <%
-
-							var arr_screens = ["Movies","Favorites","Anime"]
-
+							              var arr_screens = ["Movies","TV Series","Favorites","Anime", "Watchlist", "Last Open"];
                             var selct_start_screen = "";
                             for(var key in arr_screens) {
                                 selct_start_screen += "<option "+(Settings.start_screen == arr_screens[key]? "selected='selected'":"")+" value='"+arr_screens[key]+"'>"+i18n.__(arr_screens[key])+"</option>";
@@ -97,12 +94,10 @@
                     <div class="dropdown-arrow"></div>
                 </div>
             </span>
-
-            <!--<span class="advanced">
+            <span class="advanced">
                 <input class="settings-checkbox" name="translateSynopsis" id="translateSynopsis" type="checkbox" <%=(Settings.translateSynopsis? "checked='checked'":"")%>>
                 <label class="settings-label" for="translateSynopsis"><%= i18n.__("Translate Synopsis") %></label>
-            </span>-->
-
+            </span>
             <span class="advanced">
                 <div class="dropdown watchedCovers">
                     <p><%= i18n.__("Watched Items") %></p>
@@ -286,7 +281,7 @@
         </div>
     </section>
 
-    <!--<section id="quality" class="advanced">
+    <section id="quality" class="advanced">
         <div class="content"><div class="title"><%= i18n.__("Quality") %></div>
             <span class="advanced">
                 <div class="dropdown movies-quality">
@@ -304,16 +299,15 @@
                 <label class="settings-label" for="cb1"><%= i18n.__("Show movie quality on list") %></label>
             </span>
         </div>
-    </section>-->
+    </section>
 
-    <section id="cache">
+    <section id="playback">
         <div class="content"><div class="title"><%= i18n.__("Playback") %></div>
             <span title='Just click any magnet or .torrent link from your browser to start Popcorn Time'>
                 <div class="dropdown buffering-size">
                     <p><%= i18n.__("Stream from Browser") %></p>
                     <%
                         var arr_brow = ["Disabled", "Torrent Link", "Magnet Link"];
-
                         var stre_brow = "";
                         for(var key in arr_brow) {
                             stre_brow += "<option "+(Settings.stream_browser == arr_brow[key]? "selected='selected'":"")+" value='"+arr_brow[key]+"'>"+i18n.__(arr_brow[key])+"</option>";
@@ -323,8 +317,8 @@
                     <div class="dropdown-arrow"></div>
                 </div>
             </span>
-
-
+            <span title="Default player">
+            </span>
             <span>
                 <p><%= i18n.__("Cache Directory") %></p>
                 <input type="text" placeholder="<%= i18n.__("Cache Directory") %>" id="faketmpLocation" value="<%= Settings.tmpLocation %>" readonly="readonly" size="50" />
@@ -372,7 +366,7 @@
         </div>
     </section>
 
-    <!--<section id="features" class="advanced">
+    <section id="features" class="advanced">
         <div class="content"><div class="title"><%= i18n.__("Features") %></div>
             <span class="advanced">
                 <input class="settings-checkbox" name="activateVpn" id="activateVpn" type="checkbox" <%=(Settings.activateVpn? "checked='checked'":"")%>>
@@ -383,7 +377,7 @@
                 <label class="settings-label" for="activateRandomize"><%= i18n.__("Randomize Button for Movies") %></label>
             </span>
         </div>
-    </section>-->
+    </section>
 
 	<section id="trakt-tv" class="advanced">
         <div class="content"><div class="title"><%= i18n.__("Trakt.tv") %></div>
@@ -543,22 +537,10 @@
             </div><!-- /.modal -->
         </div>
     </section>
-
-
-    <!--<section id="miscellaneous" class="advanced">
-        <div class="content"><div class="title"><%= i18n.__("Miscellaneous") %></div>
-            <span class="advanced">
-                <input class="settings-checkbox" name="events" id="cb6" type="checkbox" <%=(Settings.events? "checked='checked'":"")%>>
-                <label class="settings-label" for="cb6"><%= i18n.__("Celebrate various events") %></label>
-            </span>
-        </div>
-    </section>-->
-
     <div class="btns">
         <div class="btn-settings flush-bookmarks advanced"><%= i18n.__("Flush bookmarks database") %></div>
         <div class="btn-settings flush-subtitles advanced"><%= i18n.__("Flush subtitles cache") %></div>
         <div class="btn-settings flush-databases"><%= i18n.__("Flush all databases") %></div>
         <div class="btn-settings default-settings"><%= i18n.__("Reset to Default Settings") %></div>
     </div>
-
 </div>

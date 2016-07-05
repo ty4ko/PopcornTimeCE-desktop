@@ -100,7 +100,9 @@ gulp.task('build', ['clean'], function () {
 });
 
 gulp.task('clean-build', function () {
-    return gulp.src(paths.build, {read: false}).pipe(clean());
+    return gulp.src(paths.build, {
+        read: false
+    }).pipe(clean());
 });
 
 gulp.task('clean-deps', function () {

@@ -4,8 +4,6 @@
     var STREAM_PORT = 21584; // 'PT'!
     var BUFFERING_SIZE = 10 * 1024 * 1024;
 
-    var WebTorrent = require('webtorrent');
-    var client = new WebTorrent();
     var parseTorrent = require('parse-torrent');
     var peerflix = require('peerflix');
     var path = require('path');

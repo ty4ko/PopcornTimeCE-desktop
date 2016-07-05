@@ -73,7 +73,6 @@ Settings.tmpLocation = path.join(os.tmpDir(), require('./package.json').name);
 Settings.databaseLocation = path.join(data_path, 'data');
 Settings.deleteTmpOnClose = false;
 Settings.automaticUpdating = true;
-Settings.events = false;
 Settings.minimizeToTray = false;
 Settings.bigPicture = false;
 
@@ -83,9 +82,8 @@ Settings.activateFakeSkan = true;
 Settings.activateAutoplay = false;
 Settings.autoStoreTorrents = true;
 Settings.activateWatchlist = false;
-//Settings.activateFavorites = true;
-//Settings.activateVpn = false;
-//Settings.activateRandomize = false;
+Settings.activateVpn = false;
+Settings.activateRandomize = false;
 Settings.onlineSearchEngine = 'KAT';
 
 // Ratio
