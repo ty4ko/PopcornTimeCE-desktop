@@ -79,7 +79,7 @@ gulp.task('run', function () {
     });
 });
 
-gulp.task('build', ['clean'], function () {
+gulp.task('build', ['clean-build'], function () {
     return new Promise(function (resolve, reject) {
         nwb.commands.nwbuild(paths.src, {
             version: '0.15.4',
