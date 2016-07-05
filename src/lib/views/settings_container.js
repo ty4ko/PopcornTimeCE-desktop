@@ -206,18 +206,6 @@
                 value = parseInt(field.val());
                 break;
             case 'ytsAPI':
-                value = field.val();
-                if (value.substr(-1) !== '/') {
-                    value += '/';
-                }
-                if (value.substr(0, 8) !== 'https://' && value.substr(0, 7) !== 'http://') {
-                    value = 'http://' + value;
-                }
-                value = {
-                    url: value,
-                    strictSSL: value.substr(0, 8) === 'https://'
-                };
-                break;
             case 'tvAPI':
                 value = field.val();
                 if (value.substr(-1) !== '/') {
@@ -231,7 +219,6 @@
                     strictSSL: value.substr(0, 8) === 'https://'
                 };
                 break;
-            case 'subtitle_size':
             case 'stream_browser':
                 if ($('option:selected', field).val() === 'Torrent Link') {
                     this.regTorrent();
@@ -241,9 +228,7 @@
                     this.remBrowStre();
                 }
                 break;
-            case 'chosenPlayer':
-                value = $('option:selected', field).val();
-                break;
+            case 'subtitle_size':
             case 'tv_detail_jump_to':
             case 'subtitle_language':
             case 'subtitle_decoration':
@@ -290,19 +275,21 @@
                 apiDataChanged = true;
                 value = field.val();
                 break;
-            case 'connectionLimit':
-            case 'dhtLimit':
-            case 'streamPort':
-            case 'subtitle_color':
-                value = field.val();
-                break;
             case 'tmpLocation':
                 tmpLocationChanged = true;
-                value = path.join(field.val(), 'Popcorn-Time');
+                //TODO find a better way to get the app name
+                value = path.join(field.val(), require('./package.json').name);
                 break;
             case 'activateVpn':
                 $('.vpn-connect').toggle();
                 value = field.is(':checked');
+                break;
+            case 'connectionLimit':
+            case 'dhtLimit':
+            case 'streamPort':
+            case 'subtitle_color':
+            case 'chosenPlayer':
+                value = field.val();
                 break;
             default:
                 win.warn('Setting not defined: ' + field.attr('name'));
@@ -783,6 +770,7 @@
         },
 
         writeDesktopFile: function (cb) {
+          //FIXME path
             var pctPath = process.execPath.substr(0, process.execPath.lastIndexOf('/') + 1);
             var Exec = pctPath + 'Popcorn-Time'; //process.execPath
             fs.writeFile(nw.App.dataPath + '/popcorntime.desktop', '[Desktop Entry]\nVersion=2.0\nName=PopcornTime Player\nComment=Popcorn Time CE downloads and streams torrents instantly, directly from your browser! Just click on the torrent or magnet link and start downloading and playing it easily and in no time.\nExec=' + Exec + ' %U\nPath=' + pctPath + '\nIcon=' + pctPath + 'popcorntime.png\nTerminal=false\nType=Application\nMimeType=application/x-bittorrent;x-scheme-handler/magnet;video/avi;video/msvideo;video/x-msvideo;video/mp4;video/x-matroska;video/mpeg;\n', cb);

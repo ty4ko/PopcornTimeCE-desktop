@@ -30,8 +30,11 @@ gulp.task('pre-commit', ['jshint']);
 
 // check entire sources for potential coding issues (tweak in .jshintrc)
 gulp.task('jshint', function () {
-    return gulp.src(['gulpfile.js', paths.lib + '/*.js', paths.lib + '/**/*.js', paths.src + '/vendor/videojshooks.js', paths.src + '/vendor/videojsplugins.js', paths.src + '/*.js'])
-        .pipe(glp.jshint('.jshintrc'))
+    return gulp.src(['gulpfile.js', paths.lib + '/*.js',
+            paths.lib + '/**/*.js', paths.src + '/vendor/videojshooks.js',
+            paths.src + '/vendor/videojsplugins.js',
+            paths.src + '/*.js'
+        ]).pipe(glp.jshint('.jshintrc'))
         .pipe(glp.jshint.reporter('jshint-stylish'))
         .pipe(glp.jshint.reporter('fail'));
 });
