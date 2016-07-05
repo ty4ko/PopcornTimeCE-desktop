@@ -307,7 +307,7 @@
             default:
                 win.warn('Setting not defined: ' + field.attr('name'));
             }
-            win.info('Setting changed: ' + field.attr('name') + ' - ' + (typeof value === 'object' ? JSON.stringify(value) : value));
+            win.info('Setting changed for ' + field.attr('name') + ':', value);
 
             // update active session
             App.settings[field.attr('name')] = value;
