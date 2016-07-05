@@ -83,7 +83,7 @@ Settings.activateAutoplay = false;
 Settings.autoStoreTorrents = true;
 Settings.activateWatchlist = false;
 Settings.activateVpn = false;
-Settings.activateRandomize = false;
+Settings.activateRandomize = true;
 Settings.onlineSearchEngine = 'KAT';
 
 // Ratio
