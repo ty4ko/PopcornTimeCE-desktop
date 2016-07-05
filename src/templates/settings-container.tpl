@@ -343,7 +343,7 @@
 
 			<span>
                 <input class="settings-checkbox" name="activateFakeSkan" id="activateFakeSkan" type="checkbox" <%=(Settings.activateFakeSkan? "checked='checked'":"")%>>
-                <label class="settings-label" for="activateFakeSkan" title="This built-in Anti-Virus Scanner will now warn you if an external torrent (kat.cr) was flagged as 'fake'">Anti Virus Scanner</label>
+                <label class="settings-label" for="activateFakeSkan" title="This warn you if an external torrent (kat.cr) was flagged as 'fake'">Fake scanner</label>
             </span>
 
 			<span>
@@ -355,12 +355,6 @@
                 <input class="settings-checkbox" name="autoStoreTorrents" id="autoStoreTorrents" type="checkbox" <%=(Settings.autoStoreTorrents? "checked='checked'":"")%>>
                 <label class="settings-label" for="autoStoreTorrents" title="Automatically list all your downloaded kat.cr torrents to keep track of them (enabled by default)">History</label>
             </span>
-
-			<span>
-                <input class="settings-checkbox" name="chosenPlayer" id="cb7" type="checkbox" <%=(Settings.chosenPlayer == 'VLC'? "checked='checked'":"")%>>
-                <label class="settings-label" for="cb7" title="Stream to VLC Player (disabled by default)"><%= i18n.__("VLC Player") %></label>
-            </span>
-
             <span>
                 <input class="settings-checkbox" name="alwaysFullscreen" id="alwaysFullscreen" type="checkbox" <%=(Settings.alwaysFullscreen? "checked='checked'":"")%>>
                 <label class="settings-label" for="alwaysFullscreen"><%= i18n.__("Always start playing in fullscreen") %></label>
