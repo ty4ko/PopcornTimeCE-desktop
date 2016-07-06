@@ -1886,7 +1886,7 @@ body,
 
 #waiting-block {
     position: fixed;
-    top: calc(90%+ 20px);
+    top: calc(90% + 20px);
     width: 90%;
     text-align: center;
     display: none;
@@ -2361,7 +2361,7 @@ body,
     height: 28px;
     position: absolute;
     top: -6px;
-    left: calc(50%+ 52px);
+    left: calc(50% + 52px);
     display: none;
 }
 

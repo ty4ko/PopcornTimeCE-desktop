@@ -66,7 +66,7 @@
 
         // XXX(xaiki): haruchichan currently doesn't support filters
         var url = URL + 'list.php?' + querystring.stringify(params).replace(/%25%20/g, '%20');
-        win.info('Request to Hurahican API', url);
+        win.info('Request to Haruhichan API', url);
         request({
             url: url,
             json: true
