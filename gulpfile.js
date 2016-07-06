@@ -7,7 +7,7 @@ var gulp = require('gulp'),
         build: './build',
         src: './src',
         css: './src/css',
-        icons: './src/images/icons',
+        images: './src/images',
         language: './src/language',
         lib: './src/lib',
         templates: './src/templates',
@@ -102,9 +102,10 @@ gulp.task('build', ['clean:build'], function () {
             platforms: argv.p ? argv.p : detectCurrentPlatform(),
             withFFmpeg: true,
             production: true,
-            macIcns: paths.icons + '/popcorntime.icns',
-            winIco: paths.icons + '/popcorntime.ico',
+            macIcns: paths.images + '/popcorntime.icns',
+            winIco: paths.images + '/popcorntime.ico',
             sideBySide: false,
+            //outputFormat: 'ZIP',
             outputDir: paths.build
         }, function (err) {
             if (err) {
