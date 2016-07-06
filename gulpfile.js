@@ -1,8 +1,5 @@
 var gulp = require('gulp'),
     glp = require('gulp-load-plugins')(),
-    exec = require('gulp-exec'),
-    csslint = require('gulp-csslint'),
-    clean = require('gulp-clean'),
     nwb = require('nwjs-builder'),
     argv = require('yargs').alias('p', 'platforms').argv,
     paths = {
@@ -32,9 +29,16 @@ gulp.task('pre-commit', ['jshint']);
 
 // validate css sources
 gulp.task('validate:css', function () {
-    gulp.src(paths.themes + '/**/*.css')
-        .pipe(csslint())
-        .pipe(csslint.reporter());
+    var customReporter = function (file) {
+        glp.util.log(glp.util.colors.cyan(file.csslint.errorCount) + ' errors in ' + glp.util.colors.magenta(file.path));
+        file.csslint.results.forEach(function (result) {
+            glp.util.log(result.error.message + ' on line ' + result.error.line);
+        });
+    };
+    return gulp.src(paths.themes + '/**/*.css')
+        .pipe(glp.csslint())
+        .pipe(glp.csslint.reporter(customReporter))
+        .pipe(glp.csslint.reporter('fail'));
 });
 
 // check entire sources for potential coding issues (tweak in .jshintrc)
@@ -115,14 +119,14 @@ gulp.task('build', ['clean:build'], function () {
 gulp.task('clean:build', function () {
     return gulp.src(paths.build, {
         read: false
-    }).pipe(clean());
+    }).pipe(glp.clean());
 });
 
 // cleans dependencies
 gulp.task('clean:deps', function () {
     return gulp.src([paths.base + '/node_modules', paths.src + '/node_modules'], {
             read: false
-        }).pipe(clean())
-        .pipe(exec('npm install'))
-        .pipe(exec.reporter());
+        }).pipe(glp.clean())
+        .pipe(glp.exec('npm install'))
+        .pipe(glp.exec.reporter());
 });
