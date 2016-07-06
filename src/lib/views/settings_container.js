@@ -768,7 +768,7 @@
         },
 
         writeDesktopFile: function (cb) {
-          //FIXME path
+            //FIXME path
             var pctPath = process.execPath.substr(0, process.execPath.lastIndexOf('/') + 1);
             var Exec = pctPath + 'Popcorn-Time'; //process.execPath
             fs.writeFile(nw.App.dataPath + '/popcorntime.desktop', '[Desktop Entry]\nVersion=2.0\nName=PopcornTime Player\nComment=Popcorn Time CE downloads and streams torrents instantly, directly from your browser! Just click on the torrent or magnet link and start downloading and playing it easily and in no time.\nExec=' + Exec + ' %U\nPath=' + pctPath + '\nIcon=' + pctPath + 'popcorntime.png\nTerminal=false\nType=Application\nMimeType=application/x-bittorrent;x-scheme-handler/magnet;video/avi;video/msvideo;video/x-msvideo;video/mp4;video/x-matroska;video/mpeg;\n', cb);

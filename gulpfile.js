@@ -1,19 +1,21 @@
 var gulp = require('gulp'),
     glp = require('gulp-load-plugins')(),
+    exec = require('gulp-exec'),
+    csslint = require('gulp-csslint'),
     clean = require('gulp-clean'),
     nwb = require('nwjs-builder'),
     argv = require('yargs').alias('p', 'platforms').argv,
     paths = {
-        base: './',
-        build: './build',
-        src: './src',
-        css: './src/css',
-        icons: './src/images/icons',
-        language: './src/language',
-        lib: './src/lib',
-        templates: './src/templates',
-        themes: './src/themes',
-        vendor: './src/vendor'
+        base: __dirname,
+        build: __dirname + '/build',
+        src: __dirname + '/src',
+        css: __dirname + '/src/css',
+        icons: __dirname + '/src/images/icons',
+        language: __dirname + '/src/language',
+        lib: __dirname + '/src/lib',
+        templates: __dirname + '/src/templates',
+        themes: __dirname + '/src/themes',
+        vendor: __dirname + '/src/vendor'
     },
     detectCurrentPlatform = function () {
         switch (process.platform) {
@@ -28,8 +30,15 @@ var gulp = require('gulp'),
 
 gulp.task('pre-commit', ['jshint']);
 
+// validate css sources
+gulp.task('validate:css', function () {
+    gulp.src(paths.themes + '/**/*.css')
+        .pipe(csslint())
+        .pipe(csslint.reporter());
+});
+
 // check entire sources for potential coding issues (tweak in .jshintrc)
-gulp.task('jshint', function () {
+gulp.task('validate:js', function () {
     return gulp.src(['gulpfile.js', paths.lib + '/*.js',
             paths.lib + '/**/*.js', paths.src + '/vendor/videojshooks.js',
             paths.src + '/vendor/videojsplugins.js',
@@ -52,7 +61,7 @@ gulp.task('beautify', function () {
             paths.lib + '/**/*.js',
             paths.vendor + '/videojshooks.js',
             paths.vendor + '/videojsplugins.js',
-            paths.themes + '/**/*.css',
+            //paths.themes + '/**/*.css',
             '*.js', '*.json'
         ], {
             base: paths.base
@@ -82,7 +91,7 @@ gulp.task('run', function () {
     });
 });
 
-gulp.task('build', ['clean-build'], function () {
+gulp.task('build', ['clean:build'], function () {
     return new Promise(function (resolve, reject) {
         nwb.commands.nwbuild(paths.src, {
             version: '0.15.4',
@@ -102,14 +111,18 @@ gulp.task('build', ['clean-build'], function () {
     });
 });
 
-gulp.task('clean-build', function () {
+// cleans build directory
+gulp.task('clean:build', function () {
     return gulp.src(paths.build, {
         read: false
     }).pipe(clean());
 });
 
-gulp.task('clean-deps', function () {
-    return gulp.src([paths.base + 'node_modules', paths.src + 'node_modules'], {
-        read: false
-    }).pipe(clean());
+// cleans dependencies
+gulp.task('clean:deps', function () {
+    return gulp.src([paths.base + '/node_modules', paths.src + '/node_modules'], {
+            read: false
+        }).pipe(clean())
+        .pipe(exec('npm install'))
+        .pipe(exec.reporter());
 });
