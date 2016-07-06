@@ -66,11 +66,6 @@
             Mousetrap.bind('backspace', function (e) {
                 App.vent.trigger('settings:close');
             });
-
-            var el = $('#chosenPlayer');
-            App.Device.Collection.forEach(function (device) {
-                el.append(new Option(device.get('name'), device.get('id'), false, Settings.chosenPlayer === device.get('id') ? true : false));
-            });
         },
 
         onRender: function () {
@@ -78,6 +73,10 @@
                 $('.advanced').css('display', 'flex');
             }
             oldTmpLocation = $('#faketmpLocation').val();
+            var el = $('#chosenPlayer');
+            App.Device.Collection.forEach(function (device) {
+                el.append(new Option(device.get('name'), device.get('id'), false, Settings.chosenPlayer === device.get('id') ? true : false));
+            });
         },
 
         rightclick_field: function (e) {
@@ -277,8 +276,7 @@
                 break;
             case 'tmpLocation':
                 tmpLocationChanged = true;
-                //TODO find a better way to get the app name
-                value = path.join(field.val(), require('./package.json').name);
+                value = path.join(field.val(), nw.App.manifest.name);
                 break;
             case 'activateVpn':
                 $('.vpn-connect').toggle();
