@@ -3,16 +3,16 @@ var gulp = require('gulp'),
     nwb = require('nwjs-builder'),
     argv = require('yargs').alias('p', 'platforms').argv,
     paths = {
-        base: __dirname,
-        build: __dirname + '/build',
-        src: __dirname + '/src',
-        css: __dirname + '/src/css',
-        icons: __dirname + '/src/images/icons',
-        language: __dirname + '/src/language',
-        lib: __dirname + '/src/lib',
-        templates: __dirname + '/src/templates',
-        themes: __dirname + '/src/themes',
-        vendor: __dirname + '/src/vendor'
+        base: './',
+        build: './build',
+        src: './src',
+        css: './src/css',
+        icons: './src/images/icons',
+        language: './src/language',
+        lib: './src/lib',
+        templates: './src/templates',
+        themes: './src/themes',
+        vendor: './src/vendor'
     },
     detectCurrentPlatform = function () {
         switch (process.platform) {
