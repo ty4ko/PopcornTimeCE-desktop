@@ -61,6 +61,12 @@
             'ONA'
         ],
 
+        types_favorite: [
+            'All',
+            'Movies',
+            'TV',
+        ],
+
         genres_anime: [
             'All',
             'Action',

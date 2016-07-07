@@ -6,6 +6,22 @@
     Favorites.prototype.constructor = Favorites;
 
     var queryTorrents = function (filters) {
+
+        var params = {};
+
+        switch (filters.type) {
+        case 'Movies':
+            params.type = 'movie';
+            break;
+        case 'TV':
+            params.type = 'tvshow';
+            break;
+        default:
+            break;
+        }
+
+        filters.params = params;
+        
         return App.db.getBookmarks(filters)
             .then(function (data) {
                     return data;
