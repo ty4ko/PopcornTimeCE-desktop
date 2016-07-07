@@ -7,7 +7,6 @@
     var Watchlist = function () {};
     Watchlist.prototype.constructor = Watchlist;
 
-
     var queryTorrents = function (filters) {
         var deferred = Q.defer();
         var now = moment();
@@ -78,9 +77,9 @@
 
             if (show.show_id && show.season !== 0) {
                 promisifyDb(db.watched.find({
-                        imdb_id: show.show_id.toString(),
-                        season: show.season.toString(),
-                        episode: show.episode.toString()
+                        imdb_id: show.show_id,
+                        season: show.season,
+                        episode: show.episode
                     }))
                     .then(function (data) {
                         if (data !== null && data.length > 0) {
