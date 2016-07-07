@@ -22,6 +22,14 @@ var os = require('os');
 
         initialize: function () {
             this.nativeWindow = nw.Window.get();
+
+            this.nativeWindow.on('enter-fullscreen', function(){
+              $('.os-min, .os-max').css('display', 'none');
+            })
+
+            this.nativeWindow.on('restore', function(){
+              $('.os-min, .os-max').css('display', 'block');
+            })
         },
 
         templateHelpers: {
@@ -59,7 +67,7 @@ var os = require('os');
                 this.nativeWindow.toggleFullscreen();
             } else {
                 if (window.screen.availHeight <= this.nativeWindow.height) {
-                    this.nativeWindow.unmaximize();
+                    this.nativeWindow.restore();
                     if (process.platform === 'win32') {
                         $('.os-max').removeClass('os-is-max');
                     }
@@ -87,11 +95,6 @@ var os = require('os');
 
         toggleFullscreen: function () {
             win.toggleFullscreen();
-            if (this.nativeWindow.isFullscreen) {
-                $('.os-min, .os-max').css('display', 'none');
-            } else {
-                $('.os-min, .os-max').css('display', 'block');
-            }
             this.$el.find('.btn-os.fullscreen').toggleClass('active');
         },
 
