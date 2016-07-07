@@ -27,7 +27,7 @@
         };
 
         var req = jQuery.extend(true, {}, Settings.ytsAPI.url, options);
-        win.info('Request to YTSApi for random movie', req.url);
+        win.info('Request to YTSApi for random movie', req.uri);
         request(req, function (err, res, data) {
             if (err || res.statusCode >= 400 || (data && !data.data)) {
                 win.warn('YTS API endpoint \'%s\' failed.', Settings.ytsAPI.url);
@@ -41,6 +41,7 @@
                     json: true,
                     timeout: 10000
                 };
+                win.info('Request to YTSApi for real random movie', options.uri);
                 request(jQuery.extend(true, {}, Settings.ytsAPI.url, options), function (err, res, data) {
                     if (err || res.statusCode >= 400 || (data && !data.data)) {
                         win.warn('YTS API endpoint \'%s\' failed.', Settings.ytsAPI.url);
@@ -49,6 +50,10 @@
                         err = data ? data.status_message : 'No data returned';
                         return defer.reject(err);
                     } else {
+                        if (data.data.movie.id === 0){
+                          win.warn('Invalid movie data returned', data);
+                          return defer.reject('Invalid movie data returned');
+                        }
                         return defer.resolve(Common.sanitize(data.data));
                     }
                 });
@@ -187,7 +192,7 @@
             timeout: 10000
         };
         var req = jQuery.extend(true, {}, ytsAPI, options);
-        win.info('Request to YTSApi for movies', req.url);
+        win.info('Request to YTSApi for movies', req.uri);
         request(req, function (err, res, data) {
             if (err || res.statusCode >= 400 || (data && !data.data)) {
                 win.warn('YTS API endpoint \'%s\' failed.', req.uri);

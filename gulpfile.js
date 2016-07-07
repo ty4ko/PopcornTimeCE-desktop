@@ -1,5 +1,7 @@
 var gulp = require('gulp'),
     glp = require('gulp-load-plugins')(),
+    del = require('del'),
+    vinylPaths = require('vinyl-paths'),
     nwb = require('nwjs-builder'),
     argv = require('yargs').alias('p', 'platforms').argv,
     paths = {
@@ -29,15 +31,9 @@ gulp.task('pre-commit', ['jshint']);
 
 // validate css sources
 gulp.task('validate:css', function () {
-    var customReporter = function (file) {
-        glp.util.log(glp.util.colors.cyan(file.csslint.errorCount) + ' errors in ' + glp.util.colors.magenta(file.path));
-        file.csslint.results.forEach(function (result) {
-            glp.util.log(result.error.message + ' on line ' + result.error.line);
-        });
-    };
     return gulp.src(paths.themes + '/**/*.css')
         .pipe(glp.csslint())
-        .pipe(glp.csslint.reporter(customReporter))
+        .pipe(glp.csslint.reporter())
         .pipe(glp.csslint.reporter('fail'));
 });
 
@@ -127,7 +123,7 @@ gulp.task('clean:build', function () {
 gulp.task('clean:deps', function () {
     return gulp.src([paths.base + '/node_modules', paths.src + '/node_modules'], {
             read: false
-        }).pipe(glp.clean())
+        }).pipe(vinylPaths(del))
         .pipe(glp.exec('npm install'))
         .pipe(glp.exec.reporter());
 });
