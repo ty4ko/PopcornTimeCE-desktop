@@ -448,7 +448,8 @@
                 icon: 'images/icon.png',
                 width: 600,
                 height: 600,
-                focus: true
+                focus: true,
+                position: 'center'
             }, function (loginWindow) {
                 loginWindow.setResizable(false);
                 loginWindow.on('closed', function () {
