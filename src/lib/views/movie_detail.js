@@ -269,7 +269,6 @@
                 $('.sub-dropdown').addClass('open');
                 $('.sub-dropdown-arrow').addClass('down');
             }
-            var self = this;
             $('.flag-container').fadeIn();
         },
 
@@ -286,7 +285,6 @@
         },
 
         playTrailer: function () {
-
             var trailer = new Backbone.Model({
                 src: this.model.get('trailer'),
                 type: 'video/youtube',
@@ -306,7 +304,6 @@
 
         enableHD: function () {
             var torrents = this.model.get('torrents');
-
             if (torrents['1080p'] !== undefined) {
                 torrents = this.model.get('torrents');
                 this.model.set('quality', '1080p');
@@ -317,7 +314,6 @@
 
         disableHD: function () {
             var torrents = this.model.get('torrents');
-
             if (torrents['720p'] !== undefined) {
                 torrents = this.model.get('torrents');
                 this.model.set('quality', '720p');
