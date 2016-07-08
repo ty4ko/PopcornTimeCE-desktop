@@ -42,6 +42,9 @@
         _.each(this.episodes, function (method, key) {
             self.episodes[key] = method.bind(self);
         });
+        _.each(this.users, function (method, key) {
+            self.users[key] = method.bind(self);
+        });
         _.each(this.sync, function (method, key) {
             self.sync[key] = method.bind(self);
         });
@@ -279,6 +282,16 @@
         related: function (id) {
             return this.get('shows/' + id + '/related');
         }
+    };
+
+    TraktTv.prototype.users = {
+      settings: function(){
+        return this.get('users/settings');
+      },
+      watchlist: function (user, filter) {
+          // filter: movies, shows, seasons, episodes, people
+          return this.get('users/' + user + '/watchlist/' + filter);
+      }
     };
 
     TraktTv.prototype.episodes = {
