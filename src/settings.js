@@ -9,7 +9,7 @@ var Settings = {};
 
 // User interface
 Settings.language = '';
-Settings.translateSynopsis = false;
+Settings.translateSynopsis = true;
 Settings.coversShowRating = true;
 Settings.watchedCovers = 'fade';
 Settings.showAdvancedSettings = false;

@@ -179,10 +179,6 @@
             params.quality = Settings.movies_quality;
         }
 
-        if (Settings.translateSynopsis) {
-            params.lang = Settings.language;
-        }
-
         var defer = Q.defer();
 
         var options = {

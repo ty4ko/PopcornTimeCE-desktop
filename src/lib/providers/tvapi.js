@@ -7,11 +7,13 @@
 
     var tvApi = Settings.tvAPI;
 
+    var TVDB_Client = require('node-tvdb');
+    var tvdb_token = '7B95D15E1BE1D75A';
+
     var URL = false;
     var TVApi = function () {
         try {
-            var Client = require('node-tvdb');
-            var tvdb = new Client('7B95D15E1BE1D75A');
+            var tvdb = new TVDB_Client(tvdb_token);
             tvdb.getLanguages()
                 .then(function (langlist) {
                     AdvSettings.set('tvdbLangs', langlist);
@@ -62,7 +64,7 @@
                 return deferred.reject(err || 'Status Code is above 400');
             } else if (!data || (data.error && data.error !== 'No movies found')) {
                 err = data ? data.status_message : 'No data returned';
-                win.error('API error:', err);
+                win.error('TVApi error:', err);
                 return deferred.reject(err);
             } else {
                 data.forEach(function (entry) {
@@ -115,8 +117,7 @@
                                 resolve(data);
                             }, 2000);
 
-                            var Client = require('node-tvdb');
-                            var tvdb = new Client('7B95D15E1BE1D75A', Settings.language);
+                            var tvdb = new TVDB_Client(tvdb_token, Settings.language);
                             win.info('Request to TVDB API: \'%s\' - %s', old_data.title, App.Localization.langcodes[Settings.language].name);
                             tvdb.getSeriesAllById(old_data.tvdb_id)
                                 .then(function (localization) {
