@@ -171,9 +171,7 @@
                 App.Device.Collection.setDevice(Settings.chosenPlayer);
             }
             App.Device.ChooserView('#player-chooser').render();
-            /*if(this.model.get('google_video')){
-		            $('#showDropdown').click();
-	          }*/
+
             if (!this.model.get('google_video')) {
                 $('#player-googlecloud').hide();
             }
@@ -211,15 +209,9 @@
         },
 
         switchRating: function () {
-            if ($('.number-container').hasClass('hidden')) {
-                $('.number-container').removeClass('hidden');
-                $('.star-container').addClass('hidden');
-                AdvSettings.set('ratingStars', false);
-            } else {
-                $('.number-container').addClass('hidden');
-                $('.star-container').removeClass('hidden');
-                AdvSettings.set('ratingStars', true);
-            }
+            $('.number-container').toggleClass('hidden');
+            $('.star-container').toggleClass('hidden');
+            AdvSettings.set('ratingStars', $('.number-container').hasClass('hidden'));
         },
 
         switchSubtitle: function (lang) {
