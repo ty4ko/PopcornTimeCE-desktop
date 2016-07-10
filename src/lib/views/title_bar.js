@@ -25,11 +25,11 @@ var os = require('os');
 
             this.nativeWindow.on('enter-fullscreen', function(){
               $('.os-min, .os-max').css('display', 'none');
-            })
+            });
 
             this.nativeWindow.on('restore', function(){
               $('.os-min, .os-max').css('display', 'block');
-            })
+            });
         },
 
         templateHelpers: {

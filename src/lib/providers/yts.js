@@ -12,55 +12,8 @@
 
         App.Providers.Generic.call(this);
     }
+
     inherits(YTS, App.Providers.Generic);
-
-    YTS.prototype.extractIds = function (items) {
-        return _.pluck(items.results, 'imdb_id');
-    };
-
-    YTS.prototype.random = function () {
-        var defer = Q.defer();
-        var options = {
-            uri: Settings.ytsAPI.url + 'api/v2/list_movies.json' + '?page=1&limit=1',
-            json: true,
-            timeout: 10000
-        };
-
-        var req = jQuery.extend(true, {}, Settings.ytsAPI.url, options);
-        win.info('Request to YTSApi for random movie', req.uri);
-        request(req, function (err, res, data) {
-            if (err || res.statusCode >= 400 || (data && !data.data)) {
-                win.warn('YTS API endpoint \'%s\' failed.', Settings.ytsAPI.url);
-                return defer.reject(err || 'Status Code is above 400');
-            } else if (!data || data.status === 'error') {
-                err = data ? data.status_message : 'No data returned';
-                return defer.reject(err);
-            } else {
-                options = {
-                    uri: Settings.ytsAPI.url + 'api/v2/movie_details.json' + '?movie_id=' + require('mathjs').randomInt(1, parseInt(data.data.movie_count)),
-                    json: true,
-                    timeout: 10000
-                };
-                win.info('Request to YTSApi for real random movie', options.uri);
-                request(jQuery.extend(true, {}, Settings.ytsAPI.url, options), function (err, res, data) {
-                    if (err || res.statusCode >= 400 || (data && !data.data)) {
-                        win.warn('YTS API endpoint \'%s\' failed.', Settings.ytsAPI.url);
-                        return defer.reject(err || 'Status Code is above 400');
-                    } else if (!data || data.status === 'error') {
-                        err = data ? data.status_message : 'No data returned';
-                        return defer.reject(err);
-                    } else {
-                        if (data.data.movie.id === 0){
-                          win.warn('Invalid movie data returned', data);
-                          return defer.reject('Invalid movie data returned');
-                        }
-                        return defer.resolve(Common.sanitize(data.data));
-                    }
-                });
-            }
-        });
-        return defer.promise;
-    };
 
     var format = function (data) {
         var results = _.chain(data.movies)
@@ -77,6 +30,7 @@
                     id: movie.id,
                     imdb_id: movie.imdb_code,
                     title: movie.title,
+                    title_original: movie.title,
                     slug: movie.slug,
                     year: movie.year,
                     genre: movie.genres,
@@ -122,11 +76,72 @@
                     }, {})
                 };
             }).value();
+        if (Settings.translateSynopsis && App.Trakt.authenticated) {
+
+            results.forEach(function (m) {
+                App.Trakt.movies.translations(m.imdb_id, Settings.language).then(function (trakt_data) {
+                    if (trakt_data[0] && trakt_data[0].overview && trakt_data[0].overview !== '') {
+                        m.synopsis = trakt_data[0].overview;
+                        m.title = trakt_data[0].title;
+                    }
+                }).catch(function (error) {
+                    win.error('Error getting synopsis from TraktTv', error);
+                });
+            });
+        }
 
         return {
             results: Common.sanitize(results),
             hasMore: true //data.movie_count > data.page_number * data.limit
         };
+    };
+
+    YTS.prototype.extractIds = function (items) {
+        return _.pluck(items.results, 'imdb_id');
+    };
+
+    YTS.prototype.random = function () {
+        var defer = Q.defer();
+        var options = {
+            uri: Settings.ytsAPI.url + 'api/v2/list_movies.json' + '?page=1&limit=1',
+            json: true,
+            timeout: 10000
+        };
+
+        var req = jQuery.extend(true, {}, Settings.ytsAPI.url, options);
+        win.info('Request to YTSApi for random movie', req.uri);
+        request(req, function (err, res, data) {
+            if (err || res.statusCode >= 400 || (data && !data.data)) {
+                win.warn('YTS API endpoint \'%s\' failed.', Settings.ytsAPI.url);
+                return defer.reject(err || 'Status Code is above 400');
+            } else if (!data || data.status === 'error') {
+                err = data ? data.status_message : 'No data returned';
+                return defer.reject(err);
+            } else {
+                options = {
+                    uri: Settings.ytsAPI.url + 'api/v2/movie_details.json' + '?movie_id=' + require('mathjs').randomInt(1, parseInt(data.data.movie_count)),
+                    json: true,
+                    timeout: 10000
+                };
+                win.info('Request to YTSApi for real random movie', options.uri);
+                request(jQuery.extend(true, {}, Settings.ytsAPI.url, options), function (err, res, data) {
+                    if (err || res.statusCode >= 400 || (data && !data.data)) {
+                        win.warn('YTS API endpoint \'%s\' failed.', Settings.ytsAPI.url);
+                        return defer.reject(err || 'Status Code is above 400');
+                    } else if (!data || data.status === 'error') {
+                        err = data ? data.status_message : 'No data returned';
+                        return defer.reject(err);
+                    } else {
+                        if (data.data.movie.id === 0) {
+                            win.warn('Invalid movie data returned', data);
+                            return defer.reject('Invalid movie data returned');
+                        }
+                        return defer.resolve(Common.sanitize(data.data));
+                    }
+                });
+            }
+        });
+        return defer.promise;
     };
 
     YTS.prototype.fetch = function (filters) {

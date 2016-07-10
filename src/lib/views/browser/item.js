@@ -243,18 +243,6 @@
                 /* falls through */
             case 'show':
             case 'movie':
-
-            /*if (Settings.translateSynopsis && App.Trakt.authenticated) {
-
-              App.Trakt.movies.translations(_this.model.get('imdb_id'), Settings.language).then(function(data){
-                if (data[0]) {
-                  _this.model.set('sinopsys', data[0].overview);
-                  win.debug('final', _this.model.get('sinopsys'));
-                }
-              }).catch(function (error) {
-                win.error('Error getting sinopsys from TraktTv', error);
-              });
-            }*/            
                 var Type = type.charAt(0).toUpperCase() + type.slice(1);
                 this.model.set('health', false);
                 $('.spinner').show();
