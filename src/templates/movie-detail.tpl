@@ -20,14 +20,6 @@ for(var i = 0; i < genre.length; i++){ genre[i] = i18n.__(genre[i]); };
             <div class="title">
                 <%= title %>
             </div>
-              <% if (title_original !== title) { %>
-              <div class="metadatas">
-               <div class="metaitem">
-                 ( <%= title_original %> )
-               </div>
-               </div>
-              <% }; %>
-
             <div class="metadatas">
                 <div class="metaitem">
                     <%= year %>

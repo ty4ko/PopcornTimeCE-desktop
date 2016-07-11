@@ -30,7 +30,6 @@
                     id: movie.id,
                     imdb_id: movie.imdb_code,
                     title: movie.title,
-                    title_original: movie.title,
                     slug: movie.slug,
                     year: movie.year,
                     genre: movie.genres,
