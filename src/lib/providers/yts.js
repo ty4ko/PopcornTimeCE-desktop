@@ -76,7 +76,8 @@
                     }, {})
                 };
             }).value();
-        if (Settings.translateSynopsis && App.Trakt.authenticated) {
+
+        /*if (Settings.translateSynopsis && App.Trakt.authenticated) {
 
             results.forEach(function (m) {
                 App.Trakt.movies.translations(m.imdb_id, Settings.language).then(function (trakt_data) {
@@ -88,7 +89,7 @@
                     win.error('Error getting synopsis from TraktTv', error);
                 });
             });
-        }
+        }*/
 
         return {
             results: Common.sanitize(results),
