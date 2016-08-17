@@ -5,8 +5,6 @@
     var Q = require('q');
     var inherits = require('util').inherits;
 
-    var tvApi = Settings.tvAPI;
-
     var TVDB_Client = require('node-tvdb');
     var tvdb_token = '7B95D15E1BE1D75A';
 
@@ -52,12 +50,12 @@
         }
 
         var options = {
-            uri: tvApi.url + 'shows/' + filters.page + '?' + querystring.stringify(params).replace(/%25%20/g, '%20'),
+            url: Settings.tvAPI.url + 'shows/' + filters.page + '?' + querystring.stringify(params).replace(/%25%20/g, '%20'),
             json: true
         };
 
-        var req = jQuery.extend(true, {}, tvApi, options);
-        win.info('Request to TVApi', req.uri);
+        var req = jQuery.extend(true, {}, Settings.tvAPI, options);
+        win.info('Request to TVApi', req.url);
         request(req, function (err, res, data) {
             if (err || res.statusCode >= 400) {
                 win.warn('TVAPI endpoint \'%s\' failed.', req.uri);
@@ -85,11 +83,11 @@
         debug === undefined ? debug = true : '';
         return Q.Promise(function (resolve, reject) {
             var options = {
-                uri: tvApi.url + 'show/' + torrent_id,
+                url: Settings.tvAPI.url + 'show/' + torrent_id,
                 json: true
             };
-            var req = jQuery.extend(true, {}, tvApi, options);
-            win.info('Request to TVApi', req.uri);
+            var req = jQuery.extend(true, {}, Settings.tvAPI, options);
+            win.info('Request to TVApi', req.url);
             request(req, function (error, response, data) {
                 if (error || response.statusCode >= 400) {
                     win.warn('TVAPI endpoint \'%s\' failed.', req.uri);
