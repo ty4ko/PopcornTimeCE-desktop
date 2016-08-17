@@ -42,12 +42,12 @@
         },
 
         showChangelog: function () {
-            fs.readFile('./CHANGELOG.md', 'utf-8', function (err, contents) {
+            fs.readFile('../CHANGELOG.md', 'utf-8', function (err, contents) {
                 if (!err) {
                     $('.changelog-text').html(contents.replace(/\n/g, '<br />'));
                     $('.changelog-overlay').show();
                 } else {
-                    nw.Shell.openExternal('https://git.popcorntime.ag/popcorntime-ce/desktop/blob/master/CHANGELOG.md');
+                    nw.Shell.openExternal('https://github.com/vzamanillo/desktop/blob/develop/CHANGELOG.md');
                 }
             });
         },

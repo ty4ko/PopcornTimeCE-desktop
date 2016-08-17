@@ -77,7 +77,7 @@ gulp.task('run', function () {
     return new Promise(function (resolve, reject) {
         nwb.commands.nwbuild([paths.src], {
             run: true,
-            version: '0.15.4-sdk',
+            version: '0.16.1-sdk',
             withFFmpeg: true
         }, function (err, code) {
             if (err) {
