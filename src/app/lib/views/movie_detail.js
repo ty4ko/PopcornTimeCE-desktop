@@ -21,11 +21,12 @@
             'click .watched-toggle': 'toggleWatched',
             'click .movie-imdb-link': 'openIMDb',
 	    	'click .movie-yify-link': 'openYify',
-		'click .movie-video2k-link': 'openVideo2k',
-		'click .movie-imdbid-link': 'openIMDb',
-		'click .movie-yifysubtitles-link': 'openYifysubtitles',
-		'click .movie-youtube-link': 'openYoutube',
-		'click .movie-googlevideo-link': 'openGooglevideo',
+		    'click .movie-video2k-link': 'openVideo2k',
+		    'click .movie-imdbid-link': 'openIMDb',
+		    'click .movie-yifysubtitles-link': 'openYifysubtitles',
+		    'click .movie-youtube-link': 'openYoutube',
+		    'click .movie-googlevideo-link': 'openGooglevideo',
+            'click .movie-kinopoisk-link': 'openKinopoisk',
             'mousedown .magnet-link': 'openMagnet',
             'click .sub-dropdown': 'toggleDropdown',
             'click .sub-flag-icon': 'closeDropdown',
@@ -68,11 +69,13 @@
             } else if (torrents['1080p'] !== undefined) {
                 this.model.set('quality', '1080p');
             } else if (torrents['720p'] !== undefined) {
-                this.model.set('quality', '720p');
+                this.model.set('quality', '720p');            
             } else if (torrents['480p'] !== undefined) {
                 this.model.set('quality', '480p');
             } else if (torrents['HDRip'] !== undefined) {
                 this.model.set('quality', 'HDRip');
+            } else {
+                this.model.set('quality', 'N/A');
             }
 
             if (Settings.movies_default_quality === '720p' && torrents['720p'] !== undefined && document.getElementsByName('switch')[0] !== undefined) {
@@ -298,11 +301,17 @@
             }
         },
 
-	playTrailer: function () {
+	   playTrailer: function () {
+            var video_type_js
+            if (this.model.get('trailer').indexOf('youtube') == -1) {      // If this is not youtube video
+                video_type_js = 'video/mp4';                               // use mp4
+            } else {
+                video_type_js = 'video/youtube';
+            }
 
             var trailer = new Backbone.Model({
                 src: this.model.get('trailer'),
-                type: 'video/youtube',
+                type: video_type_js,
                 subtitle: null,
                 quality: false,
                 title: this.model.get('title')
@@ -453,6 +462,8 @@
             gui.Shell.openExternal(this.model.get('google_video'));
         },openYoutube: function () {
             gui.Shell.openExternal(this.model.get('trailer'));
+        },openKinopoisk: function () {
+            gui.Shell.openExternal(this.model.get('url'));
         },
 
         openMagnet: function (e) {

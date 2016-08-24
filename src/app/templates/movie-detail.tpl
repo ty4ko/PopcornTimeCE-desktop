@@ -56,7 +56,7 @@ for(var i = 0; i < genre.length; i++){ genre[i] = i18n.__(genre[i]); };
         <div class="overview" style="font-size:14px;">
 		<%= synopsis %>
 
-		<%  if (Settings.ytsAPI[0].url == 'http://yts.ph/') { %>
+		<%  if (Settings.ytsAPI[0].url !== '') { %> 
 			<div style="margin-top:8px;"><div id="directors" style="color:#ccc; float:left; margin-right:5px;">Director:</div> <%= directors.join(" / ") %></div>
 
 			<div style="margin-top:8px;"><div id="cast" style="color:#ccc; float:left; margin-right:5px;">Cast:</div> <%= cast.join(" / ") %></div>
@@ -64,12 +64,15 @@ for(var i = 0; i < genre.length; i++){ genre[i] = i18n.__(genre[i]); };
 
 		<div style="margin-top:20px; color:#666; font-size:11px;">
 		<div id="resources" style="float:left; margin-right:5px;">Provider: </div>
-		<div id="yts" class="movie-yify-link provider" data-placement="top" data-id="<%= id %>" data-slug="<%= slug %>" data-poster="<%= cover %>" title="yts.ph">yts / </div>
-		<div class="movie-video2k-link provider" data-placement="top" title="video2k.is">video2k / </div>
-		<div class="movie-imdbid-link provider" data-placement="top" title="imdb.com">imdb / </div>
-		<div class="movie-yifysubtitles-link provider" data-placement="top" title="yifysubtitles.com">yifysubtitles / </div>
-		<div class="movie-googlevideo-link provider" data-placement="top" title="cloud src">googlecloud / </div>
-		<div class="movie-youtube-link provider" data-placement="top" title="youtube.com">youtube</div>
+		<div id="yts" class="movie-yify-link provider" data-placement="top" data-id="<%= id %>" data-slug="<%= slug %>" data-poster="<%= cover %>" title="yts.ph">yts</div>
+		<div class="movie-video2k-link provider" data-placement="top" title="video2k.is"> / video2k</div>
+		<div class="movie-imdbid-link provider" data-placement="top" title="imdb.com"> / imdb</div>
+		<div class="movie-yifysubtitles-link provider" data-placement="top" title="yifysubtitles.com"> / yifysubtitles</div>
+		<div class="movie-googlevideo-link provider" data-placement="top" title="cloud src"> / googlecloud</div>
+		<div class="movie-youtube-link provider" data-placement="top" title="youtube.com"> / youtube</div>
+        <% if (url !== null) { %>
+            <div class="movie-kinopoisk-link provider" data-placement="top" title="kinopoisk.ru"> / kinopoisk</div>
+        <% } %>
 		</div>
 	</div>
     </div>
@@ -83,31 +86,33 @@ for(var i = 0; i < genre.length; i++){ genre[i] = i18n.__(genre[i]); };
 
 
 	<div class="button dropup" style="text-transform:uppercase;" id="player-chooser"></div>
-	<!- data-placement="left" title="YIFY torrent - best quality at the smallest filesize" 
+	<!-- data-placement="left" title="YIFY torrent - best quality at the smallest filesize" 
 	Stream torrent - best quality at the smallest filesize but speed potentially throttled, ISP monitor & limited download bandwidth (by seeders)-->
 
 
-        <!--<div id="watch-googlevideo" class="button" style="text-transform:uppercase;" data-placement="bottom" title="Google Cloud - very fast speed, no ISP monitor & unlimited download bandwidth">Stream</div>--><!-Play via Google Cloud - possibly bad quality but very fast speed, no ISP monitor & unlimited download bandwidth-->
+        <!--<div id="watch-googlevideo" class="button" style="text-transform:uppercase;" data-placement="bottom" title="Google Cloud - very fast speed, no ISP monitor & unlimited download bandwidth">Stream</div>--><!--Play via Google Cloud - possibly bad quality but very fast speed, no ISP monitor & unlimited download bandwidth-->
 
 
 	<div id="watch-trailer" class="button" data-placement="bottom"><%=i18n.__("Watch Trailer") %></div>
-	<!- title="Watch youtube trailer" -->
+	<!-- title="Watch youtube trailer" -->
 
 	<div class="movie-quality-container">
            <% if (torrents["720p"] !== undefined && torrents["1080p"] !== undefined) { %>
                 <div class="q720">720p</div>
                 <div class="q1080">1080p</div>
                 <div class="quality switch white">
-                    <input data-toogle="tooltip" data-placement="top" title="720p - <%= Common.fileSize(torrents['720p'].size) %><br>1080p - <%= Common.fileSize(torrents['1080p'].size) %>" type="radio" name="switch" id="switch-hd-off" >
-                    <input data-toogle="tooltip" data-placement="top" title="720p - <%= Common.fileSize(torrents['720p'].size) %><br>1080p - <%= Common.fileSize(torrents['1080p'].size) %>" type="radio" name="switch" id="switch-hd-on" checked >
+                    <input data-toogle="tooltip" data-placement="top" title="720p - <%= Common.fileSize(torrents['720p'].size) %> - <%= torrents['720p'].quality_type %><br>1080p - <%= Common.fileSize(torrents['1080p'].size) %> - <%= torrents['1080p'].quality_type %>" type="radio" name="switch" id="switch-hd-off" >
+                    <input data-toogle="tooltip" data-placement="top" title="720p - <%= Common.fileSize(torrents['720p'].size) %> - <%= torrents['720p'].quality_type %><br>1080p - <%= Common.fileSize(torrents['1080p'].size) %> - <%= torrents['1080p'].quality_type %>" type="radio" name="switch" id="switch-hd-on" checked >
                     <span class="toggle"></span>
                 </div>
             <% } else { %>
                 <% if (torrents["720p"] !== undefined) { %>
-                    <div data-toogle="tooltip" data-placement="top" title="<%= Common.fileSize(torrents['720p'].size) %>" class="q720">720p</div>
+                    <div data-toogle="tooltip" data-placement="top" title="<%= Common.fileSize(torrents['720p'].size) %>" class="q720">720p - <%= torrents['720p'].quality_type %></div>
                 <% }else if (torrents["1080p"] !== undefined) { %>
-                    <div data-toogle="tooltip" data-placement="top" title="<%= Common.fileSize(torrents['1080p'].size) %>" class="q720">1080p</div>
-                <% } else { %>HDRip<% } %> 
+                    <div data-toogle="tooltip" data-placement="top" title="<%= Common.fileSize(torrents['1080p'].size) %>" class="q720">1080p - <%= torrents['1080p'].quality_type %></div>
+                <% }else if (torrents["N/A"] !== undefined) { %>
+                    <div data-toogle="tooltip" data-placement="top" title="<%= Common.fileSize(torrents['N/A'].size) %>" class="q720">N/A - <%= torrents['N/A'].quality_type %></div>
+                <% } %> 
             <% } %>
         </div>
        

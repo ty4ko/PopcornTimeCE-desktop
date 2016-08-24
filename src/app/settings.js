@@ -5,11 +5,11 @@ var Q = require('q'),
     data_path = require('nw.gui').App.dataPath;
 
 /** Default settings **/
-var ruAPIendpoint = 'http://localhost:5000/'
+var ruAPIendpoint = 'http://172.16.47.31:5000/'
 var Settings = {};
 
 // User interface
-Settings.language = 'en';
+Settings.language = 'ru';
 Settings.translateSynopsis = false;
 Settings.coversShowRating = true;
 Settings.watchedCovers = 'fade';

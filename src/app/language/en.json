@@ -522,5 +522,11 @@
 	"Yes": "Yes",
 	"horror": "horror",
 	"family": "family",
-	"fantasy": "fantasy"
+	"fantasy": "fantasy",
+	"history": "history",
+	"romance": "romance",
+	"music": "music",
+	"science-fiction": "science-fiction",
+	"war": "war",
+	"western": "western"
 }
