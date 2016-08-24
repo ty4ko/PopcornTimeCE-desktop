@@ -5,10 +5,11 @@ var Q = require('q'),
     data_path = require('nw.gui').App.dataPath;
 
 /** Default settings **/
+var ruAPIendpoint = 'http://localhost:5000/'
 var Settings = {};
 
 // User interface
-Settings.language = '';
+Settings.language = 'en';
 Settings.translateSynopsis = false;
 Settings.coversShowRating = true;
 Settings.watchedCovers = 'fade';
@@ -71,8 +72,8 @@ Settings.dhtLimit = 500;
 Settings.streamPort = 0; // 0 = Random
 Settings.tmpLocation = path.join(os.tmpDir(), 'Popcorn-Time');
 Settings.databaseLocation = path.join(data_path, 'data');
-Settings.deleteTmpOnClose = false;
-Settings.automaticUpdating = true;
+Settings.deleteTmpOnClose = true;
+Settings.automaticUpdating = false;
 Settings.events = false;
 Settings.minimizeToTray = false;
 Settings.bigPicture = false;
@@ -82,10 +83,10 @@ Settings.activateTorrentCollection = true;
 Settings.activateFakeSkan = true;
 Settings.activateAutoplay = false;
 Settings.autoStoreTorrents = true;
-Settings.activateWatchlist = false;
-//Settings.activateFavorites = true;
+Settings.activateWatchlist = true;
+Settings.activateFavorites = true;
 //Settings.activateVpn = false;
-//Settings.activateRandomize = false;
+Settings.activateRandomize = true;
 Settings.onlineSearchEngine = 'KAT';
 
 // Ratio
@@ -98,29 +99,17 @@ Settings.vpnUsername = '';
 Settings.vpnPassword = '';
 
 Settings.tvAPI = [{
-    url: 'https://eztvapi.ml/',
-    strictSSL: true
-},{
-    url: 'https://popcorntime.ws/api/eztv/',
-    strictSSL: true
-},{
-    url: 'https://popcornwvnbg7jev.onion.to/',
-    strictSSL: true
+    url: ruAPIendpoint,
+    strictSSL: false
 }];
 
 Settings.ytsAPI = [{
-    url: 'http://yts.ph/',
-    strictSSL: true
-},{
-    url: 'http://yify.is/',
-    strictSSL: true
-},{
-    url: 'https://yts.ag/',
-    strictSSL: true
+    url: ruAPIendpoint,
+    strictSSL: false
 }];
 
 Settings.updateEndpoint = {
-    url: 'http://popcorntime.ag/',
+    url: ruAPIendpoint,
     index: 0,
     proxies: [{
         url: 'http://popcorntime.ag/',

@@ -19,13 +19,14 @@
     };
 
     var format = function (data) {
-        var results = _.chain(data.movies)/*
-         .filter(function (movie) {
+        var results = _.chain(data.movies)
+        /*.filter(function (movie) {
          // Filter any 3D only movies
          return _.any(movie.torrents, function (torrent) {
          return torrent.quality !== '3D';
          });
-         })*/.map(function (movie) {
+         })*/
+         .map(function (movie) {
             return {
                 type: 'movie',
                 id: movie.id,
@@ -38,8 +39,8 @@
 		cast: movie.cast,
                 rating: movie.rating,
                 runtime: movie.runtime,
-                image: movie.medium_cover_image,
-                cover: movie.medium_cover_image, //movie.large_cover_image,
+                image: movie.small_cover_image,
+                cover: movie.large_cover_image, //movie.medium_cover_image
                 backdrop: movie.background_image,
                 synopsis: movie.synopsis, 
                 trailer: 'https://www.youtube.com/watch?v=' + movie.yt_trailer_code || false,
@@ -97,15 +98,20 @@
                 case 'last added':
                     params.sort_by = 'date_added';
                     break;
-		case 'last added & google cloud':
-                    params.sort_by = 'google_cloud';
-			App.settings['chosenPlayer'] = 'googlecloud';
+                case 'IMDB rating':
+                    params.sort_by = 'rating_imdb';
                     break;
-		case 'downloads':
+                case 'IMDB votes':
+                    params.sort_by = 'votes_imdb';
+                    break;
+                case 'Kinopoisk rating':
+                    params.sort_by = 'rating_kp';
+                    break;
+                case 'Kinopoisk votes':
+                    params.sort_by = 'votes_kp';
+                    break;
+		        case 'downloads':
                     params.sort_by = 'download_count';
-                    break;
-		case 'likes':
-                    params.sort_by = 'like_count';
                     break;
                 default:
                     params.sort_by = filters.sorter;
@@ -152,12 +158,12 @@
         return defer.promise;
     };
 
-    /*YTS.prototype.random = function () {
+    YTS.prototype.random = function () {
         var defer = Q.defer();
 
         function get(index) {
             var options = {
-                uri: Settings.ytsAPI[index].url + 'api/v2/get_random_movie.json?' + Math.round((new Date()).valueOf() / 1000),
+                uri: Settings.ytsAPI[index].url + 'api/v2/get_random_movie.json',
                 json: true,
                 timeout: 10000
             };
@@ -182,7 +188,7 @@
         get(0);
 
         return defer.promise;
-    };*/
+    };
 
     YTS.prototype.detail = function (torrent_id, old_data) {
         return Q(old_data);
