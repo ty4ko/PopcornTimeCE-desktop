@@ -32,16 +32,14 @@
         ],
 
         sorters: [
-            //'trending',
             'last added',
-            'last added & google cloud',
-            //'popularity',
+            'trending',
             'year',
-            //'title',
-            'rating',
-            'views',
-            'downloads',
-            'likes'
+            'IMDB rating',
+            'IMDB votes',
+            'Kinopoisk rating',
+            'Kinopoisk votes',
+		    'downloads'
         ],
 
         sorters_tv: [

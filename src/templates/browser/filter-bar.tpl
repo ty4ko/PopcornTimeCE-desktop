@@ -1,7 +1,8 @@
 <ul class="nav nav-hor left">
     <li class="source active showMovies providerinfo" data-toggle="tooltip" data-placement="top" title="<%=Settings.ytsAPI.url%>"><%= i18n.__("Movies") %></li>
     <li class="source showShows providerinfo" data-toggle="tooltip" data-placement="top" title="<%=Settings.tvAPI.url%>"><%= i18n.__("TV Series") %></li>
-        <li class="source showAnime providerinfo" data-toggle="tooltip" data-placement="top" title="Haruhichan"><%= i18n.__("Anime") %></li>
+    <!-- Russian API doesn't support anime yet
+    <li class="source showAnime providerinfo" data-toggle="tooltip" data-placement="top" title="Haruhichan"><%= i18n.__("Anime") %></li> -->
 </ul>
 <ul id="nav-filters" class="nav nav-hor filters">
     <% if(typeof type !== 'undefined'){ %>

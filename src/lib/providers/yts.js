@@ -37,11 +37,12 @@
                     cast: movie.cast,
                     rating: movie.rating,
                     runtime: movie.runtime,
-                    image: movie.medium_cover_image,
-                    cover: movie.medium_cover_image, //movie.large_cover_image,
+                    image: movie.small_cover_image,
+                    cover: movie.large_cover_image, //movie.medium_cover_image,
                     backdrop: movie.background_image,
                     synopsis: movie.synopsis,
-                    trailer: 'https://www.youtube.com/watch?v=' + movie.yt_trailer_code || false,
+                    //trailer: 'https://www.youtube.com/watch?v=' + movie.yt_trailer_code || false,
+                    trailer: movie.trailer || false,
                     google_video: movie.google_video || false,
                     certification: movie.mpa_rating,
                     torrents: _.reduce(movie.torrents, function (torrents, torrent) {
@@ -65,6 +66,7 @@
                                         'udp://exodus.desync.com:696931622A',
                                     ]
                                 }),
+                                quality_type: torrent.quality_type,
                                 size: torrent.size_bytes,
                                 filesize: torrent.size,
                                 seed: torrent.seeds,
@@ -172,21 +174,26 @@
 
         if (filters.sorter && filters.sorter !== 'popularity') {
             switch (filters.sorter) {
-            case 'last added':
-                params.sort_by = 'date_added';
-                break;
-            case 'last added & google cloud':
-                params.sort_by = 'google_cloud';
-                App.settings.chosenPlayer = 'googlecloud';
-                break;
-            case 'downloads':
-                params.sort_by = 'download_count';
-                break;
-            case 'likes':
-                params.sort_by = 'like_count';
-                break;
-            default:
-                params.sort_by = filters.sorter;
+                case 'last added':
+                    params.sort_by = 'date_added';
+                    break;
+                case 'IMDB rating':
+                    params.sort_by = 'rating_imdb';
+                    break;
+                case 'IMDB votes':
+                    params.sort_by = 'votes_imdb';
+                    break;
+                case 'Kinopoisk rating':
+                    params.sort_by = 'rating_kp';
+                    break;
+                case 'Kinopoisk votes':
+                    params.sort_by = 'votes_kp';
+                    break;
+                case 'downloads':
+                    params.sort_by = 'download_count';
+                    break;
+                default:
+                    params.sort_by = filters.sorter;
             }
         }
 

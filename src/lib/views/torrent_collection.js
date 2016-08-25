@@ -286,7 +286,6 @@
                 // stored
                 var _file = $(e.currentTarget.parentNode).context.innerText,
                     file = _file.substring(0, _file.length - 2); // avoid ENOENT
-
                 if (file.indexOf('.torrent') !== -1) {
                     magnetLink = parseTorrent.toMagnetURI(parseTorrent(fs.readFileSync(collection + file)));
                 } else { // Only for compatability
