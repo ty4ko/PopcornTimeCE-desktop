@@ -1,12 +1,14 @@
+Port to NW.js v0.15 with better application structure and some other enhancements
+
 [Warning! Popcorntime.sh threatens your computer privacy.](http://popcorntime.ag/official-statement.html#Malware2)
 
-# [Popcorn Time Community](https://github.com/PopcornTime-CE/desktop)
+# Popcorn Time Community
 
-[![Join the chat at https://gitter.im/PopcornTime-CE/desktop](https://badges.gitter.im/PopcornTime-CE/desktop.svg)](https://gitter.im/PopcornTime-CE/desktop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/vzamanillo/desktop](https://badges.gitter.im/vzamanillo/desktop.svg)](https://gitter.im/vzamanillo/desktop?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Allow anyone to easily watch their favorite movies, shows, and anime.
 
-![Popcorn Time](src/app/images/icon.png)
+![Popcorn Time](src/images/icon.png)
 
 Visit the project's website at <http://popcorntime.ag>.
 
@@ -16,7 +18,7 @@ This project would absolutely **not** be possible without the original developer
 
 ## Getting Involved
 
-Want to report a bug, request a feature, contribute or translate Popcorn Time? We need all the help we can get! You can also join in with our [community](README.md#community) to keep up-to-date and meet other Popcorn Timers.
+Want to report a bug, request a feature, contribute or translate Popcorn Time? We need all the help we can get! You are welcome.
 
 ## Contributing
 
@@ -26,9 +28,7 @@ Please don't post pull requests that reformats the code. Please don't remove whi
 
 If you're comfortable getting up and running from a `git clone`, this method is for you.
 
-If you clone the GitLab repository, you will need to build a number of assets with npm.
-
-The [master](https://github.com/PopcornTime-CE/desktop/tree/master) branch which contains the latest release.
+The [develop](https://github.com/vzamanillo/desktop/tree/develop) branch which contains all the new code.
 
 #### Requirements
 
@@ -38,33 +38,23 @@ The [master](https://github.com/PopcornTime-CE/desktop/tree/master) branch which
 #### Running
 *Runs the app without building, useful for testing*
 
-1. `git clone https://github.com/PopcornTime-CE/desktop.git`
+1. `git clone https://github.com/vzamanillo/desktop.git -b develop`
 1. `cd desktop`
+1. `npm install --global gulp-cli` or `npm install gulp -g` (if you have not installed `gulp` before)
 1. `npm install`
-1. `npm start`
+1. `gulp run`
 
-#### Error
+#### PopcornTime-CE configuration
 
-`The video could not be loaded, either because the server or network failed or because the format is not supported`
-
-1. Go to your popcorntime directory `desktop` and paste/replace [libffmpegsumo.so](http://www33.zippyshare.com/v/4UZX7pu4/file.html) in it.
+The configuration settings for this port are stored in your profile directory `.Popcorn-Time-CE-dev` (name in manifest src/package.json), if you want to import the configuration settings from a previous installation of PopcornTime-CE you can do that from the configuration page after run this port.
 
 #### Building
 *Builds the app for a packaged, runnable app*
 
 1. `npm install`
-1. `gulp build` **OR** `node_modules/.bin/gulp build` depending whether you have gulp installed globally or not. 
+1. `gulp build` **OR** `node_modules/.bin/gulp build` depending whether you have gulp installed globally or not.
   2. You can also build for different platforms by passing them with the `-p` argument as a comma-seperated list (For example: `gulp build -p osx64,win32`
-1. There should be a `build/` directory containing the built files 
- 
-<a name="community"></a>
-## Community
-
-Keep track of Popcorn Time Community development and community activity.
-
-* Join in discussions on the [Popcorn Time Subreddit](http://reddit.com/r/PopcornTimeCE)
-* Visit the [website](http://popcorntime.ag)
-* Chat with us on [![Join the chat at https://gitter.im/PopcornTime-CE/desktop](https://badges.gitter.im/PopcornTime-CE/desktop.svg)](https://gitter.im/PopcornTime-CE/desktop)
+1. There should be a `build/` directory containing the built files
 
 ## Versioning
 
@@ -84,11 +74,11 @@ Constructed with the following guidelines:
 ***
 
 If you distribute a copy or make a fork of the project, you have to credit this project as source.
-	
+
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
- 
+
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
- 
+
 You should have received a copy of the GNU General Public License along with this program.  If not, see http://www.gnu.org/licenses/ .
 
 ***
@@ -97,6 +87,4 @@ You should have received a copy of the GNU General Public License along with thi
 
 ***
 
-If you want to contact us : send pm to [samewhiterabbits](https://www.reddit.com/user/Samewhiterabbits) on reddit or [use the form](http://yify.is/index.php/blog/contact) on the yify website.
- 
 Copyright (c) 2015 Popcorn Time Community - Released under the [GPL v3 license](LICENSE.txt).
