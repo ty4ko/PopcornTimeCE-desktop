@@ -5,7 +5,7 @@ var Q = require('q'),
     data_path = require('nw.gui').App.dataPath;
 
 /** Default settings **/
-var ruAPIendpoint = 'http://172.16.47.31:5000/'
+var ruAPIendpoint = 'http://192.168.1.3:5000/'
 var Settings = {};
 
 // User interface
@@ -42,7 +42,7 @@ Settings.moviesShowQuality = false;
 Settings.movies_quality = 'all';
 
 // Subtitles
-Settings.subtitle_language = 'en';
+Settings.subtitle_language = 'ru';
 Settings.subtitle_size = '28px';
 Settings.subtitle_color = '#ffffff';
 Settings.subtitle_decoration = 'Outline';
