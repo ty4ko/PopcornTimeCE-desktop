@@ -256,6 +256,7 @@
                     defaultSubtitle: this.subtitle_selected,
                     title: this.model.get('title'),
                     quality: this.model.get('quality'),
+                    quality_type: this.model.get('quality_type'),
                     type: 'movie',
                     device: App.Device.Collection.selected,
                     cover: this.model.get('cover')
@@ -288,7 +289,7 @@
         },
 
 	   playTrailer: function () {
-            var video_type_js
+            var video_type_js;
             if (this.model.get('trailer').indexOf('youtube') == -1) {      // If this is not youtube video
                 video_type_js = 'video/mp4';                               // use mp4
             } else {

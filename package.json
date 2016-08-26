@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "del": "^2.2.1",
+    "git-guppy": "^1.2.1",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",
     "gulp-csslint": "^0.3.1",
