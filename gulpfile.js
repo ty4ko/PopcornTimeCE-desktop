@@ -1,5 +1,4 @@
 var gulp = require('gulp'),
-    jshint = require('gulp-jshint')
     glp = require('gulp-load-plugins')(),
     del = require('del'),
     vinylPaths = require('vinyl-paths'),
