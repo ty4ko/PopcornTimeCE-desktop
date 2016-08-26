@@ -256,7 +256,6 @@
                     defaultSubtitle: this.subtitle_selected,
                     title: this.model.get('title'),
                     quality: this.model.get('quality'),
-                    quality_type: this.model.get('quality_type'),
                     type: 'movie',
                     device: App.Device.Collection.selected,
                     cover: this.model.get('cover')

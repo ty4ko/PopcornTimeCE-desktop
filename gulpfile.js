@@ -94,7 +94,8 @@ gulp.task('run', function () {
 gulp.task('build', ['clean:build'], function () {
     return new Promise(function (resolve, reject) {
         nwb.commands.nwbuild(paths.src, {
-            version: '0.15.4',
+            // version: '0.15.4',
+            version: '0.16.1',
             platforms: argv.p ? argv.p : detectCurrentPlatform(),
             withFFmpeg: true,
             production: true,

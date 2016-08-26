@@ -3,9 +3,7 @@
     <i class="state-info-player fa fa-pause"></i>
     <div class="player-title"><%= title %></div>
     <div class="details-player">
-        <% if(quality && quality_type) { %>
-        <span class="quality-info-player"><%= quality %> - <%= quality_type %></span>
-        <% }else if(quality) { %>
+        <% if(quality) { %>
         <span class="quality-info-player"><%= quality %></span>
         <% } %>
         <span class="fa fa-times close-info-player"></span>
