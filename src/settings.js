@@ -5,7 +5,7 @@ var Q = require('q'),
     data_path = nw.App.dataPath;
 
 /** Default settings **/
-var ruAPIendpoint = 'http://192.168.1.3:5000/'
+var ruAPIendpoint = 'http://192.168.1.3:5000/';
 var Settings = {};
 
 // User interface
