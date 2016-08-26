@@ -29,6 +29,7 @@
                     type: 'movie',
                     id: movie.id,
                     imdb_id: movie.imdb_code,
+                    url: movie.url,
                     title: movie.title,
                     slug: movie.slug,
                     year: movie.year,
@@ -105,7 +106,7 @@
     YTS.prototype.random = function () {
         var defer = Q.defer();
         var options = {
-            uri: Settings.ytsAPI.url + 'api/v2/list_movies.json' + '?page=1&limit=1',
+            uri: Settings.ytsAPI.url + 'api/v2/get_random_movie.json',
             json: true,
             timeout: 10000
         };
@@ -120,8 +121,8 @@
                 err = data ? data.status_message : 'No data returned';
                 return defer.reject(err);
             } else {
-                options = {
-                    uri: Settings.ytsAPI.url + 'api/v2/movie_details.json' + '?movie_id=' + require('mathjs').randomInt(1, parseInt(data.data.movie_count)),
+             var options = {
+                    uri: Settings.ytsAPI.url + 'api/v2/movie_details.json?movie_id=' + data.data.id, //'api/v2/movie_details.json' + '?movie_id=' + require('mathjs').randomInt(1, parseInt(data.data.movie_count)),
                     json: true,
                     timeout: 10000
                 };
